@@ -105,6 +105,7 @@ import BlockViewer from './BlockViewer';
 // });
 
 router.beforeEach((to, from, next) => {
+    window.scrollTo(0, 0);
     let token = localStorage.getItem('presence_app_token') != null;
     if (to.name === 'login' && token){
       next({ name: 'dashboard' })

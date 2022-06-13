@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import AuthService from '../service/AuthService'
 export default {
     data() {
         return {
@@ -43,22 +44,18 @@ export default {
             checked: false
         }
     },
+    AuthService:null,
+    created(){
+        this.AuthService = new AuthService()
+    },
     methods:{
         doLogin(){
             this.sign_in_label = 'Silahkan tunggu...'
             this.disabled = true
-            fetch(this.API_URL+'auth/login',{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify({
-                    email:this.email,
-                    password:this.password
-                })
-            })
-            .then(res => res.json())
-            .then(res => {
+            this.AuthService.login({
+                email:this.email, 
+                password:this.password
+            }).then(res => {
                 if(!res.success)
                 {
                     this.$swal({

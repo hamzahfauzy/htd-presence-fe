@@ -18,21 +18,21 @@ const routes = [
             {
                 path: '/workunits',
                 name: 'workunits',
-                component: () => import('./pages/opd/Index.vue')
+                component: () => import('./pages/workunits/Index.vue')
             },
             {
                 path: '/employees',
                 name: 'employees',
-                component: () => import('./pages/CrudDemo.vue')
+                component: () => import('./pages/employees/Index.vue')
             },
             {
                 path: '/presences',
                 name: 'presences',
-                component: () => import('./pages/CrudDemo.vue'),
+                component: () => import('./pages/presences/Index.vue'),
                 children:[
                     {
                         path: '',
-                        component: () => import('./pages/CrudDemo.vue')
+                        component: () => import('./pages/presences/Index.vue')
                     },
                     {
                         path: '/presences/hadir',
@@ -51,12 +51,17 @@ const routes = [
             {
                 path: '/holidays',
                 name: 'holidays',
-                component: () => import('./pages/CrudDemo.vue')
+                component: () => import('./pages/holidays/Index.vue')
             },
             {
                 path: '/worktimes',
                 name: 'worktimes',
-                component: () => import('./pages/CrudDemo.vue')
+                component: () => import('./pages/worktimes/Index.vue'),
+            },
+            {
+                path: '/worktimes/:id',
+                name:'worktimes.detail',
+                component: () => import('./pages/worktimes/Detail.vue')
             },
             {
                 path: '/reports',
