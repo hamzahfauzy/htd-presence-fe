@@ -3,7 +3,7 @@
 		<div class="col-12">
 			<div class="card">
                 <DataTable :value="employees" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters" ref="dt" dataKey="id"
-                    :totalRecords="totalRecords" :loading="loading" @page="onPage($event)" @sort="onSort($event)" @filter="onFilter($event)" filterDisplay="row"
+                    :totalRecords="totalRecords" :loading="loading" @page="onPage($event)" @sort="onSort($event)" @filter="onFilter($event)"
                     :globalFilterFields="['name']" v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange" @row-select="onRowSelect" @row-unselect="onRowUnselect"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
 							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
@@ -23,40 +23,40 @@
 						</template>
 					</Column>
                     <Column field="nip" header="NIP"></Column>
-                    <Column field="workunit.name" header="OPD / Unit Kerja" headerStyle="width:20%; min-width:10rem;"></Column>
+                    <Column field="employee.name" header="OPD / Unit Kerja" headerStyle="width:20%; min-width:10rem;"></Column>
                     <Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true" headerStyle="width:20%; min-width:10rem;"></Column>
                     <Column field="position" header="Jabatan" ref="position"></Column>
                     <Column field="phone" header="Telepon" ref="phone"></Column>
                     <Column header="Aksi">
 						<template #body="slotProps">
-							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editWorkunit(slotProps.data)" />
+							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editEmployee(slotProps.data)" />
 						</template>
 					</Column>
                 </DataTable>
 
-                <Dialog v-model:visible="workunitDialog" :style="{width: '450px'}" header="Detail OPD" :modal="true" class="p-fluid">
+                <Dialog v-model:visible="employeeDialog" :style="{width: '450px'}" header="Detail OPD" :modal="true" class="p-fluid">
 					<div class="field">
 						<label for="name">Nama</label>
-						<InputText id="name" v-model.trim="workunit.name" required="true" autofocus disabled />
+						<InputText id="name" v-model.trim="employee.name" required="true" autofocus disabled />
 					</div>
                     <div class="field">
 						<label for="lat">Latitute</label>
-						<InputText id="lat" v-model.trim="workunit.lat" required="true" autofocus :class="{'p-invalid': submitted && !workunit.lat}" />
-						<small class="p-invalid" v-if="submitted && !workunit.lat">Latitute diperlukan.</small>
+						<InputText id="lat" v-model.trim="employee.lat" required="true" autofocus :class="{'p-invalid': submitted && !employee.lat}" />
+						<small class="p-invalid" v-if="submitted && !employee.lat">Latitute diperlukan.</small>
 					</div>
                     <div class="field">
 						<label for="lng">Longitude</label>
-						<InputText id="lng" v-model.trim="workunit.lng" required="true" autofocus :class="{'p-invalid': submitted && !workunit.lng}" />
-						<small class="p-invalid" v-if="submitted && !workunit.lng">Longitude diperlukan.</small>
+						<InputText id="lng" v-model.trim="employee.lng" required="true" autofocus :class="{'p-invalid': submitted && !employee.lng}" />
+						<small class="p-invalid" v-if="submitted && !employee.lng">Longitude diperlukan.</small>
 					</div>
                     <div class="field">
 						<label for="lng">Radius</label>
-						<InputText id="lng" v-model.trim="workunit.radius" required="true" autofocus :class="{'p-invalid': submitted && !workunit.radius}" />
-						<small class="p-invalid" v-if="submitted && !workunit.radius">Radius diperlukan.</small>
+						<InputText id="lng" v-model.trim="employee.radius" required="true" autofocus :class="{'p-invalid': submitted && !employee.radius}" />
+						<small class="p-invalid" v-if="submitted && !employee.radius">Radius diperlukan.</small>
 					</div>
 					<template #footer>
 						<Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-						<Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveWorkunit" />
+						<Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveEmployee" />
 					</template>
 				</Dialog>
             </div>
@@ -84,7 +84,7 @@ export default {
             columns: [
                 {field: 'id', header: 'ID'},
                 {field: 'nip', header: 'NIP'},
-                {field: 'workunit.name', header: 'OPD / Unit Kerja'},
+                {field: 'employee.name', header: 'OPD / Unit Kerja'},
                 {field: 'name', header: 'Nama'},
                 {field: 'position', header: 'Jabatan'},
                 {field: 'phone', header: 'Telepon'}
@@ -160,32 +160,32 @@ export default {
                         this.$router.push(data.redirectTo)
                     }
                     this.selectAll = true;
-                    this.selectedWorkunits = data.data;
+                    this.selectedEmployees = data.data;
                 });
             }
             else {
                 this.selectAll = false;
-                this.selectedWorkunits = [];
+                this.selectedEmployees = [];
             }
         },
         onRowSelect() {
-            this.selectAll = this.selectedWorkunits.length === this.totalRecords
+            this.selectAll = this.selectedEmployees.length === this.totalRecords
         },
         onRowUnselect() {
             this.selectAll = false;
         },
-        editWorkunit(workunit) {
-			this.workunit = {...workunit};
-			this.workunitDialog = true;
+        editEmployee(employee) {
+			this.employee = {...employee};
+			this.employeeDialog = true;
 		},
         hideDialog() {
-			this.workunitDialog = false;
+			this.employeeDialog = false;
 			this.submitted = false;
 		},
-        saveWorkunit() {
+        saveEmployee() {
 			this.submitted = true;
-            // this.employees[this.findIndexById(this.workunit.id)] = this.workunit;
-            this.employeeService.updateWorkunit(this.workunit)
+            // this.employees[this.findIndexById(this.employee.id)] = this.employee;
+            this.employeeService.updateEmployee(this.employee)
             .then(res => {
                 if(!res.success)
                 {
@@ -197,14 +197,14 @@ export default {
                 }
                 else
                 {
-                    this.employees[this.findIndexById(this.workunit.id)] = this.workunit;
+                    this.employees[this.findIndexById(this.employee.id)] = this.employee;
                     this.$swal({
                         icon: 'success',
                         title: 'Success',
                         text: res.message
                     })
-                    this.workunitDialog = false;
-                    this.workunit = {};
+                    this.employeeDialog = false;
+                    this.employee = {};
                 }
             })
 		},

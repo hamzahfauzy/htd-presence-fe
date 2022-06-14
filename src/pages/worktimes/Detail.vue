@@ -11,7 +11,7 @@
 				</Toolbar>
 
                 <DataTable :value="worktimeItems" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters" ref="dt" dataKey="id"
-                    :totalRecords="totalRecords" :loading="loading" @page="onPage($event)" @sort="onSort($event)" @filter="onFilter($event)" filterDisplay="row"
+                    :totalRecords="totalRecords" :loading="loading" @page="onPage($event)" @sort="onSort($event)" @filter="onFilter($event)"
                     :globalFilterFields="['name']" v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange" @row-select="onRowSelect" @row-unselect="onRowUnselect"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
 							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
@@ -33,7 +33,7 @@
                     <Column field="worktime.name" header="Nama"></Column>
                     <Column field="time" header="Waktu"></Column>
                     <Column field="presence.tolerance_time" header="Waktu Toleransi"></Column>
-                    <Column field="day" header="Hari"></Column>
+                    <Column field="hari" header="Hari"></Column>
                     <Column field="presence.name" header="Jenis"></Column>
                     <Column header="Aksi">
 						<template #body="slotProps">
@@ -43,11 +43,21 @@
 					</Column>
                 </DataTable>
 
-                <Dialog v-model:visible="worktimeItemDialog" :style="{width: '450px'}" header="Form Hari Libur" :modal="true" class="p-fluid">
+                <Dialog v-model:visible="worktimeItemDialog" :style="{width: '450px'}" header="Form Detail Jam Kerja" :modal="true" class="p-fluid">
 					<div class="field">
-						<label for="name">Nama</label>
-						<InputText id="name" v-model.trim="worktimeItem.name" required="true" autofocus :class="{'p-invalid': submitted && !worktimeItem.name}"  />
-                        <small class="p-invalid" v-if="submitted && !worktimeItem.name">Nama diperlukan.</small>
+						<label for="name">Jenis</label>
+                        <Dropdown v-model="worktimeItem.presence_id" :options="presences" optionLabel="name" optionValue="id" placeholder="Pilih Jenis" :class="{'p-invalid': submitted && !worktimeItem.presence_id}"   />
+                        <small class="p-invalid" v-if="submitted && !worktimeItem.presence_id">Jenis absensi diperlukan.</small>
+					</div>
+                    <div class="field">
+						<label for="name">Waktu</label>
+                        <Calendar v-model="worktimeItem.time" :showTime="true" :timeOnly="true" :class="{'p-invalid': submitted && !worktimeItem.time}"   />
+                        <small class="p-invalid" v-if="submitted && !worktimeItem.time">Waktu diperlukan.</small>
+					</div>
+                    <div class="field">
+						<label for="name">Hari</label>
+						<Dropdown v-model="worktimeItem.day" :options="days" optionLabel="name" optionValue="value" placeholder="Pilih Hari" :class="{'p-invalid': submitted && !worktimeItem.day}"   />
+                        <small class="p-invalid" v-if="submitted && !worktimeItem.day">Hari diperlukan.</small>
 					</div>
 					<template #footer>
 						<Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
@@ -62,12 +72,14 @@
 <script>
 import {FilterMatchMode} from 'primevue/api';
 import WorktimeItemService from '../../service/WorktimeItemService';
+import PresenceService from '../../service/PresenceService';
 
 export default {
     data() {
         return {
             worktimeId:null,
             loading: false,
+            presences:null,
             onsearchtimeout: null,
             totalRecords: 0,
             worktimeItems: null,
@@ -80,14 +92,28 @@ export default {
                 {field: 'id', header: 'ID'},
                 {field: 'name', header: 'Nama'}
             ],
+            days:[
+                {name:'Senin',value:'1'},
+                {name:'Selasa',value:'2'},
+                {name:'Rabu',value:'3'},
+                {name:'Kamis',value:'4'},
+                {name:'Jumat',value:'5'},
+                {name:'Sabtu',value:'6'},
+                {name:'Minggu',value:'7'},
+            ],
             worktimeItemDialog: false,
             submitted:false,
         }
     },
     worktimeItemService: null,
+    presenceService: null,
     created() {
         this.worktimeId = this.$route.params.id
         this.worktimeItemService = new WorktimeItemService();
+        this.presenceService = new PresenceService();
+        this.presenceService.getAllPresences().then(d => {
+            this.presences = d
+        })
         this.initFilters()
     },
     mounted() {
@@ -214,6 +240,10 @@ export default {
 		},
         saveWorktimeItem() {
 			this.submitted = true;
+            var d = this.worktimeItem.time
+            var hours = d.getHours() < 10 ? "0"+d.getHours() : d.getHours()
+            var minute = d.getMinutes() < 10 ? "0"+d.getMinutes() : d.getMinutes()
+            this.worktimeItem.time =  hours + ':' + minute
             if(this.worktimeItem.id)
             {
                 this.worktimeItemService.updateWorktimeItem(this.worktimeItem, this.worktimeId)

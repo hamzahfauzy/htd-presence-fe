@@ -31,6 +31,22 @@ export default class PresenceService {
         .then(d => d.data);
     }
 
+    getAllPresences() {
+		return fetch(process.env.VUE_APP_API_URL+'presences?response=array',{
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
+            }
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {data:{redirectTo:"Login"}};
+            }
+            return res.json()
+        })
+        .then(d => d.data);
+    }
+
     updatePresence(presence){
         return fetch(process.env.VUE_APP_API_URL+'presences/'+presence.id,{
             method:'PUT',
