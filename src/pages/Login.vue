@@ -68,7 +68,7 @@ export default {
                 }
                 else
                 {
-                    localStorage.setItem('presence_app_token',res.data)
+                    localStorage.setItem('presence_app_token',res.data.token)
                     this.sign_in_label = 'Login berhasil'
                     this.$router.push({name:'dashboard'});
                 }
