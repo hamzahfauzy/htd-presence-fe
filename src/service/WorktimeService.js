@@ -31,6 +31,22 @@ export default class WorktimeService {
         .then(d => d.data);
     }
 
+    getAllWorktimes(){
+        return fetch(process.env.VUE_APP_API_URL+'worktimes?response=array',{
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
+            }
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {data:{redirectTo:"login"}};
+            }
+            return res.json()
+        })
+        .then(d => d.data);
+    }
+
     createWorktime(holiday){
         return fetch(process.env.VUE_APP_API_URL+'worktimes',{
             method:'POST',

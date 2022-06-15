@@ -23,42 +23,16 @@
 						</template>
 					</Column>
                     <Column field="nip" header="NIP"></Column>
-                    <Column field="employee.name" header="OPD / Unit Kerja" headerStyle="width:20%; min-width:10rem;"></Column>
-                    <Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true" headerStyle="width:20%; min-width:10rem;"></Column>
+                    <Column field="workunit.name" header="OPD / Unit Kerja" headerStyle="width:20%; min-width:10rem;"></Column>
+                    <Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                        <template #body="slotProps">
+                            <span class="p-column-title">Nama</span>
+                            <router-link :to='{"name":"employees.detail","params":{"id":slotProps.data.id}}'>{{slotProps.data.name}}</router-link>
+						</template>
+                    </Column>
                     <Column field="position" header="Jabatan" ref="position"></Column>
                     <Column field="phone" header="Telepon" ref="phone"></Column>
-                    <Column header="Aksi">
-						<template #body="slotProps">
-							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editEmployee(slotProps.data)" />
-						</template>
-					</Column>
                 </DataTable>
-
-                <Dialog v-model:visible="employeeDialog" :style="{width: '450px'}" header="Detail OPD" :modal="true" class="p-fluid">
-					<div class="field">
-						<label for="name">Nama</label>
-						<InputText id="name" v-model.trim="employee.name" required="true" autofocus disabled />
-					</div>
-                    <div class="field">
-						<label for="lat">Latitute</label>
-						<InputText id="lat" v-model.trim="employee.lat" required="true" autofocus :class="{'p-invalid': submitted && !employee.lat}" />
-						<small class="p-invalid" v-if="submitted && !employee.lat">Latitute diperlukan.</small>
-					</div>
-                    <div class="field">
-						<label for="lng">Longitude</label>
-						<InputText id="lng" v-model.trim="employee.lng" required="true" autofocus :class="{'p-invalid': submitted && !employee.lng}" />
-						<small class="p-invalid" v-if="submitted && !employee.lng">Longitude diperlukan.</small>
-					</div>
-                    <div class="field">
-						<label for="lng">Radius</label>
-						<InputText id="lng" v-model.trim="employee.radius" required="true" autofocus :class="{'p-invalid': submitted && !employee.radius}" />
-						<small class="p-invalid" v-if="submitted && !employee.radius">Radius diperlukan.</small>
-					</div>
-					<template #footer>
-						<Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-						<Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveEmployee" />
-					</template>
-				</Dialog>
             </div>
         </div>
 	</div>
@@ -174,50 +148,6 @@ export default {
         onRowUnselect() {
             this.selectAll = false;
         },
-        editEmployee(employee) {
-			this.employee = {...employee};
-			this.employeeDialog = true;
-		},
-        hideDialog() {
-			this.employeeDialog = false;
-			this.submitted = false;
-		},
-        saveEmployee() {
-			this.submitted = true;
-            // this.employees[this.findIndexById(this.employee.id)] = this.employee;
-            this.employeeService.updateEmployee(this.employee)
-            .then(res => {
-                if(!res.success)
-                {
-                    this.$swal({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: res.message,
-                    })
-                }
-                else
-                {
-                    this.employees[this.findIndexById(this.employee.id)] = this.employee;
-                    this.$swal({
-                        icon: 'success',
-                        title: 'Success',
-                        text: res.message
-                    })
-                    this.employeeDialog = false;
-                    this.employee = {};
-                }
-            })
-		},
-        findIndexById(id) {
-			let index = -1;
-			for (let i = 0; i < this.employees.length; i++) {
-				if (this.employees[i].id === id) {
-					index = i;
-					break;
-				}
-			}
-			return index;
-		},
 		initFilters() {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
