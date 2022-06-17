@@ -227,7 +227,8 @@ export default {
                     }
                     else
                     {
-                        this.worktimes[this.findIndexById(this.worktime.id)] = this.worktime;
+                        // this.worktimes[this.findIndexById(this.worktime.id)] = this.worktime;
+                        this.loadLazyData()
                         this.$swal({
                             icon: 'success',
                             title: 'Success',
@@ -252,7 +253,7 @@ export default {
                     }
                     else
                     {
-                        this.worktimes.push(this.worktime)
+                        this.loadLazyData()
                         this.worktimeDialog = false;
                         this.worktime = {};
                         this.$swal({
