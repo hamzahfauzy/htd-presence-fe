@@ -48,20 +48,13 @@ export default {
 						{
                             label: 'Presensi', icon: 'pi pi-fw pi-calendar', 
                             items: [
-                                {label: 'Jadwal', icon: 'pi pi-fw pi-bookmark',to: '/presences'},
+                                {label: 'Absensi', icon: 'pi pi-fw pi-bookmark',to: '/presences'},
+                                {label: 'Jadwal', icon: 'pi pi-fw pi-bookmark',to: '/presences/schedules'},
                                 {label: 'Hari Libur', icon: 'pi pi-fw pi-bookmark',to: '/holidays'},
                                 {label: 'Jam Kerja', icon: 'pi pi-fw pi-bookmark',to: '/worktimes'}
                             ],
                         },
-                        {
-                            label: 'Rekapitulasi', icon: 'pi pi-fw pi-file',
-                            items: [
-                                {label: 'Kehadiran', icon: 'pi pi-fw pi-bookmark',to: '/presences/hadir'},
-                                {label: 'Izin', icon: 'pi pi-fw pi-bookmark',to: '/presences/izin'},
-                                {label: 'Sakit', icon: 'pi pi-fw pi-bookmark',to: '/presences/sakit'},
-                                {label: 'Laporan', icon: 'pi pi-fw pi-bookmark',to: '/reports'}
-                            ]
-                        },
+                        { label: 'Laporan', icon: 'pi pi-fw pi-file',to: '/reports'},
                         {label: 'Pengguna', icon: 'pi pi-fw pi-users', to: '/users'},
 					]
 				}

@@ -47,6 +47,22 @@ export default class EmployeeService {
         .then(d => d.data);
     }
 
+    getPresence(id,presence_id) {
+		return fetch(process.env.VUE_APP_API_URL+'employees/' + id + '/presences/'+presence_id,{
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
+            }
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {data:{redirectTo:"login"}};
+            }
+            return res.json()
+        })
+        .then(d => d.data);
+    }
+
     updateEmployee(employee){
         return fetch(process.env.VUE_APP_API_URL+'employees/'+employee.id+'/place',{
             method:'PATCH',

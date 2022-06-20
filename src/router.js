@@ -39,24 +39,16 @@ const routes = [
                 path: '/presences',
                 name: 'presences',
                 component: () => import('./pages/presences/Index.vue'),
-                children:[
-                    {
-                        path: '',
-                        component: () => import('./pages/presences/Index.vue')
-                    },
-                    {
-                        path: '/presences/hadir',
-                        component: () => import('./pages/CrudDemo.vue')
-                    },
-                    {
-                        path: '/presences/izin',
-                        component: () => import('./pages/CrudDemo.vue')
-                    },
-                    {
-                        path: '/presences/sakit',
-                        component: () => import('./pages/CrudDemo.vue')
-                    },
-                ]
+            },
+            {
+                path: '/presences/schedules',
+                name:'presences.schedules',
+                component: () => import('./pages/presences/Schedule.vue')
+            },
+            {
+                path: '/presences/:id/:employee_id',
+                name: 'presences.detail',
+                component: () => import('./pages/presences/Detail.vue'),
             },
             {
                 path: '/holidays',

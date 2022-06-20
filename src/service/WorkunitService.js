@@ -47,6 +47,22 @@ export default class WorkunitService {
         .then(d => d.data);
     }
 
+    getPresences(id) {
+		return fetch(process.env.VUE_APP_API_URL+'workunits/' + id + '/presences',{
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
+            }
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {data:{redirectTo:"login"}};
+            }
+            return res.json()
+        })
+        .then(d => d.data);
+    }
+
     updateWorkunit(workunit){
         return fetch(process.env.VUE_APP_API_URL+'workunits/'+workunit.id+'/place',{
             method:'PATCH',
