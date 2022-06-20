@@ -1,65 +1,79 @@
 <template>
-	<div class="grid">
-		<div class="col-12">
-			<div class="card">
-                <DataTable :value="workunits" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters" ref="dt" dataKey="id"
-                    :totalRecords="totalRecords" :loading="loading" @page="onPage($event)" @sort="onSort($event)" @filter="onFilter($event)"
-                    :globalFilterFields="['name']" responsiveLayout="scroll"
-                    v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange" @row-select="onRowSelect" @row-unselect="onRowUnselect">
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
+                <DataTable :value="workunits" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
+                    ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
+                    @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
+                    responsiveLayout="scroll" v-model:selection="selectedCustomers" :selectAll="selectAll"
+                    @select-all-change="onSelectAllChange" @row-select="onRowSelect" @row-unselect="onRowUnselect">
                     <template #header>
-						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-							<h5 class="m-0">Manajemen OPD / Unit Kerja</h5>
-							<span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                            <h5 class="m-0">Manajemen OPD / Unit Kerja</h5>
+                            <span class="block mt-2 md:mt-0 p-input-icon-left">
                                 <i class="pi pi-search" />
-                                <InputText v-model="filters['global'].value" placeholder="Search..." @keyup="onFilter" />
+                                <InputText v-model="filters['global'].value" placeholder="Search..."
+                                    @keyup="onFilter" />
                             </span>
-						</div>
-					</template>
+                        </div>
+                    </template>
                     <Column field="id" header="ID" :sortable="true">
-						<template #body="slotProps">
-							<span class="p-column-title">ID</span>
-							{{slotProps.data.id}}
-						</template>
-					</Column>
-                    <Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true"></Column>
+                        <template #body="slotProps">
+                            <span class="p-column-title">ID</span>
+                            {{slotProps.data.id}}
+                        </template>
+                    </Column>
+                    <Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true"
+                        headerStyle="width:20%; min-width:10rem;">
+                        <template #body="slotProps">
+                            <span class="p-column-title">Nama</span>
+                            <router-link :to='{"name":"workunits.detail","params":{"id":slotProps.data.id}}'>
+                                {{slotProps.data.name}}</router-link>
+                        </template>
+                    </Column>
                     <Column field="lat" header="Latitute" ref="lat"></Column>
                     <Column field="lng" header="Longitude" ref="lng"></Column>
                     <Column field="radius" header="Radius" ref="radius"></Column>
                     <Column header="Aksi">
-						<template #body="slotProps">
-							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editWorkunit(slotProps.data)" />
-						</template>
-					</Column>
+                        <template #body="slotProps">
+                            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                                @click="editWorkunit(slotProps.data)" />
+                        </template>
+                    </Column>
                 </DataTable>
 
-                <Dialog v-model:visible="workunitDialog" :style="{width: '450px'}" header="Detail OPD" :modal="true" class="p-fluid">
-					<div class="field">
-						<label for="name">Nama</label>
-						<InputText id="name" v-model.trim="workunit.name" required="true" autofocus disabled />
-					</div>
+                <Dialog v-model:visible="workunitDialog" :style="{width: '450px'}" header="Detail OPD" :modal="true"
+                    class="p-fluid">
                     <div class="field">
-						<label for="lat">Latitute</label>
-						<InputText id="lat" v-model.trim="workunit.lat" required="true" autofocus :class="{'p-invalid': submitted && !workunit.lat}" />
-						<small class="p-invalid" v-if="submitted && !workunit.lat">Latitute diperlukan.</small>
-					</div>
+                        <label for="name">Nama</label>
+                        <InputText id="name" v-model.trim="workunit.name" required="true" autofocus disabled />
+                    </div>
                     <div class="field">
-						<label for="lng">Longitude</label>
-						<InputText id="lng" v-model.trim="workunit.lng" required="true" autofocus :class="{'p-invalid': submitted && !workunit.lng}" />
-						<small class="p-invalid" v-if="submitted && !workunit.lng">Longitude diperlukan.</small>
-					</div>
+                        <label for="lat">Latitute</label>
+                        <InputText id="lat" v-model.trim="workunit.lat" required="true" autofocus
+                            :class="{'p-invalid': submitted && !workunit.lat}" />
+                        <small class="p-invalid" v-if="submitted && !workunit.lat">Latitute diperlukan.</small>
+                    </div>
                     <div class="field">
-						<label for="lng">Radius</label>
-						<InputText id="lng" v-model.trim="workunit.radius" required="true" autofocus :class="{'p-invalid': submitted && !workunit.radius}" />
-						<small class="p-invalid" v-if="submitted && !workunit.radius">Radius diperlukan.</small>
-					</div>
-					<template #footer>
-						<Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-						<Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveWorkunit" />
-					</template>
-				</Dialog>
+                        <label for="lng">Longitude</label>
+                        <InputText id="lng" v-model.trim="workunit.lng" required="true" autofocus
+                            :class="{'p-invalid': submitted && !workunit.lng}" />
+                        <small class="p-invalid" v-if="submitted && !workunit.lng">Longitude diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="lng">Radius</label>
+                        <InputText id="lng" v-model.trim="workunit.radius" required="true" autofocus
+                            :class="{'p-invalid': submitted && !workunit.radius}" />
+                        <small class="p-invalid" v-if="submitted && !workunit.radius">Radius diperlukan.</small>
+                    </div>
+                    <template #footer>
+                        <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
+                        <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveWorkunit" />
+                    </template>
+                </Dialog>
             </div>
         </div>
-	</div>
+    </div>
 </template>
 
 <script>

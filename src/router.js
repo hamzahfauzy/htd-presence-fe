@@ -21,6 +21,11 @@ const routes = [
                 component: () => import('./pages/workunits/Index.vue')
             },
             {
+                path: '/workunits/:id',
+                name: 'workunits.detail',
+                component: () => import('./pages/workunits/Detail.vue')
+            },
+            {
                 path: '/employees',
                 name: 'employees',
                 component: () => import('./pages/employees/Index.vue')

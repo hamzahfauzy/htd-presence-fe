@@ -34,7 +34,7 @@
                     <Column field="tolerance_time" header="Waktu Toleransi"></Column>
                     <Column header="Aksi">
 						<template #body="slotProps">
-							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editWorkunit(slotProps.data)" />
+							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editPresence(slotProps.data)" />
                             <Button v-if="slotProps.data.id" icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />
 						</template>
 					</Column>
@@ -167,6 +167,11 @@ export default {
         onRowUnselect() {
             this.selectAll = false;
         },
+        openNew() {
+            this.presence = {};
+            this.submitted = false;
+            this.presenceDialog = true;
+        },
         editPresence(presence) {
 			this.presence = {...presence};
 			this.presenceDialog = true;
@@ -178,28 +183,51 @@ export default {
         savePresence() {
 			this.submitted = true;
             // this.employees[this.findIndexById(this.Presence.id)] = this.Presence;
-            this.presenceService.updatePresence(this.presence)
-            .then(res => {
-                if(!res.success)
-                {
-                    this.$swal({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: res.message,
+            if(this.presence.id){
+                this.presenceService.updatePresence(this.presence)
+                .then(res => {
+                    if(!res.success)
+                    {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: res.message,
+                        })
+                    }
+                    else
+                    {
+                        this.presences[this.findIndexById(this.presence.id)] = this.presence;
+                        this.$swal({
+                            icon: 'success',
+                            title: 'Success',
+                            text: res.message
+                        })
+                        this.presenceDialog = false;
+                        this.presence = {};
+                    }
+                })
+            }else{
+                this.presenceService.createPresence(this.presence)
+                    .then(res => {
+                        if (!res.success) {
+                            this.$swal({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: res.message,
+                            })
+                        }
+                        else {
+                            this.loadLazyData()
+                            this.$swal({
+                                icon: 'success',
+                                title: 'Success',
+                                text: res.message
+                            })
+                            this.presenceDialog = false;
+                            this.presence = {};
+                        }
                     })
-                }
-                else
-                {
-                    this.presences[this.findIndexById(this.presence.id)] = this.presence;
-                    this.$swal({
-                        icon: 'success',
-                        title: 'Success',
-                        text: res.message
-                    })
-                    this.presenceDialog = false;
-                    this.presence = {};
-                }
-            })
+            }
 		},
         findIndexById(id) {
 			let index = -1;
