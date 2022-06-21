@@ -13,7 +13,7 @@ const routes = [
             {
                 path: '',
                 name: 'dashboard',
-                component: () => import('./components/Dashboard.vue')
+                component: () => import('./pages/dashboard/Index.vue')
             },
             {
                 path: '/workunits',
@@ -68,12 +68,12 @@ const routes = [
             {
                 path: '/reports',
                 name: 'reports',
-                component: () => import('./pages/CrudDemo.vue')
+                component: () => import('./pages/users/Index.vue')
             },
             {
                 path: '/users',
                 name: 'users',
-                component: () => import('./pages/CrudDemo.vue')
+                component: () => import('./pages/users/Index.vue')
             }
         ]
     },

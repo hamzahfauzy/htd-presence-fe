@@ -40,7 +40,7 @@
 					</Column>
                 </DataTable>
 
-                <Dialog v-model:visible="presenceDialog" :style="{width: '450px'}" header="Edit Jadwal" :modal="true" class="p-fluid">
+                <Dialog v-model:visible="presenceDialog" :style="{width: '450px'}" header="Form Jadwal" :modal="true" class="p-fluid">
 					<div class="field">
 						<label for="name">Nama</label>
 						<InputText id="name" v-model.trim="presence.name" required="true" autofocus :class="{'p-invalid': submitted && !presence.name}"  />

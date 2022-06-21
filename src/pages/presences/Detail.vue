@@ -4,18 +4,6 @@
             <div class="card">
                 <div class="font-medium text-3xl text-900 mb-3">Detail Absensi</div>
                 <ul class="list-none p-0 m-0">
-                    <!-- <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
-                        <div class="text-500 w-6 md:w-2 font-medium">Nama</div>
-                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-                            {{presence.employee.name}}
-                        </div>
-                    </li>
-                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
-                        <div class="text-500 w-6 md:w-2 font-medium">Jadwal</div>
-                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-                            {{presence.presence.name}}
-                        </div>
-                    </li> -->
                     <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Tipe</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
@@ -34,6 +22,18 @@
                             {{presence.created_at}}
                         </div>
                     </li>
+                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-2 font-medium">Selfi</div>
+                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                            <img :src="storage_url+presence.pic_url" v-if="presence.pic_url" style="width:250px">
+                        </div>
+                    </li>
+                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-2 font-medium">Lampiran</div>
+                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                            <a :href="storage_url+presence.attachment_url" target="_blank" v-if="presence.attachment_url">Download</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -50,6 +50,7 @@ export default {
             presenceId:null,
             presence:{},
             submitted:false,
+            storage_url:process.env.VUE_APP_STORAGE_URL
         }
     },
     employeeService: null,

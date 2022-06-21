@@ -197,5 +197,43 @@ export default class EmployeeService {
             return res.json()
         })
     }
+
+    actionPresence(status, data){
+        return fetch(process.env.VUE_APP_API_URL+'employees/'+data.employee_id+'/presences/'+data.id,{
+            method:'PATCH',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+            body:JSON.stringify({
+                status:status
+            })
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
+
+    insertPresence(employee_id, data){
+        return fetch(process.env.VUE_APP_API_URL+'employees/'+employee_id+'/presences',{
+            method:'POST',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                // 'Content-type': 'multipart/form-data',
+            },
+            body:data
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
 	
 }
