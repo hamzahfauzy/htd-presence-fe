@@ -5,7 +5,7 @@
                 <Toolbar class="mb-4">
                     <template v-slot:start>
                         <div class="my-2">
-                            <Button label="Pengajuan Izin/Sakit" class="p-button-success mr-2" @click="openNew" />
+                            <Button label="Pengajuan Cuti" class="p-button-success mr-2" @click="openNew" />
                         </div>
                     </template>
                 </Toolbar>
@@ -26,7 +26,7 @@
                             <div class="flex">
                                 <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
                                     optionValue="id" class="mr-3" placeholder="Pilih OPD" @change="onWorkunitChange" />
-                                
+
                                 <span class="mt-2 md:mt-0 p-input-icon-left">
                                     <i class="pi pi-search" />
                                     <InputText v-model="filters['global'].value" placeholder="Search..."
@@ -45,6 +45,8 @@
                     <Column field="presence.name" header="Jadwal"></Column>
                     <Column field="type" header="Tipe"></Column>
                     <Column field="status" header="Status"></Column>
+                    <Column field="started_at" header="Waktu Mulai"></Column>
+                    <Column field="finished_at" header="Waktu Selesai"></Column>
                     <Column field="created_at" header="Tanggal"></Column>
                     <Column header="Aksi">
                         <template #body="slotProps">
@@ -65,37 +67,58 @@
                     </Column>
                 </DataTable>
 
-                <Dialog v-model:visible="pengajuanDialog" :style="{width: '450px'}" header="Form Pengajuan Izin/Sakit" :modal="true" class="p-fluid">
-					<div class="field">
-						<label for="name">OPD</label>
+                <Dialog v-model:visible="pengajuanDialog" :style="{width: '450px'}" header="Form Pengajuan Cuti"
+                    :modal="true" class="p-fluid">
+                    <div class="field">
+                        <label for="name">OPD</label>
                         <Dropdown v-model="pengajuan.workunit_id" :options="workunits" optionLabel="name"
-                                    optionValue="id" class="mr-3" required="true" placeholder="Pilih OPD" @change="onPengajuanWorkunitChange" :class="{'p-invalid': submitted && !pengajuan.workunit_id}" />
+                            optionValue="id" class="mr-3" required="true" placeholder="Pilih OPD"
+                            @change="onPengajuanWorkunitChange"
+                            :class="{'p-invalid': submitted && !pengajuan.workunit_id}" />
                         <small class="p-invalid" v-if="submitted && !pengajuan.workunit_id">OPD diperlukan.</small>
-					</div>
-					<div class="field">
-						<label for="name">Pegawai</label>
+                    </div>
+                    <div class="field">
+                        <label for="name">Pegawai</label>
                         <Dropdown v-model="pengajuan.employee_id" :options="employees" optionLabel="name"
-                                    optionValue="id" class="mr-3" required="true" placeholder="Pilih Pegawai" :class="{'p-invalid': submitted && !pengajuan.employee_id}" />
+                            optionValue="id" class="mr-3" required="true" placeholder="Pilih Pegawai"
+                            :class="{'p-invalid': submitted && !pengajuan.employee_id}" />
                         <small class="p-invalid" v-if="submitted && !pengajuan.employee_id">Pegawai diperlukan.</small>
-					</div>
+                    </div>
                     <div class="field">
-						<label for="lat">Jenis Pengajuan</label>
-                        <Dropdown v-model="pengajuan.type" :options="[{name:'izin'},{name:'sakit'}]" optionLabel="name"
-                                    optionValue="name" class="mr-3" required="true" placeholder="Pilih Jenis Pengajuan" :class="{'p-invalid': submitted && !pengajuan.type}" />
-						<small class="p-invalid" v-if="submitted && !pengajuan.type">Jenis pengajuan diperlukan.</small>
-					</div>
+                        <label for="lat">Jenis Pengajuan</label>
+                        <Dropdown v-model="pengajuan.type" :options="paid_leaves" optionLabel="name" optionValue="name"
+                            class="mr-3" required="true" placeholder="Pilih Jenis Pengajuan"
+                            :class="{'p-invalid': submitted && !pengajuan.type}" />
+                        <small class="p-invalid" v-if="submitted && !pengajuan.type">Jenis pengajuan diperlukan.</small>
+                    </div>
                     <div class="field">
-						<label for="lat">Lampiran</label>
+                        <label for="name">Waktu Mulai</label>
+                        <Calendar v-model="pengajuan.started_at"
+                            :class="{ 'p-invalid': submitted && !pengajuan.started_at}" />
+                        <small class="p-invalid" v-if="submitted && !pengajuan.started_at">Waktu Mulai
+                            diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="name">Waktu Selesai</label>
+                        <Calendar v-model="pengajuan.finished_at"
+                            :class="{ 'p-invalid': submitted && !pengajuan.finished_at}" />
+                        <small class="p-invalid" v-if="submitted && !pengajuan.finished_at">Waktu Mulai
+                            diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="lat">Lampiran</label>
                         <div class="p-component p-inputwrapper mr-3">
-                            <input type="file" ref="lampiran" class="" :class="{'p-invalid': submitted && !pengajuan.attachment}" required="true">
+                            <input type="file" ref="lampiran" class=""
+                                :class="{'p-invalid': submitted && !pengajuan.attachment}" required="true">
                         </div>
-						<small class="p-invalid" v-if="submitted && !pengajuan.attachment">File lampiran diperlukan.</small>
-					</div>
-					<template #footer>
-						<Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-						<Button label="Save" icon="pi pi-check" class="p-button-text" @click="savePengajuan" />
-					</template>
-				</Dialog>
+                        <small class="p-invalid" v-if="submitted && !pengajuan.attachment">File lampiran
+                            diperlukan.</small>
+                    </div>
+                    <template #footer>
+                        <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
+                        <Button label="Save" icon="pi pi-check" class="p-button-text" @click="savePengajuan" />
+                    </template>
+                </Dialog>
             </div>
         </div>
     </div>
@@ -106,6 +129,7 @@ import {FilterMatchMode} from 'primevue/api';
 import PresenceService from '../../service/PresenceService';
 import WorkunitService from '../../service/WorkunitService';
 import EmployeeService from '../../service/EmployeeService';
+import PaidLeaveService from '../../service/PaidLeaveService';
 
 export default {
     data() {
@@ -113,9 +137,9 @@ export default {
             loading: false,
             pengajuanDialog: false,
             employees:null,
+            paid_leaves:null,
             pengajuan:{},
             submitted:false,
-
             onsearchtimeout: null,
             totalRecords: 0,
             presences: null,
@@ -131,10 +155,12 @@ export default {
     presenceService: null,
     workunitService: null,
     employeeService: null,
+    paidLeaveService: null,
     created() {
         this.presenceService = new PresenceService();
         this.workunitService = new WorkunitService();
         this.employeeService = new EmployeeService();
+        this.paidLeaveService = new PaidLeaveService();
         this.initFilters()
     },
     mounted() {
@@ -180,6 +206,16 @@ export default {
                         }
                         );
                 }
+
+                this.paidLeaveService.getPaidLeaves()
+                    .then(data => {
+                        if ('redirectTo' in data) {
+                            localStorage.removeItem('presence_app_token')
+                            this.$router.push(data.redirectTo)
+                        }
+                        this.paid_leaves = data.data;
+                    }
+                    );
             }, Math.random() * 1000 + 250);
         },
         onPage(event) {
@@ -209,10 +245,22 @@ export default {
             var file = this.$refs.lampiran
             if(file.files.length)
             {
+                var d = this.pengajuan.started_at
+                var day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+                var month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
+                this.pengajuan.started_at = d.getFullYear() + "-" + month + "-" + day
+
+                d = this.pengajuan.finished_at
+                day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+                month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
+                this.pengajuan.finished_at = d.getFullYear() + "-" + month + "-" + day
+
                 this.pengajuan.attachment = true
                 var formData = new FormData;
                 formData.append('type',this.pengajuan.type)
                 formData.append('attachment',file.files[0])
+                formData.append('started_at',this.pengajuan.started_at)
+                formData.append('finished_at',this.pengajuan.finished_at)
 
                 this.employeeService.insertPresence(this.pengajuan.employee_id, formData)
                     .then(data => {

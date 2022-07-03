@@ -48,7 +48,7 @@ export default {
 						{
                             label: 'Presensi', icon: 'pi pi-fw pi-calendar', 
                             items: [
-                                {label: 'Absensi', icon: 'pi pi-fw pi-bookmark',to: '/presences'},
+                                {label: 'Cuti', icon: 'pi pi-fw pi-bookmark',to: '/presences'},
                                 {label: 'Jadwal', icon: 'pi pi-fw pi-bookmark',to: '/presences/schedules'},
                                 {label: 'Hari Libur', icon: 'pi pi-fw pi-bookmark',to: '/holidays'},
                                 {label: 'Jam Kerja', icon: 'pi pi-fw pi-bookmark',to: '/worktimes'}
