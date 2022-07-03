@@ -3,17 +3,20 @@ export default class EmployeeService {
 	getEmployees(lazyParams) {
         // const queryParams = params ? Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&') : '';
         
-        var params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
-        var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
-        params +='&order_by='+order_by
-        if(lazyParams.sortField != null)
-        {
-            params += '&sort_by='+lazyParams.sortField
-        }
-
-        if(lazyParams.filters.global.value)
-        {
-            params += '&keyword='+lazyParams.filters.global.value
+        var params = ''
+        if(lazyParams){
+            params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
+            var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
+            params +='&order_by='+order_by
+            if(lazyParams.sortField != null)
+            {
+                params += '&sort_by='+lazyParams.sortField
+            }
+    
+            if(lazyParams.filters.global.value)
+            {
+                params += '&keyword='+lazyParams.filters.global.value
+            }
         }
         
 		return fetch(process.env.VUE_APP_API_URL+'employees?' + params,{

@@ -1,41 +1,22 @@
-export default class WorkunitService {
+export default class UserService {
 
-	getWorkunits(lazyParams) {
+	getUsers(lazyParams) {
         // const queryParams = params ? Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&') : '';
         
-        var params = ''
-        if(lazyParams){
-            params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
-            var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
-            params +='&order_by='+order_by
-            if(lazyParams.sortField != null)
-            {
-                params += '&sort_by='+lazyParams.sortField
-            }
-
-            if(lazyParams.filters.global.value)
-            {
-                params += '&keyword='+lazyParams.filters.global.value
-            }
+        var params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
+        var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
+        params +='&order_by='+order_by
+        if(lazyParams.sortField != null)
+        {
+            params += '&sort_by='+lazyParams.sortField
         }
 
-		return fetch(process.env.VUE_APP_API_URL+'workunits?' + params,{
-            headers:{
-                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
-            }
-        })
-        .then(res => {
-            if(res.status == 401)
-            {
-                return {data:{redirectTo:"Login"}};
-            }
-            return res.json()
-        })
-        .then(d => d.data);
-    }
-
-    getWorkunit(id) {
-		return fetch(process.env.VUE_APP_API_URL+'workunits/' + id,{
+        if(lazyParams.filters.global.value)
+        {
+            params += '&keyword='+lazyParams.filters.global.value
+        }
+        
+		return fetch(process.env.VUE_APP_API_URL+'users?' + params,{
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
             }
@@ -50,8 +31,8 @@ export default class WorkunitService {
         .then(d => d.data);
     }
 
-    getPresences(id) {
-		return fetch(process.env.VUE_APP_API_URL+'workunits/' + id + '/presences',{
+    getUser(id) {
+		return fetch(process.env.VUE_APP_API_URL+'users/' + id,{
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
             }
@@ -66,17 +47,19 @@ export default class WorkunitService {
         .then(d => d.data);
     }
 
-    updateWorkunit(workunit){
-        return fetch(process.env.VUE_APP_API_URL+'workunits/'+workunit.id+'/place',{
-            method:'PATCH',
+    createUser(user){
+        return fetch(process.env.VUE_APP_API_URL+'users/',{
+            method:'POST',
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
                 'Content-type': 'application/json; charset=UTF-8',
             },
             body:JSON.stringify({
-                lat:workunit.lat,
-                lng:workunit.lng,
-                radius:workunit.radius,
+                name:user.name,
+                email:user.email,
+                password:user.password,
+                role:user.role,
+                workunit_id:user.workunit_id,
             })
         })
         .then(res => {
@@ -88,15 +71,19 @@ export default class WorkunitService {
         })
     }
 
-    assignWorktime(workunit, data){
-        return fetch(process.env.VUE_APP_API_URL+'workunits/'+workunit.id+'/worktime',{
-            method:'PATCH',
+    updateUser(user){
+        return fetch(process.env.VUE_APP_API_URL+'users/'+user.id,{
+            method:'PUT',
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
                 'Content-type': 'application/json; charset=UTF-8',
             },
             body:JSON.stringify({
-                worktime_id:data.worktime_id
+                name:user.name,
+                email:user.email,
+                password:user.password,
+                role:user.role,
+                workunit_id:user.workunit_id,
             })
         })
         .then(res => {
@@ -108,16 +95,13 @@ export default class WorkunitService {
         })
     }
 
-    deleteWorktime(workunit, data){
-        return fetch(process.env.VUE_APP_API_URL+'workunits/'+workunit.id+'/worktime',{
+    deleteUser(user){
+        return fetch(process.env.VUE_APP_API_URL+'users/'+user.id,{
             method:'DELETE',
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
                 'Content-type': 'application/json; charset=UTF-8',
             },
-            body:JSON.stringify({
-                worktime_id:data.id
-            })
         })
         .then(res => {
             if(res.status == 401)

@@ -74,7 +74,12 @@ const routes = [
                 path: '/users',
                 name: 'users',
                 component: () => import('./pages/users/Index.vue')
-            }
+            },
+            {
+                path: '/users/:id',
+                name:'users.detail',
+                component: () => import('./pages/users/Detail.vue')
+            },
         ]
     },
     {
