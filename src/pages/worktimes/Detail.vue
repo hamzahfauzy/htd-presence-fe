@@ -1,72 +1,99 @@
 <template>
-	<div class="grid">
-		<div class="col-12">
-			<div class="card">
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
                 <Toolbar class="mb-4">
-					<template v-slot:start>
-						<div class="my-2">
-							<Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-						</div>
-					</template>
-				</Toolbar>
+                    <template v-slot:start>
+                        <div class="my-2">
+                            <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+                        </div>
+                    </template>
+                </Toolbar>
 
-                <DataTable :value="worktimeItems" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters" ref="dt" dataKey="id"
-                    :totalRecords="totalRecords" :loading="loading" @page="onPage($event)" @sort="onSort($event)" @filter="onFilter($event)"
-                    :globalFilterFields="['name']" v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange" @row-select="onRowSelect" @row-unselect="onRowUnselect"
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
+                <DataTable :value="worktimeItems" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
+                    ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
+                    @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
+                    v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange"
+                    @row-select="onRowSelect" @row-unselect="onRowUnselect"
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    :rowsPerPageOptions="[5,10,25]"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+                    responsiveLayout="scroll">
                     <template #header>
-						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-							<h5 class="m-0">Detail Jam Kerja</h5>
-							<span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                            <h5 class="m-0">Detail Jam Kerja</h5>
+                            <span class="block mt-2 md:mt-0 p-input-icon-left">
                                 <i class="pi pi-search" />
-                                <InputText v-model="filters['global'].value" placeholder="Search..." @keyup="onFilter" />
+                                <InputText v-model="filters['global'].value" placeholder="Search..."
+                                    @keyup="onFilter" />
                             </span>
-						</div>
-					</template>
+                        </div>
+                    </template>
                     <Column field="id" header="ID" :sortable="true">
-						<template #body="slotProps">
-							<span class="p-column-title">ID</span>
-							{{slotProps.data.id}}
-						</template>
-					</Column>
-                    <Column field="worktime.name" header="Nama"></Column>
-                    <Column field="time" header="Waktu"></Column>
-                    <Column field="presence.tolerance_time" header="Waktu Toleransi"></Column>
-                    <Column field="hari" header="Hari"></Column>
-                    <Column field="presence.name" header="Jenis"></Column>
+                        <template #body="slotProps">
+                            <span class="p-column-title">ID</span>
+                            {{slotProps.data.id}}
+                        </template>
+                    </Column>
+                    <Column field="name" header="Nama"></Column>
+                    <Column field="start_time" header="Waktu Mulai"></Column>
+                    <Column field="end_time" header="Waktu Selesai"></Column>
+                    <Column field="on_time_start" header="On Time Waktu Mulai"></Column>
+                    <Column field="on_time_end" header="On Time Waktu Selesai"></Column>
                     <Column header="Aksi">
-						<template #body="slotProps">
-							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editWorktimeItem(slotProps.data)" />
-                            <Button v-if="slotProps.data.id" icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />
-						</template>
-					</Column>
+                        <template #body="slotProps">
+                            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                                @click="editWorktimeItem(slotProps.data)" />
+                            <Button v-if="slotProps.data.id" icon="pi pi-trash"
+                                class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />
+                        </template>
+                    </Column>
                 </DataTable>
 
-                <Dialog v-model:visible="worktimeItemDialog" :style="{width: '450px'}" header="Form Detail Jam Kerja" :modal="true" class="p-fluid">
-					<div class="field">
-						<label for="name">Jenis</label>
-                        <Dropdown v-model="worktimeItem.presence_id" :options="presences" optionLabel="name" optionValue="id" placeholder="Pilih Jenis" :class="{'p-invalid': submitted && !worktimeItem.presence_id}"   />
-                        <small class="p-invalid" v-if="submitted && !worktimeItem.presence_id">Jenis absensi diperlukan.</small>
-					</div>
+                <Dialog v-model:visible="worktimeItemDialog" :style="{width: '450px'}" header="Form Detail Jam Kerja"
+                    :modal="true" class="p-fluid">
                     <div class="field">
-						<label for="name">Waktu</label>
-                        <Calendar v-model="worktimeItem.time" :showTime="true" :timeOnly="true" :class="{'p-invalid': submitted && !worktimeItem.time}"   />
-                        <small class="p-invalid" v-if="submitted && !worktimeItem.time">Waktu diperlukan.</small>
-					</div>
+                        <label for="name">Nama</label>
+                        <InputText id="name" v-model.trim="worktimeItem.name" required="true" autofocus
+                            :class="{'p-invalid': submitted && !worktimeItem.name}" />
+                        <small class="p-invalid" v-if="submitted && !worktimeItem.name">Nama diperlukan.</small>
+                    </div>
                     <div class="field">
-						<label for="name">Hari</label>
-						<Dropdown v-model="worktimeItem.day" :options="days" optionLabel="name" optionValue="value" placeholder="Pilih Hari" :class="{'p-invalid': submitted && !worktimeItem.day}"   />
-                        <small class="p-invalid" v-if="submitted && !worktimeItem.day">Hari diperlukan.</small>
-					</div>
-					<template #footer>
-						<Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-						<Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveWorktimeItem" />
-					</template>
-				</Dialog>
+                        <label for="name">Waktu Mulai</label>
+                        <Calendar v-model="worktimeItem.start_time" :showTime="true" :timeOnly="true"
+                            :class="{ 'p-invalid': submitted && !worktimeItem.start_time }" />
+                        <small class="p-invalid" v-if="submitted && !worktimeItem.start_time">Waktu Mulai
+                            diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="name">Waktu Selesai</label>
+                        <Calendar v-model="worktimeItem.end_time" :showTime="true" :timeOnly="true"
+                            :class="{ 'p-invalid': submitted && !worktimeItem.end_time }" />
+                        <small class="p-invalid" v-if="submitted && !worktimeItem.end_time">Waktu Selesai
+                            diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="name">On Time Waktu Mulai</label>
+                        <Calendar v-model="worktimeItem.on_time_start" :showTime="true" :timeOnly="true"
+                            :class="{ 'p-invalid': submitted && !worktimeItem.on_time_start }" />
+                        <small class="p-invalid" v-if="submitted && !worktimeItem.on_time_start">On Time Waktu Mulai
+                            diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="name">On Time Waktu Selesai</label>
+                        <Calendar v-model="worktimeItem.on_time_end" :showTime="true" :timeOnly="true"
+                            :class="{ 'p-invalid': submitted && !worktimeItem.on_time_end }" />
+                        <small class="p-invalid" v-if="submitted && !worktimeItem.on_time_end">On Time Waktu Selesai
+                            diperlukan.</small>
+                    </div>
+                    <template #footer>
+                        <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
+                        <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveWorktimeItem" />
+                    </template>
+                </Dialog>
             </div>
         </div>
-	</div>
+    </div>
 </template>
 
 <script>
@@ -91,15 +118,6 @@ export default {
             columns: [
                 {field: 'id', header: 'ID'},
                 {field: 'name', header: 'Nama'}
-            ],
-            days:[
-                {name:'Senin',value:'1'},
-                {name:'Selasa',value:'2'},
-                {name:'Rabu',value:'3'},
-                {name:'Kamis',value:'4'},
-                {name:'Jumat',value:'5'},
-                {name:'Sabtu',value:'6'},
-                {name:'Minggu',value:'7'},
             ],
             worktimeItemDialog: false,
             submitted:false,
@@ -240,10 +258,25 @@ export default {
 		},
         saveWorktimeItem() {
 			this.submitted = true;
-            var d = this.worktimeItem.time
+            var d = this.worktimeItem.start_time
             var hours = d.getHours() < 10 ? "0"+d.getHours() : d.getHours()
             var minute = d.getMinutes() < 10 ? "0"+d.getMinutes() : d.getMinutes()
-            this.worktimeItem.time =  hours + ':' + minute
+            this.worktimeItem.start_time =  hours + ':' + minute
+
+            d = this.worktimeItem.end_time
+            hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours()
+            minute = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes()
+            this.worktimeItem.end_time = hours + ':' + minute
+
+            d = this.worktimeItem.on_time_start
+            hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours()
+            minute = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes()
+            this.worktimeItem.on_time_start = hours + ':' + minute
+
+            d = this.worktimeItem.on_time_end
+            hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours()
+            minute = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes()
+            this.worktimeItem.on_time_end = hours + ':' + minute
             if(this.worktimeItem.id)
             {
                 this.worktimeItemService.updateWorktimeItem(this.worktimeItem, this.worktimeId)
