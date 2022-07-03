@@ -62,13 +62,6 @@
             </template>
         </Dialog>
 
-        <!--  Detail lokasi -->
-        <DetailPlace 
-            v-if="Object.keys(employee).length != 0" 
-            :employee="employee" 
-            :employeeService="employeeService">
-        </DetailPlace>
-
         <!--  Detail jam kerja -->
         <DetailWorktime 
             v-if="Object.keys(employee).length != 0" 
@@ -82,12 +75,10 @@
 
 <script>
 import EmployeeService from '../../service/EmployeeService';
-import DetailPlace from './DetailPlace'
 import DetailWorktime from './DetailWorktime'
 
 export default {
     components:{
-        "DetailPlace" : DetailPlace,
         "DetailWorktime" : DetailWorktime,
     },
     data() {
