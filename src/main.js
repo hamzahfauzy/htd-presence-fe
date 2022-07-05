@@ -99,6 +99,7 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import CodeHighlight from './AppCodeHighlight';
 import BlockViewer from './BlockViewer';
 
+import excel from 'vue-excel-export'
 // router.beforeEach(function(to, from, next) {
 //     window.scrollTo(0, 0);
 //     next();
@@ -132,6 +133,8 @@ app.use(ConfirmationService);
 app.use(ToastService);
 app.use(router);
 app.use(VueSweetalert2);
+ 
+app.use(excel)
 
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);

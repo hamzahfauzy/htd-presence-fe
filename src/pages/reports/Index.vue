@@ -2,6 +2,15 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
+                <Toolbar class="mb-4" v-if="employees.length">
+                    <template v-slot:start>
+                        <div class="my-2">
+                            <export-excel :data="employees" class="p-button p-button-success" worksheet="Laporan" name="Laporan.xls">
+                                Download Data
+                            </export-excel>
+                        </div>
+                    </template>
+                </Toolbar>
                 <DataTable :value="employees" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
                     ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
                     @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
@@ -38,12 +47,12 @@
                     <Column field="group" header="Golongan"></Column>
                     <Column field="position" header="Jabatan"></Column>
                     <Column field="hadir" class="text-center" header="Hadir"></Column>
-                    <Column field="izin" class="text-center"  header="Izin"></Column>
-                    <Column field="cuti" class="text-center"  header="Cuti"></Column>
-                    <Column field="sakit" class="text-center"  header="Sakit"></Column>
-                    <Column field="tugasluar" class="text-center"  header="Tugas Luar"></Column>
-                    <Column field="kegiatan" class="text-center"  header="Kegiatan"></Column>
-                    <Column field="alfa" class="text-center"  header="Alfa"></Column>
+                    <Column field="izin" class="text-center" header="Izin"></Column>
+                    <Column field="cuti" class="text-center" header="Cuti"></Column>
+                    <Column field="sakit" class="text-center" header="Sakit"></Column>
+                    <Column field="tugasluar" class="text-center" header="Tugas Luar"></Column>
+                    <Column field="kegiatan" class="text-center" header="Kegiatan"></Column>
+                    <Column field="alfa" class="text-center" header="Alfa"></Column>
                 </DataTable>
             </div>
         </div>
@@ -58,7 +67,7 @@ export default {
     data() {
         return {
             loading: false,
-            employees:null,
+            employees:[],
             onsearchtimeout: null,
             totalRecords: 0,
             selectAll: false,
