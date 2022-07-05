@@ -155,6 +155,7 @@ export default {
 					.then(data => {
 						if ('redirectTo' in data) {
 							localStorage.removeItem('presence_app_token')
+							localStorage.removeItem('presence_app_role')
 							this.$router.push(data.redirectTo)
 						}
 						this.users = data.data;
@@ -167,6 +168,7 @@ export default {
 					.then(data => {
 						if ('redirectTo' in data) {
 							localStorage.removeItem('presence_app_token')
+							localStorage.removeItem('presence_app_role')
 							this.$router.push(data.redirectTo)
 						}
 						this.workunits = data.data;
@@ -204,6 +206,7 @@ export default {
 				this.UserService.getUsers().then(data => {
 					if ('redirectTo' in data) {
 						localStorage.removeItem('presence_app_token')
+						localStorage.removeItem('presence_app_role')
 						this.$router.push(data.redirectTo)
 					}
 					this.selectAll = true;

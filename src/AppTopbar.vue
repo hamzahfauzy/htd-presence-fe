@@ -42,6 +42,7 @@ export default {
                         icon: 'pi pi-sign-out',
                         command: () => {
 							localStorage.removeItem('presence_app_token')
+							localStorage.removeItem('presence_app_role')
                             this.$router.push({name: 'login'})
                         }
                     }

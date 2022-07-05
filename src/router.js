@@ -13,72 +13,170 @@ const routes = [
             {
                 path: '',
                 name: 'dashboard',
-                component: () => import('./pages/dashboard/Index.vue')
+                component: () => import('./pages/dashboard/Index.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem','kasubagumum','adminkepegawaian','adminopd'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/workunits',
                 name: 'workunits',
-                component: () => import('./pages/workunits/Index.vue')
+                component: () => import('./pages/workunits/Index.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/workunits/:id',
                 name: 'workunits.detail',
-                component: () => import('./pages/workunits/Detail.vue')
+                component: () => import('./pages/workunits/Detail.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/employees',
                 name: 'employees',
-                component: () => import('./pages/employees/Index.vue')
+                component: () => import('./pages/employees/Index.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem','kasubagumum','adminkepegawaian','adminopd'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/employees/:id',
                 name: 'employees.detail',
-                component: () => import('./pages/employees/Detail.vue')
+                component: () => import('./pages/employees/Detail.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem','kasubagumum','adminkepegawaian','adminopd'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/presences',
                 name: 'presences',
                 component: () => import('./pages/presences/Index.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem','kasubagumum','adminkepegawaian'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/presences/schedules',
                 name:'presences.schedules',
-                component: () => import('./pages/presences/Schedule.vue')
+                component: () => import('./pages/presences/Schedule.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/presences/:id/:employee_id',
                 name: 'presences.detail',
                 component: () => import('./pages/presences/Detail.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/holidays',
                 name: 'holidays',
-                component: () => import('./pages/holidays/Index.vue')
+                component: () => import('./pages/holidays/Index.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/worktimes',
                 name: 'worktimes',
                 component: () => import('./pages/worktimes/Index.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem','adminopd'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/worktimes/:id',
                 name:'worktimes.detail',
-                component: () => import('./pages/worktimes/Detail.vue')
+                component: () => import('./pages/worktimes/Detail.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem','adminopd'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/reports',
                 name: 'reports',
-                component: () => import('./pages/users/Index.vue')
+                component: () => import('./pages/users/Index.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem','adminopd'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/users',
                 name: 'users',
-                component: () => import('./pages/users/Index.vue')
+                component: () => import('./pages/users/Index.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
             {
                 path: '/users/:id',
                 name:'users.detail',
-                component: () => import('./pages/users/Detail.vue')
+                component: () => import('./pages/users/Detail.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
             },
         ]
     },

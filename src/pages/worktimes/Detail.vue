@@ -163,6 +163,7 @@ export default {
                             if('redirectTo' in data)
                             {
                                 localStorage.removeItem('presence_app_token')
+                                localStorage.removeItem('presence_app_role')
                                 this.$router.push(data.redirectTo)
                             }
                             this.worktimeItems = data.data;
@@ -198,6 +199,7 @@ export default {
                     if('redirectTo' in data)
                             {
                                 localStorage.removeItem('presence_app_token')
+                        localStorage.removeItem('presence_app_role')
                                 this.$router.push(data.redirectTo)
                             }
                     this.selectAll = true;

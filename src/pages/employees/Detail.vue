@@ -1,7 +1,7 @@
 <template>
-	<div class="grid">
-		<div class="col-12">
-			<div class="card">
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
                 <div class="font-medium text-3xl text-900 mb-3">Detail Pegawai</div>
                 <ul class="list-none p-0 m-0">
                     <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
@@ -33,44 +33,45 @@
                     <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">System Role</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
-                            {{employee.user?roleLists.find(r => r.value === employee.user.role).name:''}} 
+                            {{employee.user?roleLists.find(r => r.value === employee.user.role).name:''}}
                             <template v-if="employee.user">
-                            - <a href="javascript:void(0)" @click="editRole()">Edit</a>
+                                - <a href="javascript:void(0)" @click="editRole()">Edit</a>
                             </template>
                         </div>
                     </li>
                     <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Bebas Lokasi</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
-                            {{employee.is_free_place?'Ya':'Tidak'}} 
-                            - <a href="javascript:void(0)" @click="patchPlace()">Update</a>
+                            {{employee.is_free_place?'Ya':'Tidak'}}
+                            {{ role != 'adminsistem' ?'-' : ''}}
+                            <a v-if="role != 'adminsistem'" href="javascript:void(0)" @click="patchPlace()">Update</a>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <Dialog v-model:visible="roleDialog" :style="{width: '450px'}" header="Edit System Role" :modal="true" class="p-fluid">
+        <Dialog v-model:visible="roleDialog" :style="{width: '450px'}" header="Edit System Role" :modal="true"
+            class="p-fluid">
             <div class="field">
                 <label for="name">Role Name</label>
-                <Dropdown v-model="user_role" :options="roleLists" optionLabel="name" optionValue="value" placeholder="Pilih Role" :class="{'p-invalid': submitted && !user_role}"   />
+                <Dropdown v-model="user_role" :options="roleLists" optionLabel="name" optionValue="value"
+                    placeholder="Pilih Role" :class="{'p-invalid': submitted && !user_role}" />
                 <small class="p-invalid" v-if="submitted && !user_role">Role name diperlukan.</small>
             </div>
             <template #footer>
-                <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideRoleDialog"/>
+                <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideRoleDialog" />
                 <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveRole" />
             </template>
         </Dialog>
 
         <!--  Detail jam kerja -->
-        <DetailWorktime 
-            v-if="Object.keys(employee).length != 0" 
-            :employee="employee" 
+        <DetailWorktime v-if="Object.keys(employee).length != 0" :employee="employee"
             :employeeService="employeeService">
         </DetailWorktime>
 
         <!--  Rekapitulasi Absensi -->
-	</div>
+    </div>
 </template>
 
 <script>
@@ -93,7 +94,8 @@ export default {
                 {name: "Kasubag Umum", value: "kasubagumum"},
                 {name: "Admin BKD", value: "adminkepegawaian"},
                 {name: "Admin OPD", value: "adminopd"}
-            ]
+            ],
+            role: localStorage.getItem("presence_app_role")
         }
     },
     employeeService: null,
@@ -125,6 +127,7 @@ export default {
                 if('redirectTo' in res)
                 {
                     localStorage.removeItem('presence_app_token')
+                    localStorage.removeItem('presence_app_role')
                     this.$router.push(res.redirectTo)
                 }
                 if(!res.success)
@@ -153,6 +156,7 @@ export default {
                 if('redirectTo' in res)
                 {
                     localStorage.removeItem('presence_app_token')
+                    localStorage.removeItem('presence_app_role')
                     this.$router.push(res.redirectTo)
                 }
                 if(!res.success)

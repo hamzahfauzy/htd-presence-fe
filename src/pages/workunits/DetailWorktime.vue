@@ -104,6 +104,7 @@ export default {
                         if('redirectTo' in data)
                         {
                             localStorage.removeItem('presence_app_token')
+                            localStorage.removeItem('presence_app_role')
                             this.$router.push(data.redirectTo)
                         }
 
@@ -141,6 +142,7 @@ export default {
                 if('redirectTo' in data)
                 {
                     localStorage.removeItem('presence_app_token')
+                    localStorage.removeItem('presence_app_role')
                     this.$router.push(data.redirectTo)
                 }
 

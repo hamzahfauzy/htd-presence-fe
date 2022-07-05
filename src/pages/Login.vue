@@ -69,6 +69,7 @@ export default {
                 else
                 {
                     localStorage.setItem('presence_app_token',res.data.token)
+                    localStorage.setItem('presence_app_role',res.data.user.role)
                     this.sign_in_label = 'Login berhasil'
                     this.$router.push({name:'dashboard'});
                 }

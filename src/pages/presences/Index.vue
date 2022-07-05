@@ -2,7 +2,7 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <Toolbar class="mb-4">
+                <Toolbar class="mb-4" v-if="role!='adminkepegawaian'">
                     <template v-slot:start>
                         <div class="my-2">
                             <Button label="Pengajuan Cuti" class="p-button-success mr-2" @click="openNew" />
@@ -48,7 +48,7 @@
                     <Column field="started_at" header="Waktu Mulai"></Column>
                     <Column field="finished_at" header="Waktu Selesai"></Column>
                     <Column field="created_at" header="Tanggal"></Column>
-                    <Column header="Aksi">
+                    <Column header="Aksi" v-if="role != 'kasubagumum'">
                         <template #body="slotProps">
                             <router-link
                                 :to='{"name":"presences.detail","params":{"id":slotProps.data.id,"employee_id":slotProps.data.employee.id}}'>
@@ -150,6 +150,7 @@ export default {
             lazyParams: {},
             workunits:[],
             selectedWorkunit:{},
+            role:localStorage.getItem("presence_app_role")
         }
     },
     presenceService: null,
@@ -187,6 +188,7 @@ export default {
                     .then(data => {
                         if ('redirectTo' in data) {
                             localStorage.removeItem('presence_app_token')
+                            localStorage.removeItem('presence_app_role')
                             this.$router.push(data.redirectTo)
                         }
                         this.workunits = data.data;
@@ -199,6 +201,7 @@ export default {
                         .then(data => {
                             if ('redirectTo' in data) {
                                 localStorage.removeItem('presence_app_token')
+                                localStorage.removeItem('presence_app_role')
                                 this.$router.push(data.redirectTo)
                             }
                             this.presences = data.data;
@@ -211,6 +214,7 @@ export default {
                     .then(data => {
                         if ('redirectTo' in data) {
                             localStorage.removeItem('presence_app_token')
+                            localStorage.removeItem('presence_app_role')
                             this.$router.push(data.redirectTo)
                         }
                         this.paid_leaves = data.data;
@@ -266,6 +270,7 @@ export default {
                     .then(data => {
                         if ('redirectTo' in data) {
                             localStorage.removeItem('presence_app_token')
+                            localStorage.removeItem('presence_app_role')
                             this.$router.push(data.redirectTo)
                         }
                         if(!data.success)
@@ -301,6 +306,7 @@ export default {
             .then(data => {
                 if ('redirectTo' in data) {
                     localStorage.removeItem('presence_app_token')
+                    localStorage.removeItem('presence_app_role')
                     this.$router.push(data.redirectTo)
                 }
                 this.employees = data.employees;
