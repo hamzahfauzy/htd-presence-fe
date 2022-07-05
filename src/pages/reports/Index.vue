@@ -1,0 +1,168 @@
+<template>
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
+                <DataTable :value="employees" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
+                    ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
+                    @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
+                    v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange"
+                    @row-select="onRowSelect" @row-unselect="onRowUnselect"
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    :rowsPerPageOptions="[5,10,25]"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+                    responsiveLayout="scroll">
+                    <template #header>
+                        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                            <h5 class="m-0">Laporan</h5>
+
+                            <div class="flex">
+                                <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                                    optionValue="id" class="mr-3" placeholder="Pilih OPD" @change="onWorkunitChange" />
+
+                                <span class="mt-2 md:mt-0 p-input-icon-left">
+                                    <i class="pi pi-search" />
+                                    <InputText v-model="filters['global'].value" placeholder="Search..."
+                                        @keyup="onFilter" />
+                                </span>
+                            </div>
+                        </div>
+                    </template>
+                    <Column field="id" header="ID" :sortable="true">
+                        <template #body="slotProps">
+                            <span class="p-column-title">ID</span>
+                            {{slotProps.data.id}}
+                        </template>
+                    </Column>
+                    <Column field="name" header="Nama"></Column>
+                    <Column field="nip" header="NIP"></Column>
+                    <Column field="group" header="Golongan"></Column>
+                    <Column field="position" header="Jabatan"></Column>
+                    <Column field="hadir" class="text-center" header="Hadir"></Column>
+                    <Column field="izin" class="text-center"  header="Izin"></Column>
+                    <Column field="cuti" class="text-center"  header="Cuti"></Column>
+                    <Column field="sakit" class="text-center"  header="Sakit"></Column>
+                    <Column field="tugasluar" class="text-center"  header="Tugas Luar"></Column>
+                    <Column field="kegiatan" class="text-center"  header="Kegiatan"></Column>
+                    <Column field="alfa" class="text-center"  header="Alfa"></Column>
+                </DataTable>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import {FilterMatchMode} from 'primevue/api';
+import WorkunitService from '../../service/WorkunitService';
+import EmployeeService from '../../service/EmployeeService';
+export default {
+    data() {
+        return {
+            loading: false,
+            employees:null,
+            onsearchtimeout: null,
+            totalRecords: 0,
+            selectAll: false,
+            filters: {},
+            lazyParams: {},
+            workunits:[],
+            selectedWorkunit:{},
+            role:localStorage.getItem("presence_app_role")
+        }
+    },
+    workunitService: null,
+    employeeService: null,
+    created() {
+        this.workunitService = new WorkunitService();
+        this.employeeService = new EmployeeService();
+        this.initFilters()
+    },
+    mounted() {
+        this.loading = true;
+
+        this.lazyParams = {
+            first: 0,
+            page: 0,
+            rows: this.$refs.dt.rows,
+            sortField: null,
+            sortOrder: 1,
+            filters: this.filters
+        };
+
+        this.loadLazyData();
+    },
+    methods: {
+        loadLazyData() {
+            this.loading = true;
+
+            setTimeout(() => {
+
+                this.workunitService.getWorkunits()
+                    .then(data => {
+                        if ('redirectTo' in data) {
+                            localStorage.removeItem('presence_app_token')
+                            localStorage.removeItem('presence_app_role')
+                            this.$router.push(data.redirectTo)
+                        }
+                        this.workunits = data.data;
+                        this.loading = false;
+                    }
+                    );
+
+                if(this.selectedWorkunit.id){
+                    this.employeeService.getEmployeesReport(this.lazyParams,this.selectedWorkunit.id)
+                        .then(data => {
+                            if ('redirectTo' in data) {
+                                localStorage.removeItem('presence_app_token')
+                                localStorage.removeItem('presence_app_role')
+                                this.$router.push(data.redirectTo)
+                            }
+                            this.employees = data.data;
+                            this.loading = false;
+                        }
+                        );
+                }
+            }, Math.random() * 1000 + 250);
+        },
+        onPage(event) {
+            this.lazyParams = event;
+            this.loadLazyData();
+        },
+        onSort(event) {
+            var page = this.lazyParams.page
+            this.lazyParams = event;
+            this.lazyParams.page = page
+            this.loadLazyData();
+        },
+        onFilter() {
+            if(this.onsearchtimeout)
+                clearTimeout(this.onsearchtimeout)
+            this.onsearchtimeout = setTimeout( () => {
+                this.lazyParams.filters = this.filters;
+                this.loadLazyData();
+            }, 1000)
+        },
+
+        onWorkunitChange() {
+            this.lazyParams.filters = this.filters;
+            this.loadLazyData();
+        },
+        
+        onPengajuanWorkunitChange() {
+            this.workunitService.getWorkunit(this.pengajuan.workunit_id)
+            .then(data => {
+                if ('redirectTo' in data) {
+                    localStorage.removeItem('presence_app_token')
+                    localStorage.removeItem('presence_app_role')
+                    this.$router.push(data.redirectTo)
+                }
+                this.employees = data.employees;
+            });
+        },
+		initFilters() {
+            this.filters = {
+                'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
+            }
+        },
+    }
+}
+</script>

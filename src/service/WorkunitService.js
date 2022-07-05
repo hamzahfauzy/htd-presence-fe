@@ -5,7 +5,7 @@ export default class WorkunitService {
         
         var params = ''
         if(lazyParams){
-            params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
+            params = '?page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
             var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
             params +='&order_by='+order_by
             if(lazyParams.sortField != null)
@@ -17,9 +17,11 @@ export default class WorkunitService {
             {
                 params += '&keyword='+lazyParams.filters.global.value
             }
+        }else{
+            params = "?all=1&order_by=asc"
         }
 
-		return fetch(process.env.VUE_APP_API_URL+'workunits?' + params,{
+		return fetch(process.env.VUE_APP_API_URL+'workunits' + params,{
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
             }

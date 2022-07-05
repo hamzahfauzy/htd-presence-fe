@@ -145,7 +145,7 @@ const routes = [
             {
                 path: '/reports',
                 name: 'reports',
-                component: () => import('./pages/users/Index.vue'),
+                component: () => import('./pages/reports/Index.vue'),
                 beforeEnter: (to,from,next) => {
                     var role = window.localStorage.getItem('presence_app_role')
                     if(!['superuser','adminsistem','adminopd'].includes(role))
