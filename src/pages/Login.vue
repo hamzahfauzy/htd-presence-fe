@@ -4,7 +4,7 @@
             <div class="col-12 xl:col-6" style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color), rgba(33, 150, 243, 0) 30%);">
                 <div class="h-full w-full m-0 py-7 px-4" style="border-radius:53px; background: linear-gradient(180deg, var(--surface-50) 38.9%, var(--surface-0));">
                     <div class="text-center mb-5">
-                        <img src="images/app-logo.png" alt="Image" height="100" class="mb-3">
+                        <img :src="app_logo" alt="Image" height="100" class="mb-3">
                         <div class="text-900 text-3xl font-medium mb-3">Selamat Datang!</div>
                         <span class="text-600 font-medium">Silahkan masuk untuk melanjutkan</span>
                     </div>
@@ -41,6 +41,7 @@ export default {
             sign_in_label:'Masuk',
             disabled:false,
             API_URL : process.env.VUE_APP_API_URL,
+            app_logo : process.env.VUE_APP_LOGO_URL,
             checked: false
         }
     },

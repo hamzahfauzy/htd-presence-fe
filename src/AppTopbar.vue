@@ -61,7 +61,7 @@ export default {
             this.$emit('topbar-menu-toggle', event);
         },
 		topbarImage() {
-			return 'images/app-logo.png';
+			return process.env.VUE_APP_LOGO_URL;
 		}
     },
 	computed: {
