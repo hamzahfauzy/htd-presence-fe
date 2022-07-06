@@ -52,6 +52,7 @@ export default {
                             label: 'Presensi', icon: 'pi pi-fw pi-calendar', 
                             permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian','adminopd'],
                             items: [
+                                { label: 'Manajemen Cuti', icon: 'pi pi-fw pi-bookmark', to: '/paid-leaves', permissions: ['superuser', 'adminsistem'] },
                                 { label: 'Cuti', icon: 'pi pi-fw pi-bookmark', to: '/presences' ,permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian']},
                                 // { label: 'Jadwal', icon: 'pi pi-fw pi-bookmark', to: '/presences/schedules', permissions: ['superuser', 'adminsistem'] },
                                 { label: 'Hari Libur', icon: 'pi pi-fw pi-bookmark', to: '/holidays', permissions: ['superuser', 'adminsistem'] },

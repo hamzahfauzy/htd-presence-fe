@@ -3,7 +3,7 @@ export default class UserService {
 	getUsers(lazyParams) {
         // const queryParams = params ? Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&') : '';
         
-        var params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
+        var params = 'user=1&page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
         var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
         params +='&order_by='+order_by
         if(lazyParams.sortField != null)

@@ -119,6 +119,18 @@ const routes = [
                 }
             },
             {
+                path: '/paid-leaves',
+                name: 'paid_leaves',
+                component: () => import('./pages/paid_leaves/Index.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
+            },
+            {
                 path: '/worktimes',
                 name: 'worktimes',
                 component: () => import('./pages/worktimes/Index.vue'),

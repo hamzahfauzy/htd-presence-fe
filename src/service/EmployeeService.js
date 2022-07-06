@@ -197,6 +197,23 @@ export default class EmployeeService {
         })
     }
 
+    resetDevice(employee){
+        return fetch(process.env.VUE_APP_API_URL+'employees/'+employee.id+'/reset-device',{
+            method:'POST',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
+
     addWorktime(employee, data){
         return fetch(process.env.VUE_APP_API_URL+'employees/'+employee.id+'/worktime',{
             method:'POST',

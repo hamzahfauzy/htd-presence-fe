@@ -47,6 +47,13 @@
                             <a v-if="role != 'adminsistem'" href="javascript:void(0)" @click="patchPlace()">Update</a>
                         </div>
                     </li>
+                    <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-2 font-medium">Device</div>
+                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
+                            {{employee.user?.device_number ?? '-'}}
+                            <a v-if="employee.user?.device_number" href="javascript:void(0)" @click="resetDevice()">- Reset Device</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -178,6 +185,31 @@ export default {
                 }
             })
 		},
+        resetDevice() {
+            this.employeeService.resetDevice(this.employee)
+                .then(res => {
+                    if ('redirectTo' in res) {
+                        localStorage.removeItem('presence_app_token')
+                        localStorage.removeItem('presence_app_role')
+                        this.$router.push(res.redirectTo)
+                    }
+                    if (!res.success) {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: res.message,
+                        })
+                    }
+                    else {
+                        this.$swal({
+                            icon: 'success',
+                            title: 'Success',
+                            text: res.message
+                        })
+                        this.initData()
+                    }
+                })
+        },
     }
 }
 </script>
