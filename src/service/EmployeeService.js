@@ -51,6 +51,11 @@ export default class EmployeeService {
             {
                 params += '&keyword='+lazyParams.filters.global.value
             }
+
+            if(lazyParams.date_start != null && lazyParams.date_end != null)
+            {
+                params += '&date_start='+lazyParams.date_start+'&date_end='+lazyParams.date_end
+            }
         }
         
 		return fetch(process.env.VUE_APP_API_URL+'employees/reports/'+workunit_id+'?' + params,{

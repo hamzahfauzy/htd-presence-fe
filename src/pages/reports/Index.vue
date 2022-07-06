@@ -5,7 +5,8 @@
                 <Toolbar class="mb-4" v-if="employees.length">
                     <template v-slot:start>
                         <div class="my-2">
-                            <export-excel :data="employees" class="p-button p-button-success" worksheet="Laporan" name="Laporan.xls">
+                            <export-excel :data="employees" class="p-button p-button-success" worksheet="Laporan"
+                                name="Laporan.xls">
                                 Download Data
                             </export-excel>
                         </div>
@@ -25,14 +26,24 @@
                             <h5 class="m-0">Laporan</h5>
 
                             <div class="flex">
-                                <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
-                                    optionValue="id" class="mr-3" placeholder="Pilih OPD" @change="onWorkunitChange" />
+                                <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true"
+                                    v-model="date_start" class="mr-3" placeholder="Pilih Tanggal Mulai"
+                                    @change="onDateChange" />
+                                <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true"
+                                    v-model="date_end" class="mr-3" placeholder="Pilih Tanggal Selesai"
+                                    @change="onDateChange" />
 
-                                <span class="mt-2 md:mt-0 p-input-icon-left">
+                                <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                                    optionValue="id" class="mr-3" placeholder="Pilih OPD" />
+
+                                <span class="mt-2 md:mt-0 p-input-icon-left mr-3">
                                     <i class="pi pi-search" />
                                     <InputText v-model="filters['global'].value" placeholder="Search..."
                                         @keyup="onFilter" />
                                 </span>
+
+                                <Button label="FIlter" icon="pi pi-search" class="p-button-success mr-2" @click="onSearch" />
+
                             </div>
                         </div>
                     </template>
@@ -73,6 +84,8 @@ export default {
             selectAll: false,
             filters: {},
             lazyParams: {},
+            date_start:null,
+            date_end:null,
             workunits:[],
             selectedWorkunit:{},
             role:localStorage.getItem("presence_app_role")
@@ -94,6 +107,8 @@ export default {
             rows: this.$refs.dt.rows,
             sortField: null,
             sortOrder: 1,
+            date_start:null,
+            date_end:null,
             filters: this.filters
         };
 
@@ -151,8 +166,23 @@ export default {
             }, 1000)
         },
 
-        onWorkunitChange() {
+        onSearch(){
             this.lazyParams.filters = this.filters;
+
+            if (this.date_start) {
+                let d = this.date_start
+                let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+                let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
+                this.lazyParams.date_start = d.getFullYear() + "-" + month + "-" + day
+            }
+
+            if (this.date_end) {
+                let d = this.date_end
+                let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+                let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
+                this.lazyParams.date_end = d.getFullYear() + "-" + month + "-" + day
+            }
+
             this.loadLazyData();
         },
         
