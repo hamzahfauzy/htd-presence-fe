@@ -2,7 +2,7 @@
 	<div class="layout-topbar">
 		<router-link to="/" class="layout-topbar-logo">
 			<img alt="Logo" :src="topbarImage()" />
-			<span>Presensi</span>
+			<span>Kepegawaian</span>
 		</router-link>
 		<button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle">
 			<i class="pi pi-bars"></i>

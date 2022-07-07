@@ -36,38 +36,18 @@ export default {
             menu : [
                 {
                     label: 'Home',
-                    permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian', 'adminopd'],
+                    permissions: ['superuser', 'adminkepegawaian'],
                     items: [{
                         label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/',
-                        permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian', 'adminopd']
+                        permissions: ['superuser', 'adminkepegawaian']
                     }]
                 },
 				{
 					label: 'Modul', icon: 'pi pi-fw pi-clone',
-                    permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian', 'adminopd'],
+                    permissions: ['superuser', 'adminkepegawaian'],
 					items: [
-                        { label: 'OPD', icon: 'pi pi-fw pi-microsoft', to: '/workunits', permissions: ['superuser', 'adminsistem'] },
-                        { label: 'Pegawai', icon: 'pi pi-fw pi-user', to: '/employees', permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian', 'adminopd'] },
-						{
-                            label: 'Presensi', icon: 'pi pi-fw pi-calendar', 
-                            permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian','adminopd'],
-                            items: [
-                                { label: 'Manajemen Cuti', icon: 'pi pi-fw pi-bookmark', to: '/paid-leaves', permissions: ['superuser', 'adminsistem'] },
-                                { label: 'Cuti', icon: 'pi pi-fw pi-bookmark', to: '/presences' ,permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian']},
-                                // { label: 'Jadwal', icon: 'pi pi-fw pi-bookmark', to: '/presences/schedules', permissions: ['superuser', 'adminsistem'] },
-                                { label: 'Hari Libur', icon: 'pi pi-fw pi-bookmark', to: '/holidays', permissions: ['superuser', 'adminsistem'] },
-                                { label: 'Jam Kerja', icon: 'pi pi-fw pi-bookmark', to: '/worktimes', permissions: ['superuser', 'adminsistem','adminopd'] }
-                            ],
-                        },
-                        { 
-                            label: 'Laporan', icon: 'pi pi-fw pi-file', 
-                            permissions: ['superuser', 'adminsistem','adminopd'],
-                            items:[
-                                { label: 'Rekapitulasi', icon: 'pi pi-fw pi-bookmark', to: '/reports', permissions: ['superuser', 'adminsistem', 'adminopd'] },
-                                { label: 'Detail', icon: 'pi pi-fw pi-bookmark', to: '/report-details', permissions: ['superuser', 'adminsistem', 'adminopd'] },
-                            ]
-                        },
-                        { label: 'Pengguna', icon: 'pi pi-fw pi-users', to: '/users', permissions: ['superuser', 'adminsistem'] },
+                        { label: 'OPD', icon: 'pi pi-fw pi-microsoft', to: '/workunits', permissions: ['superuser', 'adminkepegawaian'] },
+                        { label: 'Pegawai', icon: 'pi pi-fw pi-user', to: '/employees', permissions: ['superuser', 'adminkepegawaian'] },
 					]
 				}
             ]

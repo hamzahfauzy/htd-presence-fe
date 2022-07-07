@@ -2,6 +2,14 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
+                <Toolbar class="mb-4">
+					<template v-slot:start>
+						<div class="my-2">
+							<Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+						</div>
+					</template>
+				</Toolbar>
+
                 <DataTable :value="workunits" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
                     ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
                     @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
@@ -23,14 +31,7 @@
                             {{slotProps.data.id}}
                         </template>
                     </Column>
-                    <Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true"
-                        headerStyle="width:20%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Nama</span>
-                            <router-link :to='{"name":"workunits.detail","params":{"id":slotProps.data.id}}'>
-                                {{slotProps.data.name}}</router-link>
-                        </template>
-                    </Column>
+                    <Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true"></Column>
                     <Column field="lat" header="Latitute" ref="lat"></Column>
                     <Column field="lng" header="Longitude" ref="lng"></Column>
                     <Column field="radius" header="Radius" ref="radius"></Column>
@@ -38,6 +39,8 @@
                         <template #body="slotProps">
                             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
                                 @click="editWorkunit(slotProps.data)" />
+                            <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2"
+                                @click="confirmDelete(slotProps.data)" />
                         </template>
                     </Column>
                 </DataTable>
@@ -46,7 +49,7 @@
                     class="p-fluid">
                     <div class="field">
                         <label for="name">Nama</label>
-                        <InputText id="name" v-model.trim="workunit.name" required="true" autofocus disabled />
+                        <InputText id="name" v-model.trim="workunit.name" required="true" autofocus />
                     </div>
                     <div class="field">
                         <label for="lat">Latitute</label>
@@ -197,28 +200,56 @@ export default {
         saveWorkunit() {
 			this.submitted = true;
             // this.workunits[this.findIndexById(this.workunit.id)] = this.workunit;
-            this.workunitService.updateWorkunit(this.workunit)
-            .then(res => {
-                if(!res.success)
-                {
-                    this.$swal({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: res.message,
-                    })
-                }
-                else
-                {
-                    this.workunits[this.findIndexById(this.workunit.id)] = this.workunit;
-                    this.$swal({
-                        icon: 'success',
-                        title: 'Success',
-                        text: res.message
-                    })
-                    this.workunitDialog = false;
-                    this.workunit = {};
-                }
-            })
+            if(this.workunit.id)
+            {
+                this.workunitService.updateWorkunit(this.workunit)
+                .then(res => {
+                    if(!res.success)
+                    {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: res.message,
+                        })
+                    }
+                    else
+                    {
+                        this.workunits[this.findIndexById(this.workunit.id)] = this.workunit;
+                        this.$swal({
+                            icon: 'success',
+                            title: 'Success',
+                            text: res.message
+                        })
+                        this.workunitDialog = false;
+                        this.workunit = {};
+                    }
+                })
+            }
+            else
+            {
+                this.workunitService.createWorkunit(this.workunit)
+                .then(res => {
+                    if(!res.success)
+                    {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: res.message,
+                        })
+                    }
+                    else
+                    {
+                        this.loadLazyData()
+                        this.$swal({
+                            icon: 'success',
+                            title: 'Success',
+                            text: res.message
+                        })
+                        this.workunitDialog = false;
+                        this.workunit = {};
+                    }
+                })
+            }
 		},
         findIndexById(id) {
 			let index = -1;
@@ -234,7 +265,46 @@ export default {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
-        }
+        },
+        openNew() {
+			this.workunit = {};
+			this.submitted = false;
+			this.workunitDialog = true;
+		},
+        confirmDelete(workunit) {
+			this.workunit = workunit;
+			this.$swal({
+                title: 'Apakah anda yakin akan menghapus data ini ?',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.workunitService.deleteWorkunit(this.workunit.id)
+                    .then(res => {
+                        console.log(res)
+                        if(!res.success)
+                        {
+                            this.$swal({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: res.message,
+                            })
+                        }
+                        else
+                        {
+                            this.loadLazyData()
+                            this.$swal({
+                                icon: 'success',
+                                title: 'Success',
+                                text: res.message
+                            })
+                            this.workunitDialog = false;
+                            this.workunit = {};
+                        }
+                    })
+                }
+            })
+		},
     }
 }
 </script>

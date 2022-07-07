@@ -52,6 +52,22 @@ export default class WorkunitService {
         .then(d => d.data);
     }
 
+    deleteWorkunit(id) {
+		return fetch(process.env.VUE_APP_API_URL+'workunits/' + id,{
+            method:'DELETE',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
+            }
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {data:{redirectTo:"login"}};
+            }
+            return res.json()
+        });
+    }
+
     getPresences(id) {
 		return fetch(process.env.VUE_APP_API_URL+'workunits/' + id + '/presences',{
             headers:{
@@ -68,14 +84,38 @@ export default class WorkunitService {
         .then(d => d.data);
     }
 
-    updateWorkunit(workunit){
-        return fetch(process.env.VUE_APP_API_URL+'workunits/'+workunit.id+'/place',{
-            method:'PATCH',
+    createWorkunit(workunit){
+        return fetch(process.env.VUE_APP_API_URL+'workunits',{
+            method:'POST',
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
                 'Content-type': 'application/json; charset=UTF-8',
             },
             body:JSON.stringify({
+                name:workunit.name,
+                lat:workunit.lat,
+                lng:workunit.lng,
+                radius:workunit.radius,
+            })
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
+
+    updateWorkunit(workunit){
+        return fetch(process.env.VUE_APP_API_URL+'workunits/'+workunit.id,{
+            method:'PUT',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+            body:JSON.stringify({
+                name:workunit.name,
                 lat:workunit.lat,
                 lng:workunit.lng,
                 radius:workunit.radius,
