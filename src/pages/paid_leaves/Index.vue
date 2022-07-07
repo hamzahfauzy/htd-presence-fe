@@ -225,7 +225,7 @@ export default {
                     }
                     else
                     {
-                        this.paidLeaves[this.findIndexById(this.paidLeave.id)] = this.paidLeave;
+                        this.loadLazyData()
                         this.$swal({
                             icon: 'success',
                             title: 'Success',
@@ -250,7 +250,7 @@ export default {
                     }
                     else
                     {
-                        this.paidLeaves.push(this.paidLeave)
+                        this.loadLazyData()
                         this.paidLeaveDialog = false;
                         this.paidLeave = {};
                         this.$swal({

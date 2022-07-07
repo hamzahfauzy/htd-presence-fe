@@ -3,7 +3,19 @@
         <div class="col-12">
             <div class="card">
                 <div class="font-medium text-3xl text-900 mb-3">Detail Absensi</div>
-                <ul class="list-none p-0 m-0">
+                <ul class="list-none p-0 m-0" v-if="presence.employee">
+                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-2 font-medium">Pegawai</div>
+                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                            {{presence.employee.nip+' - '+presence.employee.name}}
+                        </div>
+                    </li>
+                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-2 font-medium">OPD</div>
+                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                            {{presence.workunit.name}}
+                        </div>
+                    </li>
                     <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Tipe</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
@@ -58,8 +70,6 @@ export default {
         this.presenceId = this.$route.params.id
         this.employeeId = this.$route.params.employee_id
         this.employeeService = new EmployeeService();
-    },
-    mounted(){
         this.initData()
     },
     methods:{

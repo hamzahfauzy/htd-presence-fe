@@ -21,7 +21,7 @@
                     responsiveLayout="scroll">
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                            <h5 class="m-0">Manajemen Absensi</h5>
+                            <h5 class="m-0">Manajemen Absensi dan Pengajuan Cuti</h5>
 
                             <div class="flex">
                                 <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
@@ -42,7 +42,7 @@
                         </template>
                     </Column>
                     <Column field="employee.name" header="Nama"></Column>
-                    <Column field="presence.name" header="Jadwal"></Column>
+                    <Column field="worktime_item.name" header="Jadwal"></Column>
                     <Column field="type" header="Tipe"></Column>
                     <Column field="status" header="Status"></Column>
                     <Column field="started_at" header="Waktu Mulai"></Column>
