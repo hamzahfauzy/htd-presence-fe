@@ -44,7 +44,7 @@
 					</Column>
                 </DataTable>
 
-                <Dialog v-model:visible="worktimeDialog" :style="{width: '450px'}" header="Form Hari Libur" :modal="true" class="p-fluid">
+                <Dialog v-model:visible="worktimeDialog" :style="{width: '450px'}" header="Form Jam Kerja" :modal="true" class="p-fluid">
 					<div class="field">
 						<label for="name">Nama</label>
 						<InputText id="name" v-model.trim="worktime.name" required="true" autofocus :class="{'p-invalid': submitted && !worktime.name}"  />

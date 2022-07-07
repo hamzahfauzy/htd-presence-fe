@@ -13,7 +13,7 @@
                 <DataTable :value="worktimeItems" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
                     ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
                     @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
-                    v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange"
+                    :selectAll="selectAll" @select-all-change="onSelectAllChange"
                     @row-select="onRowSelect" @row-unselect="onRowUnselect"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     :rowsPerPageOptions="[5,10,25]"
@@ -60,29 +60,37 @@
                     </div>
                     <div class="field">
                         <label for="name">Waktu Mulai</label>
-                        <Calendar v-model="worktimeItem.start_time" :showTime="true" :timeOnly="true"
-                            :class="{ 'p-invalid': submitted && !worktimeItem.start_time }" />
+                        <div class="w-full">
+                            <input type="time" v-model="worktimeItem.start_time" id="" class="p-inputtext p-component p-filled"
+                            :class="{ 'p-invalid': submitted && !worktimeItem.start_time }">
+                        </div>
                         <small class="p-invalid" v-if="submitted && !worktimeItem.start_time">Waktu Mulai
                             diperlukan.</small>
                     </div>
                     <div class="field">
                         <label for="name">Waktu Selesai</label>
-                        <Calendar v-model="worktimeItem.end_time" :showTime="true" :timeOnly="true"
-                            :class="{ 'p-invalid': submitted && !worktimeItem.end_time }" />
+                        <div class="w-full">
+                            <input type="time" v-model="worktimeItem.end_time" id="" class="p-inputtext p-component p-filled"
+                            :class="{ 'p-invalid': submitted && !worktimeItem.end_time }">
+                        </div>
                         <small class="p-invalid" v-if="submitted && !worktimeItem.end_time">Waktu Selesai
                             diperlukan.</small>
                     </div>
                     <div class="field">
                         <label for="name">On Time Waktu Mulai</label>
-                        <Calendar v-model="worktimeItem.on_time_start" :showTime="true" :timeOnly="true"
-                            :class="{ 'p-invalid': submitted && !worktimeItem.on_time_start }" />
+                        <div class="w-full">
+                            <input type="time" v-model="worktimeItem.on_time_start" id="" class="p-inputtext p-component p-filled"
+                            :class="{ 'p-invalid': submitted && !worktimeItem.on_time_start }">
+                        </div>
                         <small class="p-invalid" v-if="submitted && !worktimeItem.on_time_start">On Time Waktu Mulai
                             diperlukan.</small>
                     </div>
                     <div class="field">
                         <label for="name">On Time Waktu Selesai</label>
-                        <Calendar v-model="worktimeItem.on_time_end" :showTime="true" :timeOnly="true"
-                            :class="{ 'p-invalid': submitted && !worktimeItem.on_time_end }" />
+                        <div class="w-full">
+                            <input type="time" v-model="worktimeItem.on_time_end" id="" class="p-inputtext p-component p-filled"
+                            :class="{ 'p-invalid': submitted && !worktimeItem.on_time_end }">
+                        </div>
                         <small class="p-invalid" v-if="submitted && !worktimeItem.on_time_end">On Time Waktu Selesai
                             diperlukan.</small>
                     </div>
@@ -260,25 +268,6 @@ export default {
 		},
         saveWorktimeItem() {
 			this.submitted = true;
-            var d = this.worktimeItem.start_time
-            var hours = d.getHours() < 10 ? "0"+d.getHours() : d.getHours()
-            var minute = d.getMinutes() < 10 ? "0"+d.getMinutes() : d.getMinutes()
-            this.worktimeItem.start_time =  hours + ':' + minute
-
-            d = this.worktimeItem.end_time
-            hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours()
-            minute = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes()
-            this.worktimeItem.end_time = hours + ':' + minute
-
-            d = this.worktimeItem.on_time_start
-            hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours()
-            minute = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes()
-            this.worktimeItem.on_time_start = hours + ':' + minute
-
-            d = this.worktimeItem.on_time_end
-            hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours()
-            minute = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes()
-            this.worktimeItem.on_time_end = hours + ':' + minute
             if(this.worktimeItem.id)
             {
                 this.worktimeItemService.updateWorktimeItem(this.worktimeItem, this.worktimeId)

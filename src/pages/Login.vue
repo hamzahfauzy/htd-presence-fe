@@ -71,6 +71,7 @@ export default {
                 {
                     localStorage.setItem('presence_app_token',res.data.token)
                     localStorage.setItem('presence_app_role',res.data.user.role)
+                    localStorage.setItem('presence_user_data',JSON.stringify(res.data.user))
                     this.sign_in_label = 'Login berhasil'
                     this.$router.push({name:'dashboard'});
                 }

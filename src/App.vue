@@ -59,7 +59,14 @@ export default {
                                 { label: 'Jam Kerja', icon: 'pi pi-fw pi-bookmark', to: '/worktimes', permissions: ['superuser', 'adminsistem','adminopd'] }
                             ],
                         },
-                        { label: 'Laporan', icon: 'pi pi-fw pi-file', to: '/reports', permissions: ['superuser', 'adminsistem','adminopd'] },
+                        { 
+                            label: 'Laporan', icon: 'pi pi-fw pi-file', 
+                            permissions: ['superuser', 'adminsistem','adminopd'],
+                            items:[
+                                { label: 'Rekapitulasi', icon: 'pi pi-fw pi-bookmark', to: '/reports', permissions: ['superuser', 'adminsistem', 'adminopd'] },
+                                { label: 'Detail', icon: 'pi pi-fw pi-bookmark', to: '/report-details', permissions: ['superuser', 'adminsistem', 'adminopd'] },
+                            ]
+                        },
                         { label: 'Pengguna', icon: 'pi pi-fw pi-users', to: '/users', permissions: ['superuser', 'adminsistem'] },
 					]
 				}

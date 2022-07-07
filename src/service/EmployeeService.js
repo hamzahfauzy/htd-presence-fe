@@ -18,6 +18,12 @@ export default class EmployeeService {
                 params += '&keyword='+lazyParams.filters.global.value
             }
         }
+
+        var userData = JSON.parse(localStorage.getItem('presence_user_data'))
+        if(userData.workunit_id)
+        {
+            params += '&workunit_id='+userData.workunit_id;
+        }
         
 		return fetch(process.env.VUE_APP_API_URL+'employees?' + params,{
             headers:{
@@ -59,6 +65,45 @@ export default class EmployeeService {
         }
         
 		return fetch(process.env.VUE_APP_API_URL+'employees/reports/'+workunit_id+'?' + params,{
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
+            }
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {data:{redirectTo:"login"}};
+            }
+            return res.json()
+        })
+        .then(d => d.data);
+    }
+
+    getEmployeesReportDetail(lazyParams,workunit_id) {
+        // const queryParams = params ? Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&') : '';
+        
+        var params = ''
+        if(lazyParams){
+            params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
+            var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
+            params +='&order_by='+order_by
+            if(lazyParams.sortField != null)
+            {
+                params += '&sort_by='+lazyParams.sortField
+            }
+    
+            if(lazyParams.filters.global.value)
+            {
+                params += '&keyword='+lazyParams.filters.global.value
+            }
+
+            if(lazyParams.date_start != null && lazyParams.date_end != null)
+            {
+                params += '&date_start='+lazyParams.date_start+'&date_end='+lazyParams.date_end
+            }
+        }
+        
+		return fetch(process.env.VUE_APP_API_URL+'employees/report-details/'+workunit_id+'?' + params,{
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
             }
