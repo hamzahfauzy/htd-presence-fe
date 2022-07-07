@@ -35,7 +35,6 @@ export default {
                     items: [{
                         label: 'Edit Profile',
                         icon: 'pi pi-user-edit',
-                        url: 'https://vuejs.org/'
                     },
                     {
                         label: 'Keluar',
