@@ -60,6 +60,7 @@ export default class UserService {
                 password:user.password,
                 role:user.role,
                 workunit_id:user.workunit_id,
+                shift_management:user.shift_management,
             })
         })
         .then(res => {
@@ -72,6 +73,7 @@ export default class UserService {
     }
 
     updateUser(user){
+        console.log(user)
         return fetch(process.env.VUE_APP_API_URL+'users/'+user.id,{
             method:'PUT',
             headers:{
@@ -84,6 +86,7 @@ export default class UserService {
                 password:user.password,
                 role:user.role,
                 workunit_id:user.workunit_id,
+                shift_management:user.shift_management,
             })
         })
         .then(res => {

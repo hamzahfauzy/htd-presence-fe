@@ -10,7 +10,7 @@
 					</appsubmenu>
 				</template>
 				<template v-else>
-					<router-link v-if="item.to && item.permissions.includes(role)" :to="item.to"
+					<router-link v-if="item.to && item.permissions.includes(role) && (item.permissions.includes('shift_management') && role == 'adminopd' ? user.shift_management : true )" :to="item.to"
 						:class="[item.class, 'p-ripple', {'p-disabled': item.disabled}]" :style="item.style"
 						@click="onMenuItemClick($event,item,i)" :target="item.target" :aria-label="item.label" exact
 						role="menuitem" v-ripple>
@@ -52,7 +52,8 @@ export default {
 	data() {
 		return {
 			activeIndex : null,
-			role: localStorage.getItem("presence_app_role")
+			role: localStorage.getItem("presence_app_role"),
+			user: JSON.parse(localStorage.getItem("presence_user_data"))
 		}
 	},
 	methods: {

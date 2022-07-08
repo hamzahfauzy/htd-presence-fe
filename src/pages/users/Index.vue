@@ -45,6 +45,12 @@
 						</template>
 					</Column>
 					<Column field="role" header="Jabatan"></Column>
+					<Column field="shift_management" header="Pengatur Jam Kerja">
+						<template #body="slotProps">
+							<span class="p-column-title">Pengatur Jam Kerja</span>
+							{{slotProps.data.shift_management?'Ya':'Tidak'}}
+						</template>
+					</Column>
 					<Column header="Aksi">
 						<template #body="slotProps">
 							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
@@ -85,6 +91,11 @@
 							optionValue="id" required="true" placeholder="Pilih OPD"
 							:class="{'p-invalid': submitted && !user.workunit_id}" />
 						<small class="p-invalid" v-if="submitted && !user.workunit_id">OPD diperlukan.</small>
+					</div>
+					<div class="field">
+						<label>Pengatur Jam Kerja</label>
+						<Dropdown v-model="user.shift_management" :options="[{'name':'Ya','value':1},{'name':'Tidak','value':0}]" optionLabel="name"
+							optionValue="value" required="true" placeholder="Pilih"/>
 					</div>
 					<template #footer>
 						<Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
@@ -250,7 +261,7 @@ export default {
 							})
 						}
 						else {
-							this.users[this.findIndexById(this.user.id)] = this.user;
+							this.loadLazyData()
 							this.$swal({
 								icon: 'success',
 								title: 'Success',
