@@ -2,21 +2,33 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <Toolbar class="mb-4" v-if="employees.length">
+                <Toolbar class="mb-4">
                     <template v-slot:start>
-                        <div class="my-2">
-                            <export-excel :data="employees" class="p-button p-button-success" worksheet="Laporan"
-                                name="Laporan.xls">
-                                Download Data
-                            </export-excel>
+                        <div class="my-2 d-flex">
+
+                            <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_start"
+                                class="m-2" placeholder="Pilih Tanggal Mulai" @change="onDateChange" />
+                            <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_end"
+                                class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
+
+                            <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                                optionValue="id" class="m-2" placeholder="Pilih OPD" />
+
+                            <span class="p-input-icon-left m-2">
+                                <i class="pi pi-search" />
+                                <InputText v-model="filters['global'].value" placeholder="Search..."
+                                    @keyup="onFilter" />
+                            </span>
+
+                            <Button label="Filter" icon="pi pi-search" class="p-button-success m-2" @click="onSearch" />
                         </div>
                     </template>
                 </Toolbar>
                 <DataTable :value="employees" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
                     ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
                     @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
-                     :selectAll="selectAll" @select-all-change="onSelectAllChange"
-                    @row-select="onRowSelect" @row-unselect="onRowUnselect"
+                    :selectAll="selectAll" @select-all-change="onSelectAllChange" @row-select="onRowSelect"
+                    @row-unselect="onRowUnselect"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     :rowsPerPageOptions="[5,10,25]"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
@@ -24,27 +36,10 @@
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                             <h5 class="m-0">Laporan</h5>
-
-                            <div class="flex">
-                                <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true"
-                                    v-model="date_start" class="mr-3" placeholder="Pilih Tanggal Mulai"
-                                    @change="onDateChange" />
-                                <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true"
-                                    v-model="date_end" class="mr-3" placeholder="Pilih Tanggal Selesai"
-                                    @change="onDateChange" />
-
-                                <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
-                                    optionValue="id" class="mr-3" placeholder="Pilih OPD" />
-
-                                <span class="mt-2 md:mt-0 p-input-icon-left mr-3">
-                                    <i class="pi pi-search" />
-                                    <InputText v-model="filters['global'].value" placeholder="Search..."
-                                        @keyup="onFilter" />
-                                </span>
-                                
-                                <Button label="FIlter" icon="pi pi-search" class="p-button-success mr-2" @click="onSearch" />
-
-                            </div>
+                            <export-excel v-if="employees.length" :data="employees" class="p-button p-button-success"
+                                worksheet="Laporan" name="Laporan.xls">
+                                Download Data
+                            </export-excel>
                         </div>
                     </template>
                     <Column field="id" header="ID" :sortable="true">
@@ -61,18 +56,18 @@
                     <Column field="attachment_url" class="text-center" header="Lampiran">
                         <template #body="slotProps">
                             <span class="p-column-title">Lampiran</span>
-                            <a v-if="slotProps.data.attachment_url" :href="storage_url + slotProps.data.attachment_url">Downlaod</a>
+                            <a v-if="slotProps.data.attachment_url"
+                                :href="storage_url + slotProps.data.attachment_url">Download</a>
                             <span v-else>Tidak ada Lampiran</span>
                         </template>
                     </Column>
                     <Column field="pic_url" class="text-center" header="Foto Selfi">
                         <template #body="slotProps">
                             <span class="p-column-title">Foto Selfi</span>
-                            <img :src="storage_url + slotProps.data.pic_url" width="150" />
+                            <a :href="storage_url + slotProps.data.pic_url">Open</a>
+                            <!-- <img :src="storage_url + slotProps.data.pic_url" width="150" /> -->
                         </template>
                     </Column>
-                    <Column field="lat" class="text-center" header="Lat"></Column>
-                    <Column field="lng" class="text-center" header="Lng"></Column>
                     <Column field="created_at" class="text-center" header="Tanggal"></Column>
                 </DataTable>
             </div>

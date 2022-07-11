@@ -2,13 +2,25 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <Toolbar class="mb-4" v-if="employees.length">
+                <Toolbar class="mb-4">
                     <template v-slot:start>
-                        <div class="my-2">
-                            <export-excel :data="employees" class="p-button p-button-success" worksheet="Laporan"
-                                name="Laporan.xls">
-                                Download Data
-                            </export-excel>
+                        <div class="my-2 d-flex">
+
+                            <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_start"
+                                class="m-2" placeholder="Pilih Tanggal Mulai" @change="onDateChange" />
+                            <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_end"
+                                class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
+
+                            <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                                optionValue="id" class="m-2" placeholder="Pilih OPD" />
+
+                            <span class="p-input-icon-left m-2">
+                                <i class="pi pi-search" />
+                                <InputText v-model="filters['global'].value" placeholder="Search..."
+                                    @keyup="onFilter" />
+                            </span>
+
+                            <Button label="Filter" icon="pi pi-search" class="p-button-success m-2" @click="onSearch" />
                         </div>
                     </template>
                 </Toolbar>
@@ -25,26 +37,10 @@
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                             <h5 class="m-0">Laporan</h5>
 
-                            <div class="flex">
-                                <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true"
-                                    v-model="date_start" class="mr-3" placeholder="Pilih Tanggal Mulai"
-                                    @change="onDateChange" />
-                                <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true"
-                                    v-model="date_end" class="mr-3" placeholder="Pilih Tanggal Selesai"
-                                    @change="onDateChange" />
-
-                                <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
-                                    optionValue="id" class="mr-3" placeholder="Pilih OPD" />
-
-                                <span class="mt-2 md:mt-0 p-input-icon-left mr-3">
-                                    <i class="pi pi-search" />
-                                    <InputText v-model="filters['global'].value" placeholder="Search..."
-                                        @keyup="onFilter" />
-                                </span>
-
-                                <Button label="FIlter" icon="pi pi-search" class="p-button-success mr-2" @click="onSearch" />
-
-                            </div>
+                            <export-excel v-if="employees.length" :data="employees" class="p-button p-button-success"
+                                worksheet="Laporan" name="Laporan.xls">
+                                Download Data
+                            </export-excel>
                         </div>
                     </template>
                     <Column field="id" header="ID" :sortable="true">
