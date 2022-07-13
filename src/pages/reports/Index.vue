@@ -7,9 +7,9 @@
                         <div class="my-2 d-flex">
 
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_start"
-                                class="m-2" placeholder="Pilih Tanggal Mulai" @change="onDateChange" />
+                                class="m-2" placeholder="Pilih Tanggal Mulai" @date-select="onDateChange" />
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_end"
-                                class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
+                                class="m-2" placeholder="Pilih Tanggal Selesai" />
 
                             <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
                                 optionValue="id" class="m-2" placeholder="Pilih OPD" />
@@ -38,7 +38,8 @@
                             <h5 class="m-0">Laporan</h5>
 
                             <export-excel v-if="employees.length" :data="employees" class="p-button p-button-success"
-                                worksheet="Laporan" name="Laporan.xls">
+                                worksheet="Laporan"
+                                :name="'Laporan Rekapitulasi - ' + cdate_start + ' - ' + cdate_end +'.xls'">
                                 Download Data
                             </export-excel>
                         </div>
@@ -82,6 +83,8 @@ export default {
             lazyParams: {},
             date_start:null,
             date_end:null,
+            cdate_start:null,
+            cdate_end:null,
             workunits:[],
             selectedWorkunit:{},
             role:localStorage.getItem("presence_app_role")
@@ -160,6 +163,22 @@ export default {
                 this.lazyParams.filters = this.filters;
                 this.loadLazyData();
             }, 1000)
+        },
+
+        onDateChange(){
+            if (this.date_start) {
+                let d = this.date_start
+                let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+                let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
+                this.cdate_start = d.getFullYear() + "-" + month + "-" + day
+            }
+
+            if (this.date_end) {
+                let d = this.date_end
+                let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+                let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
+                this.cdate_end = d.getFullYear() + "-" + month + "-" + day
+            }
         },
 
         onSearch(){

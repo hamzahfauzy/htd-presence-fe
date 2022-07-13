@@ -36,6 +36,7 @@
 						</template>
 					</Column>
 					<Column field="email" header="Email"></Column>
+					<Column field="workunit.name" header="OPD"></Column>
 					<Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true"
 						headerStyle="width:20%; min-width:10rem;">
 						<template #body="slotProps">

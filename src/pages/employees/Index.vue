@@ -1,46 +1,61 @@
 <template>
-	<div class="grid">
-		<div class="col-12">
-			<div class="card">
-                <DataTable :value="employees" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters" ref="dt" dataKey="id"
-                    :totalRecords="totalRecords" :loading="loading" @page="onPage($event)" @sort="onSort($event)" @filter="onFilter($event)"
-                    :globalFilterFields="['name']" v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange" @row-select="onRowSelect" @row-unselect="onRowUnselect"
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
+                <DataTable :value="employees" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
+                    ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
+                    @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
+                    v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange"
+                    @row-select="onRowSelect" @row-unselect="onRowUnselect"
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    :rowsPerPageOptions="[5,10,25]"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+                    responsiveLayout="scroll">
                     <template #header>
-						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-							<h5 class="m-0">Manajemen Pegawai</h5>
-							<span class="block mt-2 md:mt-0 p-input-icon-left">
-                                <i class="pi pi-search" />
-                                <InputText v-model="filters['global'].value" placeholder="Search..." @keyup="onFilter" />
-                            </span>
-						</div>
-					</template>
+                        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                            <h5 class="m-0">Manajemen Pegawai</h5>
+                            <div class="flex">
+                                <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                                    v-if="['superuser', 'adminsistem','adminkepegawaian'].includes(role)"
+                                    optionValue="id" class="mr-3" placeholder="Pilih OPD" @change="onWorkunitChange" />
+
+                                <span class="mt-2 md:mt-0 p-input-icon-left">
+                                    <i class="pi pi-search" />
+                                    <InputText v-model="filters['global'].value" placeholder="Search..."
+                                        @keyup="onFilter" />
+                                </span>
+                            </div>
+                        </div>
+                    </template>
                     <Column field="id" header="ID" :sortable="true">
-						<template #body="slotProps">
-							<span class="p-column-title">ID</span>
-							{{slotProps.data.id}}
-						</template>
-					</Column>
+                        <template #body="slotProps">
+                            <span class="p-column-title">ID</span>
+                            {{slotProps.data.id}}
+                        </template>
+                    </Column>
                     <Column field="nip" header="NIP"></Column>
-                    <Column field="workunit.name" header="OPD / Unit Kerja" headerStyle="width:20%; min-width:10rem;"></Column>
-                    <Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+                    <Column field="workunit.name" header="OPD / Unit Kerja" headerStyle="width:20%; min-width:10rem;">
+                    </Column>
+                    <Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true"
+                        headerStyle="width:20%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">Nama</span>
-                            <router-link :to='{"name":"employees.detail","params":{"id":slotProps.data.id}}'>{{slotProps.data.name}}</router-link>
-						</template>
+                            <router-link :to='{"name":"employees.detail","params":{"id":slotProps.data.id}}'>
+                                {{slotProps.data.name}}</router-link>
+                        </template>
                     </Column>
                     <Column field="position" header="Jabatan" ref="position"></Column>
                     <Column field="phone" header="Telepon" ref="phone"></Column>
                 </DataTable>
             </div>
         </div>
-	</div>
+    </div>
 </template>
 
 <script>
 import {FilterMatchMode} from 'primevue/api';
 import EmployeeService from '../../service/EmployeeService';
+import WorkunitService from '../../service/WorkunitService';
 
 export default {
     data() {
@@ -55,6 +70,7 @@ export default {
             selectAll: false,
             filters: {},
             lazyParams: {},
+            role: window.localStorage.getItem('presence_app_role'),
             columns: [
                 {field: 'id', header: 'ID'},
                 {field: 'nip', header: 'NIP'},
@@ -65,11 +81,15 @@ export default {
             ],
             employeeDialog: false,
             submitted:false,
+            workunits: [],
+            selectedWorkunit: {},
         }
     },
     employeeService: null,
+    workunitService: null,
     created() {
         this.employeeService = new EmployeeService();
+        this.workunitService = new WorkunitService();
         this.initFilters()
     },
     mounted() {
@@ -91,10 +111,22 @@ export default {
             this.loading = true;
 
             setTimeout(() => {
-                this.employeeService.getEmployees(this.lazyParams)
+                this.workunitService.getWorkunits(this.lazyParams)
+                    .then(data => {
+                        if ('redirectTo' in data) {
+                            localStorage.removeItem('presence_app_token')
+                            localStorage.removeItem('presence_app_role')
+                            this.$router.push(data.redirectTo)
+                        }
+                        this.workunits = data.data;
+                        this.loading = false;
+                    }
+                    );
+
+                if (this.selectedWorkunit.id) {
+                    this.employeeService.getEmployees(this.lazyParams, this.selectedWorkunit.id)
                         .then(data => {
-                            if('redirectTo' in data)
-                            {
+                            if ('redirectTo' in data) {
                                 localStorage.removeItem('presence_app_token')
                                 localStorage.removeItem('presence_app_role')
                                 this.$router.push(data.redirectTo)
@@ -102,8 +134,23 @@ export default {
                             this.employees = data.data;
                             this.totalRecords = data.total;
                             this.loading = false;
-                    }
-                );
+                        }
+                        );
+                }else{
+                    this.employeeService.getEmployees(this.lazyParams)
+                        .then(data => {
+                            if ('redirectTo' in data) {
+                                localStorage.removeItem('presence_app_token')
+                                localStorage.removeItem('presence_app_role')
+                                this.$router.push(data.redirectTo)
+                            }
+                            this.employees = data.data;
+                            this.totalRecords = data.total;
+                            this.loading = false;
+                        }
+                        );
+                }
+                
             }, Math.random() * 1000 + 250);
         },
         onPage(event) {
@@ -154,7 +201,11 @@ export default {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
-        }
+        },
+        onWorkunitChange() {
+            this.lazyParams.filters = this.filters;
+            this.loadLazyData();
+        },
     }
 }
 </script>

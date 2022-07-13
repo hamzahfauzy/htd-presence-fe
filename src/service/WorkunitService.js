@@ -52,8 +52,30 @@ export default class WorkunitService {
         .then(d => d.data);
     }
 
-    getPresences(id) {
-		return fetch(process.env.VUE_APP_API_URL+'workunits/' + id + '/presences',{
+    getPresences(lazyParams,id) {
+
+        var params = ''
+        if(lazyParams){
+            params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
+            var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
+            params +='&order_by='+order_by
+            if(lazyParams.sortField != null)
+            {
+                params += '&sort_by='+lazyParams.sortField
+            }
+    
+            if(lazyParams.filters.global.value)
+            {
+                params += '&keyword='+lazyParams.filters.global.value
+            }
+
+            if(lazyParams.date_start != null && lazyParams.date_end != null)
+            {
+                params += '&date_start='+lazyParams.date_start+'&date_end='+lazyParams.date_end
+            }
+        }
+
+		return fetch(process.env.VUE_APP_API_URL+'workunits/' + id + '/presences?'+params,{
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
             }

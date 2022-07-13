@@ -1,6 +1,6 @@
 export default class EmployeeService {
 
-	getEmployees(lazyParams) {
+	getEmployees(lazyParams, workunit_id = false) {
         // const queryParams = params ? Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&') : '';
         
         var params = ''
@@ -23,6 +23,11 @@ export default class EmployeeService {
         if(userData.workunit_id)
         {
             params += '&workunit_id='+userData.workunit_id;
+        }
+
+        if(workunit_id)
+        {
+            params += '&workunit_id='+workunit_id;
         }
         
 		return fetch(process.env.VUE_APP_API_URL+'employees?' + params,{

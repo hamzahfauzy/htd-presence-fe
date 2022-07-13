@@ -4,8 +4,24 @@
             <div class="card">
                 <Toolbar class="mb-4" v-if="role!='adminkepegawaian'">
                     <template v-slot:start>
-                        <div class="my-2">
-                            <Button label="Pengajuan Cuti" class="p-button-success mr-2" @click="openNew" />
+                        <div class="my-2 d-flex">
+                            <Button label="Pengajuan Cuti" class="p-button-success m-2" @click="openNew" />
+
+                            <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_start"
+                                class="m-2" placeholder="Pilih Tanggal Mulai" @change="onDateChange" />
+                            <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_end"
+                                class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
+
+                            <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                                optionValue="id" class="m-2" placeholder="Pilih OPD" />
+
+                            <span class="p-input-icon-left m-2">
+                                <i class="pi pi-search" />
+                                <InputText v-model="filters['global'].value" placeholder="Search..."
+                                    @keyup="onFilter" />
+                            </span>
+
+                            <Button label="Filter" icon="pi pi-search" class="p-button-success m-2" @click="onSearch" />
                         </div>
                     </template>
                 </Toolbar>
@@ -24,9 +40,6 @@
                             <h5 class="m-0">Manajemen Absensi dan Pengajuan Cuti</h5>
 
                             <div class="flex">
-                                <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
-                                    optionValue="id" class="mr-3" placeholder="Pilih OPD" @change="onWorkunitChange" />
-
                                 <span class="mt-2 md:mt-0 p-input-icon-left">
                                     <i class="pi pi-search" />
                                     <InputText v-model="filters['global'].value" placeholder="Search..."
@@ -43,6 +56,7 @@
                     </Column>
                     <Column field="employee.name" header="Nama"></Column>
                     <Column field="worktime_item.name" header="Jadwal"></Column>
+                    <Column field="workunit.name" header="OPD"></Column>
                     <Column field="type" header="Tipe"></Column>
                     <Column field="status" header="Status"></Column>
                     <Column field="started_at" header="Waktu Mulai"></Column>
@@ -150,7 +164,9 @@ export default {
             lazyParams: {},
             workunits:[],
             selectedWorkunit:{},
-            role:localStorage.getItem("presence_app_role")
+            role:localStorage.getItem("presence_app_role"),
+            date_start: null,
+            date_end: null,
         }
     },
     presenceService: null,
@@ -173,7 +189,9 @@ export default {
             rows: this.$refs.dt.rows,
             sortField: null,
             sortOrder: 1,
-            filters: this.filters
+            filters: this.filters,
+            date_start: null,
+            date_end: null,
         };
 
         this.loadLazyData();
@@ -184,7 +202,7 @@ export default {
 
             setTimeout(() => {
 
-                this.workunitService.getWorkunits(this.lazyParams)
+                this.workunitService.getWorkunits()
                     .then(data => {
                         if ('redirectTo' in data) {
                             localStorage.removeItem('presence_app_token')
@@ -197,7 +215,7 @@ export default {
                     );
 
                 if(this.selectedWorkunit.id){
-                    this.workunitService.getPresences(this.selectedWorkunit.id)
+                    this.workunitService.getPresences(this.lazyParams,this.selectedWorkunit.id)
                         .then(data => {
                             if ('redirectTo' in data) {
                                 localStorage.removeItem('presence_app_token')
@@ -239,6 +257,25 @@ export default {
                 this.lazyParams.filters = this.filters;
                 this.loadLazyData();
             }, 1000)
+        },
+        onSearch() {
+            this.lazyParams.filters = this.filters;
+
+            if (this.date_start) {
+                let d = this.date_start
+                let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+                let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
+                this.lazyParams.date_start = d.getFullYear() + "-" + month + "-" + day
+            }
+
+            if (this.date_end) {
+                let d = this.date_end
+                let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+                let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
+                this.lazyParams.date_end = d.getFullYear() + "-" + month + "-" + day
+            }
+
+            this.loadLazyData();
         },
         openNew(){
             this.pengajuanDialog = true

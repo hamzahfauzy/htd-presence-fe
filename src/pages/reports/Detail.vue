@@ -11,7 +11,8 @@
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_end"
                                 class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
 
-                            <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                            <Dropdown v-model="selectedWorkunit.id" :options="workunits"
+                                v-if="['superuser', 'adminsistem','adminkepegawaian'].includes(role)" optionLabel="name"
                                 optionValue="id" class="m-2" placeholder="Pilih OPD" />
 
                             <span class="p-input-icon-left m-2">
@@ -50,8 +51,7 @@
                     </Column>
                     <Column field="employee.name" header="Nama"></Column>
                     <Column field="employee.nip" header="NIP"></Column>
-                    <Column field="employee.group" header="Golongan"></Column>
-                    <Column field="employee.position" header="Jabatan"></Column>
+                    <Column field="workunit.name" header="OPD"></Column>
                     <Column field="worktime_item.name" header="Status"></Column>
                     <Column field="attachment_url" class="text-center" header="Lampiran">
                         <template #body="slotProps">
@@ -94,7 +94,8 @@ export default {
             workunits:[],
             selectedWorkunit:{},
             storage_url:process.env.VUE_APP_STORAGE_URL,
-            role:localStorage.getItem("presence_app_role")
+            role:localStorage.getItem("presence_app_role"),
+            userData :JSON.parse(localStorage.getItem('presence_user_data'))
         }
     },
     workunitService: null,
@@ -140,6 +141,18 @@ export default {
 
                 if(this.selectedWorkunit.id){
                     this.employeeService.getEmployeesReportDetail(this.lazyParams,this.selectedWorkunit.id)
+                        .then(data => {
+                            if ('redirectTo' in data) {
+                                localStorage.removeItem('presence_app_token')
+                                localStorage.removeItem('presence_app_role')
+                                this.$router.push(data.redirectTo)
+                            }
+                            this.employees = data.data;
+                            this.loading = false;
+                        }
+                        );
+                }else if(this.userData.workunit_id){
+                    this.employeeService.getEmployeesReportDetail(this.lazyParams, this.userData.workunit_id)
                         .then(data => {
                             if ('redirectTo' in data) {
                                 localStorage.removeItem('presence_app_token')
