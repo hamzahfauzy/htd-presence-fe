@@ -30,24 +30,15 @@
                             {{employee.workunit?employee.workunit.name:''}}
                         </div>
                     </li>
-                    <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
-                        <div class="text-500 w-6 md:w-2 font-medium">System Role</div>
-                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
-                            {{employee.user?roleLists.find(r => r.value === employee.user.role).name:''}}
-                            <template v-if="employee.user">
-                                - <a href="javascript:void(0)" @click="editRole()">Edit</a>
-                            </template>
-                        </div>
-                    </li>
-                    <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
+                    <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap" v-if="role == 'superuser'">
                         <div class="text-500 w-6 md:w-2 font-medium">Bebas Lokasi</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
                             {{employee.is_free_place?'Ya':'Tidak'}}
                             {{ role != 'adminsistem' ?'-' : ''}}
-                            <a v-if="role != 'adminsistem'" href="javascript:void(0)" @click="patchPlace()">Update</a>
+                            <a href="javascript:void(0)" @click="patchPlace()">Update</a>
                         </div>
                     </li>
-                    <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
+                    <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap" v-if="role == 'adminsistem' || role == 'adminkepegawaian' || role == 'superuser'">
                         <div class="text-500 w-6 md:w-2 font-medium">Device</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
                             {{employee.user?.device_number ?? '-'}}

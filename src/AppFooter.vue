@@ -1,8 +1,6 @@
 <template>
 	<div class="layout-footer">
-		<img alt="Logo" :src="footerImage()" height="20" class="mr-2" />
-		by
-		<span class="font-medium ml-2">PrimeVue</span>
+		by <span class="font-medium ml-2">SISAPA (Sistem Informasi Absensi Pegawai) Kota Tanjung Balai</span>
 	</div>
 </template>
 

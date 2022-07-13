@@ -129,6 +129,7 @@ export default {
 			userDialog: false,
 			submitted: false,
 			roleLists: [
+				{ name: "Admin Kota", value: "adminsistem" },
 				{ name: "Pegawai", value: "pegawai" },
 				{ name: "Kasubag Umum", value: "kasubagumum" },
 				{ name: "Admin BKD", value: "adminkepegawaian" },

@@ -4,26 +4,28 @@
             <div class="col-12 xl:col-6" style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color), rgba(33, 150, 243, 0) 30%);">
                 <div class="h-full w-full m-0 py-7 px-4" style="border-radius:53px; background: linear-gradient(180deg, var(--surface-50) 38.9%, var(--surface-0));">
                     <div class="text-center mb-5">
-                        <img :src="app_logo" alt="Image" height="100" class="mb-3">
+                        <img :src="app_logo" alt="Image" height="200" class="mb-3">
                         <div class="text-900 text-3xl font-medium mb-3">Selamat Datang!</div>
                         <span class="text-600 font-medium">Silahkan masuk untuk melanjutkan</span>
                     </div>
                 
                     <div class="w-full md:w-10 mx-auto">
-                        <label for="email1" class="block text-900 text-xl font-medium mb-2">NIP/NIK/Username</label>
-                        <InputText id="email1" v-model="email" type="text" class="w-full mb-3" placeholder="Email" style="padding:1rem;" />
-                
-                        <label for="password1" class="block text-900 font-medium text-xl mb-2">Kata Sandi</label>
-                        <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" inputStyle="padding:1rem" :feedback="false"></Password>
-                
-                        <!-- <div class="flex align-items-center justify-content-between mb-5">
-                            <div class="flex align-items-center">
-                                <Checkbox id="rememberme1" v-model="checked" :binary="true" class="mr-2"></Checkbox>
-                                <label for="rememberme1">Ingat Saya</label>
-                            </div>
-                            <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Lupa Password?</a>
-                        </div> -->
-                        <Button :label="sign_in_label" :disabled="disabled" class="w-full p-3 text-xl" @click="doLogin()"></button>
+                        <form action="" method="post" @submit.prevent="doLogin()">
+                            <label for="email1" class="block text-900 text-xl font-medium mb-2">Username</label>
+                            <InputText id="email1" v-model="email" type="text" class="w-full mb-3" placeholder="Email" style="padding:1rem;" />
+                    
+                            <label for="password1" class="block text-900 font-medium text-xl mb-2">Kata Sandi</label>
+                            <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" inputStyle="padding:1rem" :feedback="false"></Password>
+                    
+                            <!-- <div class="flex align-items-center justify-content-between mb-5">
+                                <div class="flex align-items-center">
+                                    <Checkbox id="rememberme1" v-model="checked" :binary="true" class="mr-2"></Checkbox>
+                                    <label for="rememberme1">Ingat Saya</label>
+                                </div>
+                                <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Lupa Password?</a>
+                            </div> -->
+                            <Button type="submit" :label="sign_in_label" :disabled="disabled" class="w-full p-3 text-xl" @click="doLogin()"></button>
+                        </form>
                     </div>
                 </div>
             </div>
