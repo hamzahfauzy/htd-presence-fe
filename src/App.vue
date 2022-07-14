@@ -53,7 +53,8 @@ export default {
                             permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian','adminopd'],
                             items: [
                                 { label: 'Master Cuti', icon: 'pi pi-fw pi-bookmark', to: '/paid-leaves', permissions: ['superuser', 'adminsistem'] },
-                                { label: 'Absensi dan Cuti', icon: 'pi pi-fw pi-bookmark', to: '/presences' ,permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian']},
+                                { label: 'Absensi', icon: 'pi pi-fw pi-bookmark', to: '/presences' ,permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian']},
+                                { label: 'Cuti', icon: 'pi pi-fw pi-bookmark', to: '/presences/cuti' ,permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian']},
                                 // { label: 'Jadwal', icon: 'pi pi-fw pi-bookmark', to: '/presences/schedules', permissions: ['superuser', 'adminsistem'] },
                                 { label: 'Hari Libur', icon: 'pi pi-fw pi-bookmark', to: '/holidays', permissions: ['superuser', 'adminsistem'] },
                                 { label: 'Jam Kerja', icon: 'pi pi-fw pi-bookmark', to: '/worktimes', permissions: ['superuser', 'adminsistem','adminopd','shift_management'] }
