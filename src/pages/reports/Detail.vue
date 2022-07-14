@@ -37,8 +37,11 @@
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                             <h5 class="m-0">Laporan</h5>
-                            <export-excel v-if="employees.length" :data="employees" class="p-button p-button-success"
-                                worksheet="Laporan" name="Laporan.xls">
+                            <export-excel v-if="employees.length" 
+                                :data="employees" 
+                                :fields="fields"
+                                class="p-button p-button-success"
+                                worksheet="Laporan" name="Laporan Detail.xls">
                                 Download Data
                             </export-excel>
                         </div>
@@ -95,7 +98,19 @@ export default {
             selectedWorkunit:{},
             storage_url:process.env.VUE_APP_STORAGE_URL,
             role:localStorage.getItem("presence_app_role"),
-            userData :JSON.parse(localStorage.getItem('presence_user_data'))
+            userData :JSON.parse(localStorage.getItem('presence_user_data')),
+            fields:{
+                'Nama':'employee.name',
+                'NIP':{
+                    field: 'employee.nip',
+                    callback: (value) => {
+                        return `'${value}`;
+                    }
+                },
+                'OPD':'workunit.name',
+                'Status':'worktime_item.name',
+                'Tanggal':'created_at'
+            }
         }
     },
     workunitService: null,
