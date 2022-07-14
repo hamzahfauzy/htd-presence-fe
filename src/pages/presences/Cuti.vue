@@ -5,7 +5,7 @@
                 <Toolbar class="mb-4" v-if="role!='adminkepegawaian'">
                     <template v-slot:start>
                         <div class="my-2 d-flex">
-                            <!-- <Button label="Pengajuan Cuti" class="p-button-success m-2" @click="openNew" /> -->
+                            <Button label="Pengajuan Cuti" class="p-button-success m-2" @click="openNew" />
 
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_start"
                                 class="m-2" placeholder="Pilih Tanggal Mulai" @change="onDateChange" />
@@ -37,7 +37,7 @@
                     responsiveLayout="scroll">
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                            <h5 class="m-0">Manajemen Absensi</h5>
+                            <h5 class="m-0">Manajemen Cuti</h5>
 
                             <div class="flex">
                                 <span class="mt-2 md:mt-0 p-input-icon-left">
@@ -215,7 +215,7 @@ export default {
                     );
 
                 if(this.selectedWorkunit.id){
-                    this.workunitService.getPresences(this.lazyParams,this.selectedWorkunit.id,1)
+                    this.workunitService.getPresences(this.lazyParams,this.selectedWorkunit.id,2)
                         .then(data => {
                             if ('redirectTo' in data) {
                                 localStorage.removeItem('presence_app_token')

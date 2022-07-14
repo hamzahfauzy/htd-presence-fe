@@ -52,7 +52,7 @@ export default class WorkunitService {
         .then(d => d.data);
     }
 
-    getPresences(lazyParams,id) {
+    getPresences(lazyParams,id, type = false) {
 
         var params = ''
         if(lazyParams){
@@ -73,6 +73,10 @@ export default class WorkunitService {
             {
                 params += '&date_start='+lazyParams.date_start+'&date_end='+lazyParams.date_end
             }
+        }
+
+        if(type){
+            params += '&type='+type
         }
 
 		return fetch(process.env.VUE_APP_API_URL+'workunits/' + id + '/presences?'+params,{
