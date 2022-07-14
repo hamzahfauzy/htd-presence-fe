@@ -40,7 +40,7 @@
                             <export-excel v-if="employees.length" :data="employees" class="p-button p-button-success"
                                 worksheet="Laporan"
                                 :fields="fields"
-                                :name="'Laporan Rekapitulasi - ' + cdate_start + ' - ' + cdate_end +'.xls'">
+                                :name="'Laporan Rekapitulasi.xls'">
                                 Download Data
                             </export-excel>
                         </div>
