@@ -37,11 +37,8 @@
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                             <h5 class="m-0">Laporan</h5>
-                            <export-excel v-if="employees.length" 
-                                :data="employees" 
-                                :fields="fields"
-                                class="p-button p-button-success"
-                                worksheet="Laporan" name="Laporan Detail.xls">
+                            <export-excel v-if="employees.length" :data="employees" :fields="fields"
+                                class="p-button p-button-success" worksheet="Laporan" name="Laporan Detail.xls">
                                 Download Data
                             </export-excel>
                         </div>
@@ -64,10 +61,21 @@
                             <span v-else>Tidak ada Lampiran</span>
                         </template>
                     </Column>
+
+                    <Column class="text-center" header="Lokasi">
+                        <template #body="slotProps">
+                            <span class="p-column-title">Lokasi</span>
+                            <Button label="Lihat" class="p-button-success m-2"
+                                @click="showLocation(slotProps.data.lat,slotProps.data.lng)" />
+                            <!-- <img :src="storage_url + slotProps.data.pic_url" width="150" /> -->
+                        </template>
+                    </Column>
+
                     <Column field="pic_url" class="text-center" header="Foto Selfi">
                         <template #body="slotProps">
                             <span class="p-column-title">Foto Selfi</span>
-                            <a :href="storage_url + slotProps.data.pic_url">Open</a>
+                            <Button label="Lihat" class="p-button-success m-2"
+                                @click="showImage(storage_url + slotProps.data.pic_url)" />
                             <!-- <img :src="storage_url + slotProps.data.pic_url" width="150" /> -->
                         </template>
                     </Column>
@@ -75,6 +83,28 @@
                 </DataTable>
             </div>
         </div>
+
+        <Dialog v-model:visible="locationDialog" :style="{width: '800px'}" header="Lokasi" :modal="true"
+            class="p-fluid">
+            <div>
+                <iframe width="700" height="500"
+                    :src="'//maps.google.com/maps?q=' + lng + ',' + lat +'&z=15&output=embed'" allowfullscreen
+                    style="border:0" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <template #footer>
+                <Button label="Close" icon="pi pi-times" class="p-button-text" @click="locationDialog = false" />
+            </template>
+        </Dialog>
+
+        <Dialog v-model:visible="imageDialog" :style="{ width: '800px'}" header="Foto Selfi" :modal="true"
+            class="p-fluid">
+            <div>
+                <img :src="selectedImage" width="100%" alt="Foto Selfi">
+            </div>
+            <template #footer>
+                <Button label="Close" icon="pi pi-times" class="p-button-text" @click="imageDialog = false" />
+            </template>
+        </Dialog>
     </div>
 </template>
 
@@ -99,6 +129,12 @@ export default {
             storage_url:process.env.VUE_APP_STORAGE_URL,
             role:localStorage.getItem("presence_app_role"),
             userData :JSON.parse(localStorage.getItem('presence_user_data')),
+            imageDialog:false,
+            selectedImage:'',
+            locationDialog:false,
+            lat:null,
+            lng:null,
+            MAP_KEY:process.env.VUE_APP_MAP_KEY,
             fields:{
                 'Nama':'employee.name',
                 'NIP':{
@@ -200,6 +236,19 @@ export default {
             }, 1000)
         },
 
+        showImage(image){
+
+            this.selectedImage = image
+            this.imageDialog = true
+
+        },  
+
+        showLocation(lat,lng) {
+            this.lat = lat
+            this.lng = lng
+            this.locationDialog = true
+
+        },  
         onSearch(){
             this.lazyParams.filters = this.filters;
 
