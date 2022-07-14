@@ -111,7 +111,7 @@ export default {
             this.loading = true;
 
             setTimeout(() => {
-                this.workunitService.getWorkunits(this.lazyParams)
+                this.workunitService.getWorkunits(false)
                     .then(data => {
                         if ('redirectTo' in data) {
                             localStorage.removeItem('presence_app_token')
