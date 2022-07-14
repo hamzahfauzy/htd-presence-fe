@@ -39,6 +39,7 @@
 
                             <export-excel v-if="employees.length" :data="employees" class="p-button p-button-success"
                                 worksheet="Laporan"
+                                :fields="fields"
                                 :name="'Laporan Rekapitulasi - ' + cdate_start + ' - ' + cdate_end +'.xls'">
                                 Download Data
                             </export-excel>
@@ -87,7 +88,25 @@ export default {
             cdate_end:null,
             workunits:[],
             selectedWorkunit:{},
-            role:localStorage.getItem("presence_app_role")
+            role:localStorage.getItem("presence_app_role"),
+            fields:{
+                'Nama':'name',
+                'NIP':{
+                    field: 'nip',
+                    callback: (value) => {
+                        return `'${value}`;
+                    }
+                },
+                'Golongan':'group',
+                'Jabatan':'position',
+                'Hadir':'hadir',
+                'Izin':'izin',
+                'Cuti':'cuti',
+                'Sakit':'sakit',
+                'Tugas Luar':'tugasluar',
+                'Kegiatan':'kegiatan',
+                'Alfa':'alfa',
+            }
         }
     },
     workunitService: null,
