@@ -114,5 +114,26 @@ export default class UserService {
             return res.json()
         })
     }
+
+    changePassword(password){
+        var user = JSON.parse(localStorage.getItem('presence_user_data'))
+        return fetch(process.env.VUE_APP_API_URL+'users/'+user.id+'/change-password',{
+            method:'POST',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+            body:JSON.stringify({
+                password:password
+            })
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
 	
 }
