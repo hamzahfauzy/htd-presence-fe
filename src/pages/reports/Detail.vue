@@ -49,37 +49,43 @@
                             {{slotProps.data.id}}
                         </template>
                     </Column>
-                    <Column field="employee.name" header="Nama"></Column>
-                    <Column field="employee.nip" header="NIP"></Column>
-                    <Column field="workunit.name" header="OPD"></Column>
-                    <Column field="worktime_item.name" header="Status"></Column>
-                    <Column field="attachment_url" class="text-center" header="Lampiran">
+                    <Column field="name" header="Nama"></Column>
+                    <Column field="nip" header="NIP"></Column>
+                    <Column field="workunit" header="OPD"></Column>
+                    <Column field="date" header="Tanggal"></Column>
+                    <Column field="types" header="Keterangan">
                         <template #body="slotProps">
-                            <span class="p-column-title">Lampiran</span>
-                            <a v-if="slotProps.data.attachment_url"
-                                :href="storage_url + slotProps.data.attachment_url">Download</a>
-                            <span v-else>Tidak ada Lampiran</span>
+                            <table>
+                                <tr>
+                                    <th class="p-3">Status</th>
+                                    <th class="p-3">Lampiran</th>
+                                    <th class="p-3">Lokasi</th>
+                                    <th class="p-3">Foto Selfi</th>
+                                    <th class="p-3">Tanggal</th>
+                                </tr>
+                                <tr v-for="(tipe,idx) in slotProps.data.types" :key="idx">
+                                    <th class="p-3">{{tipe.type}}</th>
+                                    <td class="p-3">
+                                        <a v-if="tipe.attachment_url"
+                                            :href="storage_url + tipe.attachment_url">Download</a>
+                                        <p v-else>Tidak ada Lampiran</p>
+                                    </td>
+                                    <td class="p-3">
+                                        <Button v-if="tipe.lat && tipe.lng" label="Lihat"
+                                            class="p-button-sm p-button-success"
+                                            @click="showLocation(tipe.lat,tipe.lng)" />
+                                        <p v-else>Tidak ada Lokasi</p>
+                                    </td>
+                                    <td class="p-3">
+                                        <Button v-if="tipe.pic_url" label="Lihat" class="p-button-sm p-button-success"
+                                            @click="showImage(storage_url + tipe.pic_url)" />
+                                        <p v-else>Tidak ada Foto Selfi</p>
+                                    </td>
+                                    <td class="p-3">{{ tipe.created_at ?? "Tidak ada Tanggal"}}</td>
+                                </tr>
+                            </table>
                         </template>
                     </Column>
-
-                    <Column class="text-center" header="Lokasi">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Lokasi</span>
-                            <Button label="Lihat" class="p-button-success m-2"
-                                @click="showLocation(slotProps.data.lat,slotProps.data.lng)" />
-                            <!-- <img :src="storage_url + slotProps.data.pic_url" width="150" /> -->
-                        </template>
-                    </Column>
-
-                    <Column field="pic_url" class="text-center" header="Foto Selfi">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Foto Selfi</span>
-                            <Button label="Lihat" class="p-button-success m-2"
-                                @click="showImage(storage_url + slotProps.data.pic_url)" />
-                            <!-- <img :src="storage_url + slotProps.data.pic_url" width="150" /> -->
-                        </template>
-                    </Column>
-                    <Column field="created_at" class="text-center" header="Tanggal"></Column>
                 </DataTable>
             </div>
         </div>
@@ -136,16 +142,10 @@ export default {
             lng:null,
             MAP_KEY:process.env.VUE_APP_MAP_KEY,
             fields:{
-                'Nama':'employee.name',
-                'NIP':{
-                    field: 'employee.nip',
-                    callback: (value) => {
-                        return `'${value}`;
-                    }
-                },
-                'OPD':'workunit.name',
-                'Status':'worktime_item.name',
-                'Tanggal':'created_at'
+                'Nama':'name',
+                'NIP':'nip',
+                'OPD':'workunit',
+                'Tanggal':'date'
             }
         }
     },
