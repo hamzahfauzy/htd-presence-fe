@@ -94,7 +94,7 @@
             class="p-fluid">
             <div>
                 <iframe width="700" height="500"
-                    :src="'//maps.google.com/maps?q=' + lng + ',' + lat +'&z=15&output=embed'" allowfullscreen
+                    :src="'//maps.google.com/maps?q=' + lat + ',' + lng +'&z=15&output=embed'" allowfullscreen
                     style="border:0" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <template #footer>
