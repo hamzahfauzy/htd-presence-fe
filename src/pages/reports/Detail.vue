@@ -61,7 +61,7 @@
                                     <th class="p-3">Lampiran</th>
                                     <th class="p-3">Lokasi</th>
                                     <th class="p-3">Foto Selfi</th>
-                                    <th class="p-3">Tanggal</th>
+                                    <th class="p-3">Jam</th>
                                 </tr>
                                 <tr v-for="(tipe,idx) in slotProps.data.types" :key="idx">
                                     <th class="p-3">{{tipe.type}}</th>
@@ -81,7 +81,7 @@
                                             @click="showImage(storage_url + tipe.pic_url)" />
                                         <p v-else>Tidak ada Foto Selfi</p>
                                     </td>
-                                    <td class="p-3">{{ tipe.created_at ?? "Tidak ada Tanggal"}}</td>
+                                    <td class="p-3">{{ tipe.time ?? "Tidak ada Jam"}}</td>
                                 </tr>
                             </table>
                         </template>
