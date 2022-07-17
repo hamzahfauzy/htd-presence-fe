@@ -1,64 +1,75 @@
 <template>
-	<div class="grid">
-		<div class="col-12">
-			<div class="card">
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
                 <Toolbar class="mb-4">
-					<template v-slot:start>
-						<div class="my-2">
-							<Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-						</div>
-					</template>
-				</Toolbar>
+                    <template v-slot:start>
+                        <div class="my-2">
+                            <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+                        </div>
+                    </template>
+                </Toolbar>
 
-                <DataTable :value="holidays" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters" ref="dt" dataKey="id"
-                    :totalRecords="totalRecords" :loading="loading" @page="onPage($event)" @sort="onSort($event)" @filter="onFilter($event)"
-                    :globalFilterFields="['name']" v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange" @row-select="onRowSelect" @row-unselect="onRowUnselect"
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
+                <DataTable :value="holidays" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
+                    ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
+                    @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
+                    v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange"
+                    @row-select="onRowSelect" @row-unselect="onRowUnselect"
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    :rowsPerPageOptions="[5,10,25]"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+                    responsiveLayout="scroll">
                     <template #header>
-						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-							<h5 class="m-0">Manajemen Hari Libur</h5>
-							<span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                            <h5 class="m-0">Manajemen Hari Libur</h5>
+                            <span class="block mt-2 md:mt-0 p-input-icon-left">
                                 <i class="pi pi-search" />
-                                <InputText v-model="filters['global'].value" placeholder="Search..." @keyup="onFilter" />
+                                <InputText v-model="filters['global'].value" placeholder="Search..."
+                                    @keyup="onFilter" />
                             </span>
-						</div>
-					</template>
+                        </div>
+                    </template>
                     <Column field="id" header="ID" :sortable="true">
-						<template #body="slotProps">
-							<span class="p-column-title">ID</span>
-							{{slotProps.data.id}}
-						</template>
-					</Column>
+                        <template #body="slotProps">
+                            <span class="p-column-title">ID</span>
+                            {{slotProps.data.id}}
+                        </template>
+                    </Column>
                     <Column field="name" header="Nama"></Column>
                     <Column field="date" header="Tanggal"></Column>
                     <Column header="Aksi">
-						<template #body="slotProps">
-							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editHoliday(slotProps.data)" />
-                            <Button v-if="slotProps.data.id" icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />
-						</template>
-					</Column>
+                        <template #body="slotProps">
+                            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                                @click="editHoliday(slotProps.data)" />
+                            <Button v-if="slotProps.data.id" icon="pi pi-trash"
+                                class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />
+                        </template>
+                    </Column>
                 </DataTable>
 
-                <Dialog v-model:visible="holidayDialog" :style="{width: '450px'}" header="Form Hari Libur" :modal="true" class="p-fluid">
-					<div class="field">
-						<label for="name">Nama</label>
-						<InputText id="name" v-model.trim="holiday.name" required="true" autofocus :class="{'p-invalid': submitted && !holiday.name}"  />
-                        <small class="p-invalid" v-if="submitted && !holiday.name">Nama diperlukan.</small>
-					</div>
+                <Dialog v-model:visible="holidayDialog" :style="{width: '450px'}" header="Form Hari Libur" :modal="true"
+                    class="p-fluid">
                     <div class="field">
-						<label for="date">Tanggal</label>
-						<Calendar id="date" dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="holiday.date" required="true" autofocus :class="{'p-invalid': submitted && !holiday.date}" />
-						<small class="p-invalid" v-if="submitted && !holiday.date">Tanggal diperlukan.</small>
-					</div>
-					<template #footer>
-						<Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-						<Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveHoliday" />
-					</template>
-				</Dialog>
+                        <label for="name">Nama</label>
+                        <InputText id="name" v-model.trim="holiday.name" required="true" autofocus
+                            :class="{'p-invalid': submitted && !holiday.name}" />
+                        <small class="p-invalid" v-if="submitted && !holiday.name">Nama diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="date">Tanggal</label>
+                        <input type="date" id="date" v-model="holiday.date" required="true" autofocus
+                            class="p-inputtext p-component p-filled"
+                            :class="{'p-invalid': submitted && !holiday.date}" />
+                        <small class="p-invalid" v-if="submitted && !holiday.date">Tanggal diperlukan.</small>
+                    </div>
+                    <template #footer>
+                        <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
+                        <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveHoliday" />
+                    </template>
+                </Dialog>
             </div>
         </div>
-	</div>
+    </div>
 </template>
 
 <script>
@@ -217,11 +228,6 @@ export default {
 		},
         saveHoliday() {
 			this.submitted = true;
-            // this.employees[this.findIndexById(this.Holiday.id)] = this.Holiday;
-            var d = this.holiday.date
-            var day = d.getDate() < 10 ? "0"+d.getDate() : d.getDate()
-            var month = (d.getMonth()+1) < 10 ? "0"+(d.getMonth()+1) : (d.getMonth()+1)
-            this.holiday.date =  d.getFullYear() + "-" + month + "-" + day
             if(this.holiday.id)
             {
                 this.holidayService.updateHoliday(this.holiday)
