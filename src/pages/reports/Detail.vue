@@ -105,7 +105,7 @@
         <Dialog v-model:visible="imageDialog" :style="{ width: '800px'}" header="Foto Selfi" :modal="true"
             class="p-fluid">
             <div>
-                <img :src="selectedImage" width="100%" alt="Foto Selfi">
+                <img :src="selectedImage" style="max-width:500px" alt="Foto Selfi">
             </div>
             <template #footer>
                 <Button label="Close" icon="pi pi-times" class="p-button-text" @click="imageDialog = false" />
@@ -199,6 +199,7 @@ export default {
                                 this.$router.push(data.redirectTo)
                             }
                             this.employees = data.data;
+                            this.totalRecords = data.total;
                             this.loading = false;
                         }
                         );
@@ -211,6 +212,7 @@ export default {
                                 this.$router.push(data.redirectTo)
                             }
                             this.employees = data.data;
+                            this.totalRecords = data.total;
                             this.loading = false;
                         }
                         );

@@ -159,6 +159,7 @@ export default {
                                 this.$router.push(data.redirectTo)
                             }
                             this.employees = data.data;
+                            this.totalRecords = data.total;
                             this.loading = false;
                         }
                         );
