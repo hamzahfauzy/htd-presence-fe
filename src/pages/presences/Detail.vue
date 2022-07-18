@@ -2,7 +2,15 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <div class="font-medium text-3xl text-900 mb-3">Detail Absensi</div>
+                <div class="flex justify-content-between mb-3 align-items-center">
+                    <div class="font-medium text-3xl text-900">Detail Absensi</div>
+                    <div>
+                        <Button icon="pi pi-check" class="p-button-rounded p-button-success mr-2"
+                            v-if="presence.status == 'diajukan'" @click="action('setujui', presence)" />
+                        <Button icon="pi pi-times" class="p-button-rounded p-button-danger mr-2"
+                            v-if="presence.status == 'diajukan'" @click="action('tolak', presence)" />
+                    </div>
+                </div>
                 <ul class="list-none p-0 m-0" v-if="presence.employee">
                     <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Pegawai</div>
@@ -29,18 +37,26 @@
                         </div>
                     </li>
                     <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-2 font-medium">Di lokasi</div>
+                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                            {{presence.in_location == 1 ? "Ya" : "Tidak"}}
+                        </div>
+                    </li>
+                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Status</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                             {{presence.status}}
                         </div>
                     </li>
-                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                    <li v-if="presence.presence_id == null"
+                        class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Waktu Mulai</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                             {{presence.started_at}}
                         </div>
                     </li>
-                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                    <li v-if="presence.presence_id == null"
+                        class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Waktu Selesai</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                             {{presence.finished_at}}
@@ -63,6 +79,14 @@
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                             <a :href="storage_url+presence.attachment_url" target="_blank"
                                 v-if="presence.attachment_url">Download</a>
+                        </div>
+                    </li>
+                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-2 font-medium">Lokasi</div>
+                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                            <iframe width="500" height="300"
+                                :src="'//maps.google.com/maps?q=' + presence.lat + ',' + presence.lng +'&z=15&output=embed'"
+                                allowfullscreen style="border:0" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </li>
                 </ul>
@@ -96,6 +120,34 @@ export default {
             this.employeeService.getPresence(this.employeeId,this.presenceId).then(d => {
                 this.presence = d
                 console.log(d)
+            })
+        },
+        action(status, data) {
+            this.$swal({
+                title: 'Apakah anda yakin akan ' + status + ' data ini ?',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.employeeService.actionPresence('di' + status, data)
+                        .then(res => {
+                            if (!res.success) {
+                                this.$swal({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: res.message,
+                                })
+                            }
+                            else {
+                                this.$swal({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: res.message
+                                })
+                                this.initData()
+                            }
+                        })
+                }
             })
         },
     }

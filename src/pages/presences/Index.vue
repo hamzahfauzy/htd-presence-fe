@@ -58,9 +58,12 @@
                     <Column field="worktime_item.name" header="Jadwal"></Column>
                     <Column field="workunit.name" header="OPD"></Column>
                     <Column field="type" header="Tipe"></Column>
+                    <Column field="in_location" header="Di lokasi">
+                        <template #body="slotProps">
+                            <p>{{ slotProps.data.in_location == 1 ? "Ya" : "Tidak"}}</p>
+                        </template>
+                    </Column>
                     <Column field="status" header="Status"></Column>
-                    <Column field="started_at" header="Waktu Mulai"></Column>
-                    <Column field="finished_at" header="Waktu Selesai"></Column>
                     <Column field="created_at" header="Tanggal"></Column>
                     <Column header="Aksi" v-if="role != 'kasubagumum'">
                         <template #body="slotProps">
@@ -104,20 +107,6 @@
                             class="mr-3" required="true" placeholder="Pilih Jenis Pengajuan"
                             :class="{'p-invalid': submitted && !pengajuan.type}" />
                         <small class="p-invalid" v-if="submitted && !pengajuan.type">Jenis pengajuan diperlukan.</small>
-                    </div>
-                    <div class="field">
-                        <label for="name">Waktu Mulai</label>
-                        <Calendar v-model="pengajuan.started_at"
-                            :class="{ 'p-invalid': submitted && !pengajuan.started_at}" />
-                        <small class="p-invalid" v-if="submitted && !pengajuan.started_at">Waktu Mulai
-                            diperlukan.</small>
-                    </div>
-                    <div class="field">
-                        <label for="name">Waktu Selesai</label>
-                        <Calendar v-model="pengajuan.finished_at"
-                            :class="{ 'p-invalid': submitted && !pengajuan.finished_at}" />
-                        <small class="p-invalid" v-if="submitted && !pengajuan.finished_at">Waktu Mulai
-                            diperlukan.</small>
                     </div>
                     <div class="field">
                         <label for="lat">Lampiran</label>
