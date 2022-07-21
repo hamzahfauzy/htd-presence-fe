@@ -123,6 +123,60 @@ export default class EmployeeService {
         .then(d => d.data);
     }
 
+    getEmployeesReportPdfLink(lazyParams,workunit_id) {
+        // const queryParams = params ? Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&') : '';
+        
+        var params = ''
+        if(lazyParams){
+            params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
+            var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
+            params +='&order_by='+order_by
+            if(lazyParams.sortField != null)
+            {
+                params += '&sort_by='+lazyParams.sortField
+            }
+    
+            if(lazyParams.filters.global.value)
+            {
+                params += '&keyword='+lazyParams.filters.global.value
+            }
+
+            if(lazyParams.date_start != null && lazyParams.date_end != null)
+            {
+                params += '&date_start='+lazyParams.date_start+'&date_end='+lazyParams.date_end
+            }
+        }
+        
+		return (process.env.VUE_APP_API_URL+'employees/report-pdf/'+workunit_id+'?' + params)
+    }
+
+    getEmployeesReportDetailPdfLink(lazyParams,workunit_id) {
+        // const queryParams = params ? Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&') : '';
+        
+        var params = ''
+        if(lazyParams){
+            params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
+            var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
+            params +='&order_by='+order_by
+            if(lazyParams.sortField != null)
+            {
+                params += '&sort_by='+lazyParams.sortField
+            }
+    
+            if(lazyParams.filters.global.value)
+            {
+                params += '&keyword='+lazyParams.filters.global.value
+            }
+
+            if(lazyParams.date_start != null && lazyParams.date_end != null)
+            {
+                params += '&date_start='+lazyParams.date_start+'&date_end='+lazyParams.date_end
+            }
+        }
+        
+		return (process.env.VUE_APP_API_URL+'employees/report-detail-pdf/'+workunit_id+'?' + params)
+    }
+
     getEmployee(id) {
 		return fetch(process.env.VUE_APP_API_URL+'employees/' + id,{
             headers:{
