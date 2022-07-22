@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="flex justify-content-between mb-3 align-items-center">
-                    <div class="font-medium text-3xl text-900">Detail Absensi</div>
+                    <div class="font-medium text-3xl text-900">Detail {{ presence.presence_id ? "Absensi" : "Cuti"}}</div>
                     <div>
                         <Button icon="pi pi-check" class="p-button-rounded p-button-success mr-2"
                             v-if="presence.status == 'diajukan'" @click="action('setujui', presence)" />
@@ -18,7 +18,8 @@
                             {{presence.employee.nip+' - '+presence.employee.name}}
                         </div>
                     </li>
-                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                    <li v-if="presence.presence_id"
+                        class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Jadwal</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                             {{ presence.worktime_item?.name }}
@@ -36,7 +37,8 @@
                             {{presence.type}}
                         </div>
                     </li>
-                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                    <li v-if="presence.presence_id"
+                        class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Di lokasi</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                             {{presence.in_location == 1 ? "Ya" : "Tidak"}}
@@ -68,7 +70,8 @@
                             {{presence.created_at}}
                         </div>
                     </li>
-                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                    <li v-if="presence.presence_id"
+                        class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Selfi</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                             <img :src="storage_url+presence.pic_url" v-if="presence.pic_url" style="width:250px">
@@ -81,7 +84,8 @@
                                 v-if="presence.attachment_url">Download</a>
                         </div>
                     </li>
-                    <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
+                    <li v-if="presence.presence_id"
+                        class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Lokasi</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                             <iframe width="500" height="300"
