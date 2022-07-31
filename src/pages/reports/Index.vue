@@ -60,12 +60,8 @@
                     <Column field="group" header="Golongan"></Column>
                     <Column field="position" header="Jabatan"></Column>
                     <Column field="hadir" class="text-center" header="Hadir"></Column>
-                    <Column field="izin" class="text-center" header="Izin"></Column>
                     <Column field="cuti" class="text-center" header="Cuti"></Column>
-                    <Column field="sakit" class="text-center" header="Sakit"></Column>
-                    <Column field="tugasluar" class="text-center" header="Tugas Luar"></Column>
-                    <Column field="kegiatan" class="text-center" header="Kegiatan"></Column>
-                    <Column field="alfa" class="text-center" header="Alfa"></Column>
+                    <Column field="time_left" class="text-center" header="Waktu Telat (Menit)"></Column>
                 </DataTable>
             </div>
         </div>

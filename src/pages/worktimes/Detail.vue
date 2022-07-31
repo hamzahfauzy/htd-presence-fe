@@ -13,8 +13,8 @@
                 <DataTable :value="worktimeItems" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
                     ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
                     @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
-                    :selectAll="selectAll" @select-all-change="onSelectAllChange"
-                    @row-select="onRowSelect" @row-unselect="onRowUnselect"
+                    :selectAll="selectAll" @select-all-change="onSelectAllChange" @row-select="onRowSelect"
+                    @row-unselect="onRowUnselect"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     :rowsPerPageOptions="[5,10,25]"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
@@ -40,6 +40,7 @@
                     <Column field="end_time" header="Waktu Selesai"></Column>
                     <Column field="on_time_start" header="On Time Waktu Mulai"></Column>
                     <Column field="on_time_end" header="On Time Waktu Selesai"></Column>
+                    <Column field="days" header="Hari"></Column>
                     <Column header="Aksi">
                         <template #body="slotProps">
                             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
@@ -61,8 +62,9 @@
                     <div class="field">
                         <label for="name">Waktu Mulai</label>
                         <div class="w-full">
-                            <input type="time" v-model="worktimeItem.start_time" id="" class="p-inputtext p-component p-filled"
-                            :class="{ 'p-invalid': submitted && !worktimeItem.start_time }">
+                            <input type="time" v-model="worktimeItem.start_time" id=""
+                                class="p-inputtext p-component p-filled"
+                                :class="{ 'p-invalid': submitted && !worktimeItem.start_time }">
                         </div>
                         <small class="p-invalid" v-if="submitted && !worktimeItem.start_time">Waktu Mulai
                             diperlukan.</small>
@@ -70,8 +72,9 @@
                     <div class="field">
                         <label for="name">Waktu Selesai</label>
                         <div class="w-full">
-                            <input type="time" v-model="worktimeItem.end_time" id="" class="p-inputtext p-component p-filled"
-                            :class="{ 'p-invalid': submitted && !worktimeItem.end_time }">
+                            <input type="time" v-model="worktimeItem.end_time" id=""
+                                class="p-inputtext p-component p-filled"
+                                :class="{ 'p-invalid': submitted && !worktimeItem.end_time }">
                         </div>
                         <small class="p-invalid" v-if="submitted && !worktimeItem.end_time">Waktu Selesai
                             diperlukan.</small>
@@ -79,8 +82,9 @@
                     <div class="field">
                         <label for="name">On Time Waktu Mulai</label>
                         <div class="w-full">
-                            <input type="time" v-model="worktimeItem.on_time_start" id="" class="p-inputtext p-component p-filled"
-                            :class="{ 'p-invalid': submitted && !worktimeItem.on_time_start }">
+                            <input type="time" v-model="worktimeItem.on_time_start" id=""
+                                class="p-inputtext p-component p-filled"
+                                :class="{ 'p-invalid': submitted && !worktimeItem.on_time_start }">
                         </div>
                         <small class="p-invalid" v-if="submitted && !worktimeItem.on_time_start">On Time Waktu Mulai
                             diperlukan.</small>
@@ -88,11 +92,21 @@
                     <div class="field">
                         <label for="name">On Time Waktu Selesai</label>
                         <div class="w-full">
-                            <input type="time" v-model="worktimeItem.on_time_end" id="" class="p-inputtext p-component p-filled"
-                            :class="{ 'p-invalid': submitted && !worktimeItem.on_time_end }">
+                            <input type="time" v-model="worktimeItem.on_time_end" id=""
+                                class="p-inputtext p-component p-filled"
+                                :class="{ 'p-invalid': submitted && !worktimeItem.on_time_end }">
                         </div>
                         <small class="p-invalid" v-if="submitted && !worktimeItem.on_time_end">On Time Waktu Selesai
                             diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="name">Hari</label>
+                        <div class="w-full">
+                            <Multiselect v-model="selectedDays" :options="days" mode="tags" />
+                        </div>
+                    </div>
+                    <div>
+
                     </div>
                     <template #footer>
                         <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
@@ -104,12 +118,19 @@
     </div>
 </template>
 
+<style src="@vueform/multiselect/themes/default.css">
+</style>
+
 <script>
 import {FilterMatchMode} from 'primevue/api';
 import WorktimeItemService from '../../service/WorktimeItemService';
 import PresenceService from '../../service/PresenceService';
+import Multiselect from '@vueform/multiselect'
 
 export default {
+    components: {
+        Multiselect
+    },
     data() {
         return {
             worktimeId:null,
@@ -126,6 +147,15 @@ export default {
             columns: [
                 {field: 'id', header: 'ID'},
                 {field: 'name', header: 'Nama'}
+            ],
+            selectedDays: [],
+            days: [
+                'Senin',
+                'Selasa',
+                'Rabu',
+                'Kamis',
+                'Jumat',
+                'Sabtu',
             ],
             worktimeItemDialog: false,
             submitted:false,
@@ -227,6 +257,11 @@ export default {
         },
         editWorktimeItem(worktimeItem) {
 			this.worktimeItem = {...worktimeItem};
+            if(worktimeItem.days){
+                this.selectedDays = worktimeItem.days.split(',')
+            }else{
+                this.selectedDays = []
+            }
 			this.worktimeItemDialog = true;
 		},
         confirmDelete(worktimeItem) {
@@ -268,6 +303,9 @@ export default {
 		},
         saveWorktimeItem() {
 			this.submitted = true;
+            if(this.selectedDays){
+                this.worktimeItem.days = this.selectedDays.join()
+            }
             if(this.worktimeItem.id)
             {
                 this.worktimeItemService.updateWorktimeItem(this.worktimeItem, this.worktimeId)
