@@ -38,11 +38,11 @@
                             <h5 class="m-0">Laporan</h5>
 
                             <div>
-                                <export-excel v-if="employees.length" :data="employees"
+                                <!-- <export-excel v-if="employees.length" :data="employees"
                                     class="p-button p-button-success m-2" worksheet="Laporan" :fields="fields"
                                     :name="'Laporan Rekapitulasi.xls'">
                                     Download Excel
-                                </export-excel>
+                                </export-excel> -->
 
                                 <Button v-if="employees.length" label="Download Pdf" class="p-button-success m-2"
                                     @click="onDownloadPdf" />

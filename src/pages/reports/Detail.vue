@@ -38,10 +38,10 @@
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                             <h5 class="m-0">Laporan</h5>
                             <div>
-                                <export-excel v-if="employees.length" :data="employees" :fields="fields"
+                                <!-- <export-excel v-if="employees.length" :data="employees" :fields="fields"
                                     class="p-button p-button-success m-2" worksheet="Laporan" name="Laporan Detail.xls">
                                     Download Excel
-                                </export-excel>
+                                </export-excel> -->
     
                                 <Button v-if="employees.length" label="Download Pdf" class="p-button-success m-2" @click="onDownloadPdf" />
                             </div>
