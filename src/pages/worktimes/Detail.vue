@@ -156,6 +156,7 @@ export default {
                 'Kamis',
                 'Jumat',
                 'Sabtu',
+                'Minggu',
             ],
             worktimeItemDialog: false,
             submitted:false,
