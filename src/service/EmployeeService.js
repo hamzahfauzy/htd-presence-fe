@@ -128,7 +128,6 @@ export default class EmployeeService {
         
         var params = ''
         if(lazyParams){
-            params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
             var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
             params +='&order_by='+order_by
             if(lazyParams.sortField != null)
@@ -155,7 +154,6 @@ export default class EmployeeService {
         
         var params = ''
         if(lazyParams){
-            params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
             var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
             params +='&order_by='+order_by
             if(lazyParams.sortField != null)
