@@ -66,6 +66,8 @@
                                     <th class="p-3">Lokasi</th>
                                     <th class="p-3">Foto Selfi</th>
                                     <th class="p-3">Jam</th>
+                                    <th class="p-3">Keterlambatan</th>
+                                    <th class="p-3">%</th>
                                 </tr>
                                 <tr v-for="(tipe,idx) in slotProps.data.types" :key="idx">
                                     <th class="p-3">{{tipe.type}}</th>
@@ -86,6 +88,13 @@
                                         <p v-else>Tidak ada Foto Selfi</p>
                                     </td>
                                     <td class="p-3">{{ tipe.time ?? "Tidak ada Jam"}}</td>
+                                    <td class="p-3">{{ tipe.time_left ?? "Tidak ada Keterlambatan"}}</td>
+                                    <td class="p-3">{{ tipe.presentase ?? 0}}%</td>
+                                </tr>
+                                <tr>
+                                    <th class="p-3" colspan="5">Total</th>
+                                    <th class="p-3">{{slotProps.data.time_left}}</th>
+                                    <th class="p-3">{{slotProps.data.presentase}}%</th>
                                 </tr>
                             </table>
                         </template>
