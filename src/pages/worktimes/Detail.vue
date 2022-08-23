@@ -41,6 +41,7 @@
                     <Column field="on_time_start" header="On Time Waktu Mulai"></Column>
                     <Column field="on_time_end" header="On Time Waktu Selesai"></Column>
                     <Column field="days" header="Hari"></Column>
+                    <Column field="penalty" header="Penalti (menit)"></Column>
                     <Column header="Aksi">
                         <template #body="slotProps">
                             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
@@ -104,6 +105,12 @@
                         <div class="w-full">
                             <Multiselect v-model="selectedDays" :options="days" mode="tags" />
                         </div>
+                    </div>
+                    <div class="field">
+                        <label for="name">Penalti (Menit)</label>
+                        <InputText id="name" v-model.trim="worktimeItem.penalty" required="true" autofocus
+                            :class="{'p-invalid': submitted && !worktimeItem.penalty}" />
+                        <small class="p-invalid" v-if="submitted && !worktimeItem.penalty">Penalti diperlukan.</small>
                     </div>
                     <div>
 
