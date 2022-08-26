@@ -53,10 +53,11 @@
                             {{slotProps.data.id}}
                         </template>
                     </Column>
+                    <Column field="date" header="Tanggal"></Column>
                     <Column field="name" header="Nama"></Column>
                     <Column field="nip" header="NIP"></Column>
-                    <Column field="workunit" header="OPD"></Column>
-                    <Column field="date" header="Tanggal"></Column>
+                    <Column field="group" header="Pangkat"></Column>
+                    <Column field="position" header="Jabatan"></Column>
                     <Column field="types" header="Keterangan">
                         <template #body="slotProps">
                             <table>
@@ -66,7 +67,7 @@
                                     <th class="p-3">Lokasi</th>
                                     <th class="p-3">Foto Selfi</th>
                                     <th class="p-3">Jam</th>
-                                    <th class="p-3">Keterlambatan</th>
+                                    <th class="p-3">Keterlambatan / Sebelum Waktu</th>
                                     <th class="p-3">%</th>
                                 </tr>
                                 <tr v-for="(tipe,idx) in slotProps.data.types" :key="idx">
@@ -87,8 +88,8 @@
                                             @click="showImage(storage_url + tipe.pic_url)" />
                                         <p v-else>Tidak ada Foto Selfi</p>
                                     </td>
-                                    <td class="p-3">{{ tipe.time ?? "Tidak ada Jam"}}</td>
-                                    <td class="p-3">{{ tipe.time_left ?? "Tidak ada Keterlambatan"}}</td>
+                                    <td class="p-3">{{ tipe.time != false ? tipe.time :"Tidak ada Jam"}}</td>
+                                    <td class="p-3">{{ tipe.time_left ?? "-"}}</td>
                                     <td class="p-3">{{ tipe.presentase ?? 0}}%</td>
                                 </tr>
                                 <tr>
