@@ -63,7 +63,7 @@
                     <Column field="alfa" class="text-center" header="Alfa"></Column>
                     <Column field="cuti" class="text-center" header="Cuti"></Column>
                     <Column field="hari_kerja" class="text-center" header="Hari Kerja"></Column>
-                    <Column field="time_left" class="text-center" header="Waktu Telat (Menit)"></Column>
+                    <Column field="time_left" class="text-center" header="Kekurangan Waktu (Menit)"></Column>
                     <Column field="presentase" class="text-center" header="Persentase"></Column>
                 </DataTable>
             </div>
