@@ -25,9 +25,8 @@
                         </div>
                     </template>
                 </Toolbar>
-                <DataTable :value="employees" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
-                    ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
-                    @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
+                <DataTable :value="employees" :lazy="true" v-model:filters="filters"
+                    ref="dt" dataKey="id" :loading="loading" :globalFilterFields="['name']"
                     :selectAll="selectAll" @select-all-change="onSelectAllChange" @row-select="onRowSelect"
                     @row-unselect="onRowUnselect"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
