@@ -12,6 +12,7 @@
                                 class="m-2" placeholder="Pilih Tanggal Selesai" />
 
                             <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                                v-if="['superuser','adminsistem','adminkepegawaian'].includes(role)"
                                 optionValue="id" class="m-2" placeholder="Pilih OPD" />
 
                             <span class="p-input-icon-left m-2">
@@ -137,6 +138,9 @@ export default {
     methods: {
         loadLazyData() {
             this.loading = true;
+
+            var userData = JSON.parse(localStorage.getItem("presence_user_data"))
+            if(userData.workunit_id) this.selectedWorkunit.id = userData.workunit_id
 
             setTimeout(() => {
 

@@ -12,7 +12,7 @@
                                 class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
 
                             <Dropdown v-model="selectedWorkunit.id" :options="workunits"
-                                v-if="['superuser', 'adminsistem','adminkepegawaian'].includes(role)" optionLabel="name"
+                                v-if="['superuser','adminsistem','adminkepegawaian'].includes(role)" optionLabel="name"
                                 optionValue="id" class="m-2" placeholder="Pilih OPD" />
 
                             <span class="p-input-icon-left m-2">

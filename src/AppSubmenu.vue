@@ -1,7 +1,7 @@
 <template>
 	<ul v-if="items">
 		<template v-for="(item,i) of items">
-			<li v-if="visible(item) && !item.separator" :key="item.label || i"
+			<li v-if="visible(item) && !item.separator && item.permissions.includes(role)" :key="item.label || i"
 				:class="[{'layout-menuitem-category': root, 'active-menuitem': activeIndex === i && !item.to && !item.disabled}]"
 				role="none">
 				<template v-if="root">
