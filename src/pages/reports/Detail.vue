@@ -189,6 +189,9 @@ export default {
         loadLazyData() {
             this.loading = true;
 
+            var userData = JSON.parse(localStorage.getItem("presence_user_data"))
+            if(userData.workunit_id) this.selectedWorkunit.id = userData.workunit_id
+
             setTimeout(() => {
 
                 this.workunitService.getWorkunits()

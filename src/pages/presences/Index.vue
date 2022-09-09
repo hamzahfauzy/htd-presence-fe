@@ -2,7 +2,7 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <Toolbar class="mb-4" v-if="role!='adminkepegawaian'">
+                <Toolbar class="mb-4">
                     <template v-slot:start>
                         <div class="my-2 d-flex">
                             <!-- <Button label="Pengajuan Cuti" class="p-button-success m-2" @click="openNew" /> -->
@@ -12,7 +12,7 @@
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_end"
                                 class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
 
-                            <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                            <Dropdown v-if="role!='kasubagumum'" v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
                                 optionValue="id" class="m-2" placeholder="Pilih OPD" />
 
                             <span class="p-input-icon-left m-2">
@@ -188,6 +188,9 @@ export default {
     methods: {
         loadLazyData() {
             this.loading = true;
+            
+            var userData = JSON.parse(localStorage.getItem("presence_user_data"))
+            if(userData.workunit_id) this.selectedWorkunit.id = userData.workunit_id
 
             setTimeout(() => {
 

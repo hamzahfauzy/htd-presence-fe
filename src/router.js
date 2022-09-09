@@ -112,7 +112,7 @@ const routes = [
                 component: () => import('./pages/presences/Detail.vue'),
                 beforeEnter: (to,from,next) => {
                     var role = window.localStorage.getItem('presence_app_role')
-                    if(!['superuser','adminsistem'].includes(role))
+                    if(!['superuser','adminsistem','adminkepegawaian'].includes(role))
                         next({'name':'login'})
                     else
                         next()
