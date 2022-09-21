@@ -95,6 +95,18 @@ const routes = [
                 }
             },
             {
+                path: '/presences/tugas-luar',
+                name:'presences.tugas-luar',
+                component: () => import('./pages/presences/TugasLuar.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem','kasubagumum','adminkepegawaian'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
+            },
+            {
                 path: '/presences/schedules',
                 name:'presences.schedules',
                 component: () => import('./pages/presences/Schedule.vue'),

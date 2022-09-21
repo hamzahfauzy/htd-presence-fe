@@ -38,6 +38,14 @@
                             <a href="javascript:void(0)" @click="patchPlace()">Update</a>
                         </div>
                     </li>
+                    <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-2 font-medium">Pengguna Android</div>
+                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
+                            {{employee.is_android_user?'Ya':'Tidak'}}
+                            {{ role != 'adminsistem' ?'-' : ''}}
+                            <a href="javascript:void(0)" @click="patchAndroid()">Update</a>
+                        </div>
+                    </li>
                     <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap" v-if="role == 'adminsistem' || role == 'adminkepegawaian' || role == 'superuser'">
                         <div class="text-500 w-6 md:w-2 font-medium">Device</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
@@ -173,6 +181,34 @@ export default {
                         text: res.message
                     })
                     this.employee.is_free_place = !this.employee.is_free_place
+                }
+            })
+		},
+        patchAndroid() {
+            this.employeeService.patchAndroid(this.employee)
+            .then(res => {
+                if('redirectTo' in res)
+                {
+                    localStorage.removeItem('presence_app_token')
+                    localStorage.removeItem('presence_app_role')
+                    this.$router.push(res.redirectTo)
+                }
+                if(!res.success)
+                {
+                    this.$swal({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res.message,
+                    })
+                }
+                else
+                {
+                    this.$swal({
+                        icon: 'success',
+                        title: 'Success',
+                        text: res.message
+                    })
+                    this.employee.is_android_user = !this.employee.is_android_user
                 }
             })
 		},

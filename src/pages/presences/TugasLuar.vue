@@ -2,17 +2,16 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <Toolbar class="mb-4">
+                <Toolbar class="mb-4" v-if="role!='adminkepegawaian'">
                     <template v-slot:start>
                         <div class="my-2 d-flex">
-                            <!-- <Button label="Pengajuan Cuti" class="p-button-success m-2" @click="openNew" /> -->
 
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_start"
                                 class="m-2" placeholder="Pilih Tanggal Mulai" @change="onDateChange" />
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_end"
                                 class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
 
-                            <Dropdown v-if="role!='kasubagumum'" v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                            <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
                                 optionValue="id" class="m-2" placeholder="Pilih OPD" />
 
                             <span class="p-input-icon-left m-2">
@@ -37,7 +36,7 @@
                     responsiveLayout="scroll">
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                            <h5 class="m-0">Manajemen Absensi</h5>
+                            <h5 class="m-0">Manajemen Tugas Luar</h5>
 
                             <div class="flex">
                                 <span class="mt-2 md:mt-0 p-input-icon-left">
@@ -58,12 +57,9 @@
                     <Column field="worktime_item.name" header="Jadwal"></Column>
                     <Column field="workunit.name" header="OPD"></Column>
                     <Column field="type" header="Tipe"></Column>
-                    <Column field="in_location" header="Di lokasi">
-                        <template #body="slotProps">
-                            <p>{{ slotProps.data.in_location == 1 ? "Ya" : "Tidak"}}</p>
-                        </template>
-                    </Column>
                     <Column field="status" header="Status"></Column>
+                    <Column field="started_at" header="Waktu Mulai"></Column>
+                    <Column field="finished_at" header="Waktu Selesai"></Column>
                     <Column field="created_at" header="Tanggal"></Column>
                     <Column header="Aksi" v-if="role != 'kasubagumum'">
                         <template #body="slotProps">
@@ -107,6 +103,20 @@
                             class="mr-3" required="true" placeholder="Pilih Jenis Pengajuan"
                             :class="{'p-invalid': submitted && !pengajuan.type}" />
                         <small class="p-invalid" v-if="submitted && !pengajuan.type">Jenis pengajuan diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="name">Waktu Mulai</label>
+                        <Calendar v-model="pengajuan.started_at"
+                            :class="{ 'p-invalid': submitted && !pengajuan.started_at}" />
+                        <small class="p-invalid" v-if="submitted && !pengajuan.started_at">Waktu Mulai
+                            diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="name">Waktu Selesai</label>
+                        <Calendar v-model="pengajuan.finished_at"
+                            :class="{ 'p-invalid': submitted && !pengajuan.finished_at}" />
+                        <small class="p-invalid" v-if="submitted && !pengajuan.finished_at">Waktu Mulai
+                            diperlukan.</small>
                     </div>
                     <div class="field">
                         <label for="lat">Lampiran</label>
@@ -188,9 +198,6 @@ export default {
     methods: {
         loadLazyData() {
             this.loading = true;
-            
-            var userData = JSON.parse(localStorage.getItem("presence_user_data"))
-            if(userData.workunit_id) this.selectedWorkunit.id = userData.workunit_id
 
             setTimeout(() => {
 
@@ -207,7 +214,7 @@ export default {
                     );
 
                 if(this.selectedWorkunit.id){
-                    this.workunitService.getPresences(this.lazyParams,this.selectedWorkunit.id,1)
+                    this.workunitService.getPresences(this.lazyParams,this.selectedWorkunit.id,3)
                         .then(data => {
                             if ('redirectTo' in data) {
                                 localStorage.removeItem('presence_app_token')
@@ -221,7 +228,7 @@ export default {
                 }
                 else
                 {
-                    this.workunitService.getPresences(this.lazyParams,false,1)
+                    this.workunitService.getPresences(this.lazyParams,false,3)
                         .then(data => {
                             if ('redirectTo' in data) {
                                 localStorage.removeItem('presence_app_token')

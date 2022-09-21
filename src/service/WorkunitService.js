@@ -52,7 +52,7 @@ export default class WorkunitService {
         .then(d => d.data);
     }
 
-    getPresences(lazyParams,id, type = false) {
+    getPresences(lazyParams, id = false, type = false) {
 
         var params = ''
         if(lazyParams){
@@ -79,7 +79,9 @@ export default class WorkunitService {
             params += '&type='+type
         }
 
-		return fetch(process.env.VUE_APP_API_URL+'workunits/' + id + '/presences?'+params,{
+        var api_url = id ? process.env.VUE_APP_API_URL+'workunits/' + id + '/presences?'+params : process.env.VUE_APP_API_URL+'workunits/presences?'+params
+
+		return fetch(api_url,{
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token')
             }

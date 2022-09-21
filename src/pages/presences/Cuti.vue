@@ -227,6 +227,20 @@ export default {
                         }
                         );
                 }
+                else
+                {
+                    this.workunitService.getPresences(this.lazyParams,false,2)
+                        .then(data => {
+                            if ('redirectTo' in data) {
+                                localStorage.removeItem('presence_app_token')
+                                localStorage.removeItem('presence_app_role')
+                                this.$router.push(data.redirectTo)
+                            }
+                            this.presences = data.data;
+                            this.loading = false;
+                        }
+                        );
+                }
 
                 this.paidLeaveService.getPaidLeaves()
                     .then(data => {

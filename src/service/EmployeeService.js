@@ -304,6 +304,23 @@ export default class EmployeeService {
         })
     }
 
+    patchAndroid(employee){
+        return fetch(process.env.VUE_APP_API_URL+'employees/'+employee.id+'/android-user',{
+            method:'PATCH',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
+
     resetDevice(employee){
         return fetch(process.env.VUE_APP_API_URL+'employees/'+employee.id+'/reset-device',{
             method:'POST',

@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="flex justify-content-between mb-3 align-items-center">
-                    <div class="font-medium text-3xl text-900">Detail {{ presence.presence_id ? "Absensi" : "Cuti"}}</div>
+                    <div class="font-medium text-3xl text-900">Detail {{ presence.presence_id ? (presence.type == 'tugas luar' ? 'Tugas Luar' : "Absensi") : "Cuti"}}</div>
                     <div>
                         <Button icon="pi pi-check" class="p-button-rounded p-button-success mr-2"
                             v-if="presence.status == 'diajukan'" @click="action('setujui', presence)" />
@@ -50,14 +50,14 @@
                             {{presence.status}}
                         </div>
                     </li>
-                    <li v-if="presence.presence_id == null"
+                    <li v-if="presence.presence_id == null || presence.type == 'tugas luar'"
                         class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Waktu Mulai</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                             {{presence.started_at}}
                         </div>
                     </li>
-                    <li v-if="presence.presence_id == null"
+                    <li v-if="presence.presence_id == null || presence.type == 'tugas luar'"
                         class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Waktu Selesai</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
