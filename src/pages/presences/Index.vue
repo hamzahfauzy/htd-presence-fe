@@ -215,6 +215,7 @@ export default {
                                 this.$router.push(data.redirectTo)
                             }
                             this.presences = data.data;
+                            this.totalRecords = data.total;
                             this.loading = false;
                         }
                         );
@@ -229,6 +230,7 @@ export default {
                                 this.$router.push(data.redirectTo)
                             }
                             this.presences = data.data;
+                            this.totalRecords = data.total;
                             this.loading = false;
                         }
                         );
