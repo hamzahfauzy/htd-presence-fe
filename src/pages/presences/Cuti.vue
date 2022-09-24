@@ -57,7 +57,6 @@
                     <Column field="employee.name" header="Nama"></Column>
                     <Column field="worktime_item.name" header="Jadwal"></Column>
                     <Column field="workunit.name" header="OPD"></Column>
-                    <Column field="type" header="Tipe"></Column>
                     <Column field="status" header="Status"></Column>
                     <Column field="started_at" header="Waktu Mulai"></Column>
                     <Column field="finished_at" header="Waktu Selesai"></Column>

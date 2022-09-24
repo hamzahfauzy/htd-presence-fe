@@ -5,6 +5,7 @@
                 <Toolbar class="mb-4" v-if="role!='adminkepegawaian'">
                     <template v-slot:start>
                         <div class="my-2 d-flex">
+                            <Button label="Pengajuan Tugas Luar" class="p-button-success m-2" @click="openNew" />
 
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_start"
                                 class="m-2" placeholder="Pilih Tanggal Mulai" @change="onDateChange" />
@@ -56,7 +57,6 @@
                     <Column field="employee.name" header="Nama"></Column>
                     <Column field="worktime_item.name" header="Jadwal"></Column>
                     <Column field="workunit.name" header="OPD"></Column>
-                    <Column field="type" header="Tipe"></Column>
                     <Column field="status" header="Status"></Column>
                     <Column field="started_at" header="Waktu Mulai"></Column>
                     <Column field="finished_at" header="Waktu Selesai"></Column>
@@ -80,7 +80,7 @@
                     </Column>
                 </DataTable>
 
-                <Dialog v-model:visible="pengajuanDialog" :style="{width: '450px'}" header="Form Pengajuan Cuti"
+                <Dialog v-model:visible="pengajuanDialog" :style="{width: '450px'}" header="Form Pengajuan Tugas Luar"
                     :modal="true" class="p-fluid">
                     <div class="field">
                         <label for="name">OPD</label>
@@ -96,13 +96,6 @@
                             optionValue="id" class="mr-3" required="true" placeholder="Pilih Pegawai"
                             :class="{'p-invalid': submitted && !pengajuan.employee_id}" />
                         <small class="p-invalid" v-if="submitted && !pengajuan.employee_id">Pegawai diperlukan.</small>
-                    </div>
-                    <div class="field">
-                        <label for="lat">Jenis Pengajuan</label>
-                        <Dropdown v-model="pengajuan.type" :options="paid_leaves" optionLabel="name" optionValue="name"
-                            class="mr-3" required="true" placeholder="Pilih Jenis Pengajuan"
-                            :class="{'p-invalid': submitted && !pengajuan.type}" />
-                        <small class="p-invalid" v-if="submitted && !pengajuan.type">Jenis pengajuan diperlukan.</small>
                     </div>
                     <div class="field">
                         <label for="name">Waktu Mulai</label>
@@ -178,6 +171,8 @@ export default {
         this.employeeService = new EmployeeService();
         this.paidLeaveService = new PaidLeaveService();
         this.initFilters()
+
+        this.pengajuan.type = 'tugas luar'
     },
     mounted() {
         this.loading = true;
@@ -242,17 +237,6 @@ export default {
                         }
                         );
                 }
-
-                this.paidLeaveService.getPaidLeaves()
-                    .then(data => {
-                        if ('redirectTo' in data) {
-                            localStorage.removeItem('presence_app_token')
-                            localStorage.removeItem('presence_app_role')
-                            this.$router.push(data.redirectTo)
-                        }
-                        this.paid_leaves = data.data;
-                    }
-                    );
             }, Math.random() * 1000 + 250);
         },
         onPage(event) {
