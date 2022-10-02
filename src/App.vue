@@ -55,7 +55,7 @@ export default {
                                 { label: 'Master Cuti', icon: 'pi pi-fw pi-bookmark', to: '/paid-leaves', permissions: ['superuser', 'adminsistem'] },
                                 { label: 'Absensi', icon: 'pi pi-fw pi-bookmark', to: '/presences' ,permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian']},
                                 { label: 'Cuti', icon: 'pi pi-fw pi-bookmark', to: '/presences/cuti' ,permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian']},
-                                { label: 'Tugas Luar', icon: 'pi pi-fw pi-bookmark', to: '/presences/tugas-luar' ,permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian']},
+                                { label: 'Tugas Luar / Dalam', icon: 'pi pi-fw pi-bookmark', to: '/presences/tugas-luar' ,permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian']},
                                 // { label: 'Jadwal', icon: 'pi pi-fw pi-bookmark', to: '/presences/schedules', permissions: ['superuser', 'adminsistem'] },
                                 { label: 'Hari Libur', icon: 'pi pi-fw pi-bookmark', to: '/holidays', permissions: ['superuser', 'adminsistem'] },
                             ],

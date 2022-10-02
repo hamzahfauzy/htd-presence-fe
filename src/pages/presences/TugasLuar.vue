@@ -5,7 +5,7 @@
                 <Toolbar class="mb-4" v-if="role!='adminkepegawaian'">
                     <template v-slot:start>
                         <div class="my-2 d-flex">
-                            <Button label="Pengajuan Tugas Luar" class="p-button-success m-2" @click="openNew" />
+                            <Button label="Pengajuan Tugas" class="p-button-success m-2" @click="openNew" />
 
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_start"
                                 class="m-2" placeholder="Pilih Tanggal Mulai" @change="onDateChange" />
@@ -55,7 +55,7 @@
                         </template>
                     </Column>
                     <Column field="employee.name" header="Nama"></Column>
-                    <Column field="worktime_item.name" header="Jadwal"></Column>
+                    <Column field="type" header="Jenis Pengajuan"></Column>
                     <Column field="workunit.name" header="OPD"></Column>
                     <Column field="status" header="Status"></Column>
                     <Column field="started_at" header="Waktu Mulai"></Column>
@@ -96,6 +96,13 @@
                             optionValue="id" class="mr-3" required="true" placeholder="Pilih Pegawai"
                             :class="{'p-invalid': submitted && !pengajuan.employee_id}" />
                         <small class="p-invalid" v-if="submitted && !pengajuan.employee_id">Pegawai diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="lat">Jenis Pengajuan</label>
+                        <Dropdown v-model="pengajuan.type" :options="paid_leaves" optionLabel="name" optionValue="name"
+                            class="mr-3" required="true" placeholder="Pilih Jenis Pengajuan"
+                            :class="{'p-invalid': submitted && !pengajuan.type}" />
+                        <small class="p-invalid" v-if="submitted && !pengajuan.type">Jenis pengajuan diperlukan.</small>
                     </div>
                     <div class="field">
                         <label for="name">Waktu Mulai</label>
@@ -143,7 +150,10 @@ export default {
             loading: false,
             pengajuanDialog: false,
             employees:null,
-            paid_leaves:null,
+            paid_leaves:[
+                {name:'tugas luar'},
+                {name:'tugas dalam'},
+            ],
             pengajuan:{},
             submitted:false,
             onsearchtimeout: null,
@@ -171,8 +181,6 @@ export default {
         this.employeeService = new EmployeeService();
         this.paidLeaveService = new PaidLeaveService();
         this.initFilters()
-
-        this.pengajuan.type = 'tugas luar'
     },
     mounted() {
         this.loading = true;

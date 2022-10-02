@@ -55,7 +55,7 @@
                         </template>
                     </Column>
                     <Column field="employee.name" header="Nama"></Column>
-                    <Column field="worktime_item.name" header="Jadwal"></Column>
+                    <Column field="type" header="Jenis Pengajuan"></Column>
                     <Column field="workunit.name" header="OPD"></Column>
                     <Column field="status" header="Status"></Column>
                     <Column field="started_at" header="Waktu Mulai"></Column>

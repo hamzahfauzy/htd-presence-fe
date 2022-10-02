@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="flex justify-content-between mb-3 align-items-center">
-                    <div class="font-medium text-3xl text-900">Detail {{ presence.presence_id ? "Absensi" : (presence.type == 'tugas luar' ? 'Tugas Luar' : "Cuti")}}</div>
+                    <div class="font-medium text-3xl text-900">Detail {{ presence.presence_id ? "Absensi" : (presence.type.includes('tugas') ? presence.type : "Cuti")}}</div>
                     <div>
                         <Button icon="pi pi-check" class="p-button-rounded p-button-success mr-2"
                             v-if="presence.status == 'diajukan'" @click="action('setujui', presence)" />
