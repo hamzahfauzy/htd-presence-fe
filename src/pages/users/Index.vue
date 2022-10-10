@@ -134,7 +134,7 @@ export default {
 				{ name: "Pegawai", value: "pegawai" },
 				{ name: "Kasubag Umum", value: "kasubagumum" },
 				{ name: "Admin BKD", value: "adminkepegawaian" },
-				{ name: "Admin OPD", value: "adminopd" }
+				// { name: "Admin OPD", value: "adminopd" }
 			]
 		}
 	},

@@ -12,7 +12,7 @@
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_end"
                                 class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
 
-                            <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
+                            <Dropdown v-if="role!='kasubagumum'" v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
                                 optionValue="id" class="m-2" placeholder="Pilih OPD" />
 
                             <span class="p-input-icon-left m-2">
@@ -82,7 +82,7 @@
 
                 <Dialog v-model:visible="pengajuanDialog" :style="{width: '450px'}" header="Form Pengajuan Tugas Luar"
                     :modal="true" class="p-fluid">
-                    <div class="field">
+                    <div class="field" v-if="role!='kasubagumum'">
                         <label for="name">OPD</label>
                         <Dropdown v-model="pengajuan.workunit_id" :options="workunits" optionLabel="name"
                             optionValue="id" class="mr-3" required="true" placeholder="Pilih OPD"
@@ -202,6 +202,9 @@ export default {
         loadLazyData() {
             this.loading = true;
 
+            var userData = JSON.parse(localStorage.getItem("presence_user_data"))
+            if(userData.workunit_id) this.selectedWorkunit.id = userData.workunit_id
+
             setTimeout(() => {
 
                 this.workunitService.getWorkunits()
@@ -286,6 +289,14 @@ export default {
         },
         openNew(){
             this.pengajuanDialog = true
+            if(this.role=='kasubagumum')
+            {
+                var userData = JSON.parse(localStorage.getItem("presence_user_data"))
+                if(userData.workunit_id){
+                    this.pengajuan.workunit_id = userData.workunit_id
+                    this.onPengajuanWorkunitChange()
+                }
+            }
         },
 
         savePengajuan(){

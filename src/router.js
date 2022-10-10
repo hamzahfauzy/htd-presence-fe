@@ -161,7 +161,7 @@ const routes = [
                 beforeEnter: (to,from,next) => {
                     var role = window.localStorage.getItem('presence_app_role')
                     var user = JSON.parse(window.localStorage.getItem('presence_user_data'))
-                    if(!['superuser','adminsistem','adminopd'].includes(role) || user.shif_management == 0)
+                    if(!['superuser','adminsistem','adminopd','kasubagumum'].includes(role) || user.shif_management == 0)
                         next({'name':'login'})
                     else
                         next()
@@ -174,7 +174,7 @@ const routes = [
                 beforeEnter: (to,from,next) => {
                     var role = window.localStorage.getItem('presence_app_role')
                     var user = JSON.parse(window.localStorage.getItem('presence_user_data'))
-                    if(!['superuser','adminsistem','adminopd'].includes(role) || user.shif_management == 0)
+                    if(!['superuser','adminsistem','adminopd','kasubagumum'].includes(role) || user.shif_management == 0)
                         next({'name':'login'})
                     else
                         next()
@@ -186,7 +186,7 @@ const routes = [
                 component: () => import('./pages/reports/Index.vue'),
                 beforeEnter: (to,from,next) => {
                     var role = window.localStorage.getItem('presence_app_role')
-                    if(!['superuser','adminsistem','adminopd'].includes(role))
+                    if(!['superuser','adminsistem','adminopd','kasubagumum'].includes(role))
                         next({'name':'login'})
                     else
                         next()
@@ -198,7 +198,7 @@ const routes = [
                 component: () => import('./pages/reports/Detail.vue'),
                 beforeEnter: (to,from,next) => {
                     var role = window.localStorage.getItem('presence_app_role')
-                    if(!['superuser','adminsistem','adminopd'].includes(role))
+                    if(!['superuser','adminsistem','adminopd','kasubagumum'].includes(role))
                         next({'name':'login'})
                     else
                         next()
