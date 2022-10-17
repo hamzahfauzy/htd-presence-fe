@@ -186,7 +186,7 @@ const routes = [
                 component: () => import('./pages/reports/Index.vue'),
                 beforeEnter: (to,from,next) => {
                     var role = window.localStorage.getItem('presence_app_role')
-                    if(!['superuser','adminsistem','adminopd','kasubagumum'].includes(role))
+                    if(!['superuser','adminsistem','adminopd','kasubagumum','adminkepegawaian'].includes(role))
                         next({'name':'login'})
                     else
                         next()
@@ -198,7 +198,7 @@ const routes = [
                 component: () => import('./pages/reports/Detail.vue'),
                 beforeEnter: (to,from,next) => {
                     var role = window.localStorage.getItem('presence_app_role')
-                    if(!['superuser','adminsistem','adminopd','kasubagumum'].includes(role))
+                    if(!['superuser','adminsistem','adminopd','kasubagumum','adminkepegawaian'].includes(role))
                         next({'name':'login'})
                     else
                         next()
