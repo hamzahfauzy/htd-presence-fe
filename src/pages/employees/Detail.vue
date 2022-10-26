@@ -53,6 +53,13 @@
                             <a v-if="employee.user?.device_number" href="javascript:void(0)" @click="resetDevice()">- Reset Device</a>
                         </div>
                     </li>
+                    <li class="flex align-items-center py-3 px-2 border-top-1 border-bottom-1 surface-border flex-wrap"
+                        v-if="role == 'adminsistem' || role == 'adminkepegawaian' || role == 'superuser'">
+                        <div class="text-500 w-6 md:w-2 font-medium">Password</div>
+                        <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1 line-height-3">
+                            <a href="javascript:void(0)" @click="resetPassword()">Reset Password</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -214,6 +221,31 @@ export default {
 		},
         resetDevice() {
             this.employeeService.resetDevice(this.employee)
+                .then(res => {
+                    if ('redirectTo' in res) {
+                        localStorage.removeItem('presence_app_token')
+                        localStorage.removeItem('presence_app_role')
+                        this.$router.push(res.redirectTo)
+                    }
+                    if (!res.success) {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: res.message,
+                        })
+                    }
+                    else {
+                        this.$swal({
+                            icon: 'success',
+                            title: 'Success',
+                            text: res.message
+                        })
+                        this.initData()
+                    }
+                })
+        },
+        resetPassword() {
+            this.employeeService.resetPassword(this.employee)
                 .then(res => {
                     if ('redirectTo' in res) {
                         localStorage.removeItem('presence_app_token')
