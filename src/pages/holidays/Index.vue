@@ -267,7 +267,7 @@ export default {
                     }
                     else
                     {
-                        this.holidays.push(this.holiday)
+                        this.holidays.push(res.data)
                         this.holidayDialog = false;
                         this.holiday = {};
                         this.$swal({
