@@ -132,7 +132,7 @@ export default {
                         }
                         else
                         {
-                            this.employeeWorktimes = this.employeeWorktimes.filter(val => val.id !== this.employeeWorktime.id);
+                            this.employeeWorktimes = data.data.worktimes;
                             this.$swal({
                                 icon: 'success',
                                 title: 'Success',
@@ -187,6 +187,7 @@ export default {
                     })
                     var worktime = this.worktimes.find(w => w.id === this.employeeWorktime.worktime_id)
                     this.employeeWorktimes.push({
+                        id: worktime.id,
                         name: worktime.name,
                         pivot: {
                             date_start:this.employeeWorktime.date_start,

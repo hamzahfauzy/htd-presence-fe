@@ -381,7 +381,9 @@ export default class EmployeeService {
                 'Content-type': 'application/json; charset=UTF-8',
             },
             body:JSON.stringify({
-                worktime_id:data.id
+                worktime_id:data.id,
+                date_start:data.pivot.date_start,
+                date_end:data.pivot.date_end,
             })
         })
         .then(res => {
