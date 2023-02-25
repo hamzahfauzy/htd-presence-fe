@@ -13,7 +13,7 @@
                                 class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
 
                             <Dropdown v-if="role!='kasubagumum'" v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
-                                optionValue="id" class="m-2" placeholder="Pilih OPD" />
+                                optionValue="id" class="m-2" placeholder="Pilih OPD" :filter="true" />
 
                             <span class="p-input-icon-left m-2">
                                 <i class="pi pi-search" />
@@ -89,7 +89,7 @@
                     <div class="field">
                         <label for="name">OPD</label>
                         <Dropdown v-model="pengajuan.workunit_id" :options="workunits" optionLabel="name"
-                            optionValue="id" class="mr-3" required="true" placeholder="Pilih OPD"
+                            optionValue="id" class="mr-3" required="true" placeholder="Pilih OPD" :filter="true"
                             @change="onPengajuanWorkunitChange"
                             :class="{'p-invalid': submitted && !pengajuan.workunit_id}" />
                         <small class="p-invalid" v-if="submitted && !pengajuan.workunit_id">OPD diperlukan.</small>

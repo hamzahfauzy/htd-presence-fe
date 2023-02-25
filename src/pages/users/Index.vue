@@ -89,7 +89,7 @@
 					<div class="field">
 						<label>OPD</label>
 						<Dropdown v-model="user.workunit_id" :options="workunits" optionLabel="name"
-							optionValue="id" required="true" placeholder="Pilih OPD"
+							optionValue="id" required="true" placeholder="Pilih OPD" :filter="true"
 							:class="{'p-invalid': submitted && !user.workunit_id}" />
 						<small class="p-invalid" v-if="submitted && !user.workunit_id">OPD diperlukan.</small>
 					</div>

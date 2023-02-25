@@ -13,7 +13,7 @@
 
                             <Dropdown v-model="selectedWorkunit.id" :options="workunits"
                                 v-if="['superuser','adminsistem','adminkepegawaian'].includes(role)" optionLabel="name"
-                                optionValue="id" class="m-2" placeholder="Pilih OPD" />
+                                optionValue="id" class="m-2" placeholder="Pilih OPD" :filter="true"/>
 
                             <span class="p-input-icon-left m-2">
                                 <i class="pi pi-search" />
