@@ -63,7 +63,13 @@
                             <p>{{ slotProps.data.in_location == 1 ? "Ya" : "Tidak"}}</p>
                         </template>
                     </Column>
-                    <Column field="status" header="Status"></Column>
+                    <Column field="status" header="Status">
+                         <template #body="slotProps">
+                            <Badge :class="'p-badge '+(slotProps.data.status == 'diajukan' ? 'p-badge-info' : slotProps.data.status == 'ditolak' ? 'p-badge-danger' : slotProps.data.status == 'disetujui' ? 'p-badge-success' : '')">
+                                {{ slotProps.data.status }}
+                            </Badge>
+                        </template>
+                    </Column>
                     <Column field="created_at" header="Tanggal"></Column>
                     <Column header="Aksi" v-if="role != 'kasubagumum'">
                         <template #body="slotProps">

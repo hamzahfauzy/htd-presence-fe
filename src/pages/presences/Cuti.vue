@@ -57,7 +57,13 @@
                     <Column field="employee.name" header="Nama"></Column>
                     <Column field="type" header="Jenis Pengajuan"></Column>
                     <Column field="workunit.name" header="OPD"></Column>
-                    <Column field="status" header="Status"></Column>
+                    <Column field="status" header="Status">
+                        <template #body="slotProps">
+                            <Badge :class="'p-badge ' + (slotProps.data.status == 'diajukan' ? 'p-badge-info' : slotProps.data.status == 'ditolak' ? 'p-badge-danger' : slotProps.data.status == 'disetujui' ? 'p-badge-success' : '')">
+                                {{ slotProps.data.status }}
+                            </Badge>
+                        </template>
+                    </Column>
                     <Column field="started_at" header="Waktu Mulai"></Column>
                     <Column field="finished_at" header="Waktu Selesai"></Column>
                     <Column field="created_at" header="Tanggal"></Column>
