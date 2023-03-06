@@ -59,7 +59,7 @@
                     <Column field="nip" header="NIP"></Column>
                     <Column field="group" header="Golongan"></Column>
                     <Column field="position" header="Jabatan"></Column>
-                    <Column field="_hadir" class="text-center" header="Hadir"></Column>
+                    <Column field="kehadiran" class="text-center" header="Hadir"></Column>
                     <Column field="alfa" class="text-center" header="Alfa"></Column>
                     <Column field="_cuti" class="text-center" header="Cuti"></Column>
                     <Column field="_tugas" class="text-center" header="Tugas Luar/Dalam"></Column>
