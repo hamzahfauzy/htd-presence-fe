@@ -3,6 +3,7 @@ export default class ReportRequestService {
 	getReports(workunit_id = false) {
         // const queryParams = params ? Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&') : '';
 
+        var params = ''
         var userData = JSON.parse(localStorage.getItem('presence_user_data'))
         if(userData.workunit_id)
         {
@@ -29,8 +30,8 @@ export default class ReportRequestService {
         .then(d => d.data);
     }
 
-    createReportRequest(data){
-        return fetch(process.env.VUE_APP_API_URL+'report-requests/',{
+    createReport(data){
+        return fetch(process.env.VUE_APP_API_URL+'report-requests',{
             method:'POST',
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),

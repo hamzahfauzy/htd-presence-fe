@@ -103,7 +103,7 @@
                     <div class="field">
                         <label for="name">Hari</label>
                         <div class="w-full">
-                            <Multiselect v-model="selectedDays" :options="days" mode="tags" />
+                            <!-- <Multiselect v-model="selectedDays" :options="days" mode="tags" /> -->
                         </div>
                     </div>
                     <div class="field">
@@ -125,19 +125,12 @@
     </div>
 </template>
 
-<style src="@vueform/multiselect/themes/default.css">
-</style>
-
 <script>
 import {FilterMatchMode} from 'primevue/api';
 import WorktimeItemService from '../../service/WorktimeItemService';
 import PresenceService from '../../service/PresenceService';
-import Multiselect from '@vueform/multiselect'
 
 export default {
-    components: {
-        Multiselect
-    },
     data() {
         return {
             worktimeId:null,

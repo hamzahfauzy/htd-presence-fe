@@ -205,6 +205,18 @@ const routes = [
                 }
             },
             {
+                path: '/report-requests',
+                name: 'report-requests',
+                component: () => import('./pages/reports/Request.vue'),
+                beforeEnter: (to,from,next) => {
+                    var role = window.localStorage.getItem('presence_app_role')
+                    if(!['superuser','adminsistem','adminopd','kasubagumum','adminkepegawaian'].includes(role))
+                        next({'name':'login'})
+                    else
+                        next()
+                }
+            },
+            {
                 path: '/users',
                 name: 'users',
                 component: () => import('./pages/users/Index.vue'),

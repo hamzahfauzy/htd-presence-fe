@@ -67,6 +67,7 @@ export default {
                             items:[
                                 { label: 'Rekapitulasi', icon: 'pi pi-fw pi-bookmark', to: '/reports', permissions: ['superuser', 'adminsistem', 'adminopd','kasubagumum','adminkepegawaian'] },
                                 { label: 'Detail', icon: 'pi pi-fw pi-bookmark', to: '/report-details', permissions: ['superuser', 'adminsistem', 'adminopd','kasubagumum','adminkepegawaian'] },
+                                { label: 'Download', icon: 'pi pi-fw pi-bookmark', to: '/report-requests', permissions: ['superuser', 'adminsistem', 'adminopd','kasubagumum','adminkepegawaian'] },
                             ]
                         },
                         { label: 'Pengguna', icon: 'pi pi-fw pi-users', to: '/users', permissions: ['superuser', 'adminsistem'] },

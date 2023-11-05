@@ -19,11 +19,11 @@
                                 v-if="['superuser','adminsistem','adminkepegawaian'].includes(role)"
                                 optionValue="value" class="m-2" placeholder="Pilih Report Type" :filter="true" />
 
-                            <Button label="Filter" icon="pi pi-search" class="p-button-success m-2" @click="saveReport()" />
+                            <Button label="Buat Laporan" class="p-button-success m-2" @click="saveReport()" />
                         </div>
                     </template>
                 </Toolbar>
-                <DataTable :value="employees" :lazy="true" v-model:filters="filters"
+                <DataTable :value="reports" :lazy="true" v-model:filters="filters"
                     ref="dt" dataKey="id" :loading="loading" :globalFilterFields="['name']"
                     v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange"
                     @row-select="onRowSelect" @row-unselect="onRowUnselect"
@@ -37,11 +37,17 @@
                             {{slotProps.data.id}}
                         </template>
                     </Column>
-                    <Column field="workunit.name" header="OPD"></Column>
+                    <Column field="workunit.name" header="OPD / Unit Kerja"></Column>
                     <Column field="start_at" header="Tanggal Awal"></Column>
                     <Column field="end_at" header="Tanggal Akhir"></Column>
                     <Column field="status" header="Status"></Column>
-                    <Column field="file_url" header="File URL"></Column>
+                    <Column field="file_url" header="File" 
+                        headerStyle="width:20%; min-width:10rem;">
+                        <template #body="slotProps">
+                            <span class="p-column-title">File</span>
+                            <a :href="slotProps.data.file_url" v-if="slotProps.data.file_url">Download File</a>
+                        </template>
+                    </Column>
                 </DataTable>
             </div>
         </div>
@@ -128,20 +134,18 @@ export default {
                     }
                     );
 
-                if(this.selectedWorkunit.id){
-                    this.reportService.getReports(this.selectedWorkunit.id)
-                        .then(data => {
-                            if ('redirectTo' in data) {
-                                localStorage.removeItem('presence_app_token')
-                                localStorage.removeItem('presence_app_role')
-                                this.$router.push(data.redirectTo)
-                            }
-                            this.reports = data.data;
-                            this.totalRecords = data.total;
-                            this.loading = false;
+                this.reportService.getReports(this.selectedWorkunit ? this.selectedWorkunit.id : {})
+                    .then(data => {
+                        if ('redirectTo' in data) {
+                            localStorage.removeItem('presence_app_token')
+                            localStorage.removeItem('presence_app_role')
+                            this.$router.push(data.redirectTo)
                         }
-                        );
-                }
+                        this.reports = data.data;
+                        this.totalRecords = data.total;
+                        this.loading = false;
+                    }
+                    );
             }, Math.random() * 1000 + 250);
         },
         onPage(event) {
@@ -220,7 +224,7 @@ export default {
             }
         },
         saveReport() {
-			this.reportService.createReport(this.paidLeave)
+			this.reportService.createReport(this.report)
             .then(res => {
                 if(!res.success)
                 {
