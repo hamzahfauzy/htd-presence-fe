@@ -103,7 +103,8 @@
                     <div class="field">
                         <label for="name">Hari</label>
                         <div class="w-full">
-                            <!-- <Multiselect v-model="selectedDays" :options="days" mode="tags" /> -->
+                            <!-- <MultiSelect v-model="selectedCities" :options="cities" optionLabel="name" placeholder="Select Cities" :maxSelectedLabels="3" class="w-full md:w-20rem" /> -->
+                            <MultiSelect v-model="selectedDays" :options="days" placeholder="Pilih Hari" mode="tags" />
                         </div>
                     </div>
                     <div class="field">

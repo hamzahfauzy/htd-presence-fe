@@ -31,6 +31,12 @@ export default class ReportRequestService {
     }
 
     createReport(data){
+        var userData = JSON.parse(localStorage.getItem('presence_user_data'))
+        if(userData.workunit_id)
+        {
+            data.workunit_id = userData.workunit_id
+        }
+
         return fetch(process.env.VUE_APP_API_URL+'report-requests',{
             method:'POST',
             headers:{
