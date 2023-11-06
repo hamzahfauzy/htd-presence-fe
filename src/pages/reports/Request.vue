@@ -16,7 +16,6 @@
                                 optionValue="id" class="m-2" placeholder="Pilih OPD" :filter="true" />
                             
                             <Dropdown v-model="report.report_type" :options="[{name:'Rekapitulasi',value:'rekapitulasi'},{name:'Detail',value:'detail'}]" optionLabel="name"
-                                v-if="['superuser','adminsistem','adminkepegawaian'].includes(role)"
                                 optionValue="value" class="m-2" placeholder="Pilih Report Type" :filter="true" />
 
                             <Button label="Buat Laporan" class="p-button-success m-2" @click="saveReport()" />
