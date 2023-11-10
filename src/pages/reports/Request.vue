@@ -171,18 +171,18 @@ export default {
         },
 
         onDateChange(){
-            if (this.date_start) {
-                let d = this.date_start
+            if (this.report.start_at) {
+                let d = this.report.start_at
                 let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
                 let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
-                this.cdate_start = d.getFullYear() + "-" + month + "-" + day
+                this.report.start_at = d.getFullYear() + "-" + month + "-" + day
             }
 
-            if (this.date_end) {
-                let d = this.date_end
+            if (this.report.end_at) {
+                let d = this.report.end_at
                 let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
                 let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
-                this.cdate_end = d.getFullYear() + "-" + month + "-" + day
+                this.report.end_at = d.getFullYear() + "-" + month + "-" + day
             }
         },
 
