@@ -9,7 +9,7 @@
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="report.start_at"
                                 class="m-2" placeholder="Pilih Tanggal Awal" @date-select="onDateChange" />
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="report.end_at"
-                                class="m-2" placeholder="Pilih Tanggal Akhir" />
+                                class="m-2" placeholder="Pilih Tanggal Akhir" @date-select="onDateChange" />
 
                             <Dropdown v-model="report.workunit_id" :options="workunits" optionLabel="name"
                                 v-if="['superuser','adminsistem','adminkepegawaian'].includes(role)"

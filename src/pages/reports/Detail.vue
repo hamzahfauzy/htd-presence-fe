@@ -7,9 +7,9 @@
                         <div class="my-2 d-flex">
 
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_start"
-                                class="m-2" placeholder="Pilih Tanggal Mulai" @change="onDateChange" />
+                                class="m-2" placeholder="Pilih Tanggal Mulai" @date-select="onDateChange" />
                             <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_end"
-                                class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
+                                class="m-2" placeholder="Pilih Tanggal Selesai" @date-select="onDateChange" />
 
                             <Dropdown v-model="selectedWorkunit.id" :options="workunits"
                                 v-if="['superuser','adminsistem','adminkepegawaian'].includes(role)" optionLabel="name"
@@ -289,6 +289,22 @@ export default {
             }
 
             this.loadLazyData();
+        },
+
+        onDateChange(){
+            if (this.date_start) {
+                let d = this.date_start
+                let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+                let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
+                this.cdate_start = d.getFullYear() + "-" + month + "-" + day
+            }
+
+            if (this.date_end) {
+                let d = this.date_end
+                let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
+                let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
+                this.cdate_end = d.getFullYear() + "-" + month + "-" + day
+            }
         },
         
         onPengajuanWorkunitChange() {
