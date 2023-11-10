@@ -6,9 +6,9 @@
                     <template v-slot:start>
                         <div class="my-2 d-flex">
 
-                            <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="report.start_at"
+                            <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_start"
                                 class="m-2" placeholder="Pilih Tanggal Awal" @date-select="onDateChange" />
-                            <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="report.end_at"
+                            <Calendar dateFormat="yy-mm-dd" :showIcon="true" :showButtonBar="true" v-model="date_end"
                                 class="m-2" placeholder="Pilih Tanggal Akhir" @date-select="onDateChange" />
 
                             <Dropdown v-model="report.workunit_id" :options="workunits" optionLabel="name"
@@ -169,17 +169,17 @@ export default {
         onDownloadPdf() {
             window.open(this.employeeService.getEmployeesReportPdfLink(this.lazyParams, this.selectedWorkunit.id ?? this.userData.workunit_id))
         },
-
+        
         onDateChange(){
-            if (this.report.start_at) {
-                let d = this.report.start_at
+            if (this.date_start) {
+                let d = this.date_start
                 let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
                 let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
                 this.report.start_at = d.getFullYear() + "-" + month + "-" + day
             }
-
-            if (this.report.end_at) {
-                let d = this.report.end_at
+            
+            if (this.date_end) {
+                let d = this.date_end
                 let day = d.getDate() < 10 ? "0" + d.getDate() : d.getDate()
                 let month = (d.getMonth() + 1) < 10 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)
                 this.report.end_at = d.getFullYear() + "-" + month + "-" + day
