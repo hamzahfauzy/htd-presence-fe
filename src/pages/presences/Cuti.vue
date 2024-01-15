@@ -13,7 +13,7 @@
                                 class="m-2" placeholder="Pilih Tanggal Selesai" @change="onDateChange" />
 
                             <Dropdown v-if="role!='kasubagumum'" v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
-                                optionValue="id" class="m-2" placeholder="Pilih OPD" :filter="true" />
+                                optionValue="id" class="m-2" placeholder="Pilih Unit Kerja" :filter="true" />
 
                             <span class="p-input-icon-left m-2">
                                 <i class="pi pi-search" />
