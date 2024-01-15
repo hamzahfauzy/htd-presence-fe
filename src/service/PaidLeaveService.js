@@ -51,7 +51,7 @@ export default class PaidLeaveService {
     }
 
     createPaidLeave(PaidLeave){
-        return fetch(process.env.VUE_APP_API_URL+'paid_leaves/',{
+        return fetch(process.env.VUE_APP_API_URL+'paid_leaves',{
             method:'POST',
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
