@@ -13,7 +13,7 @@
 
                             <Dropdown v-model="selectedWorkunit.id" :options="workunits"
                                 v-if="['superuser','adminsistem','adminkepegawaian'].includes(role)" optionLabel="name"
-                                optionValue="id" class="m-2" placeholder="Pilih OPD" :filter="true"/>
+                                optionValue="id" class="m-2" placeholder="Pilih Unit Kerja" :filter="true"/>
 
                             <span class="p-input-icon-left m-2">
                                 <i class="pi pi-search" />
@@ -54,7 +54,7 @@
                     </Column>
                     <Column field="date" header="Tanggal"></Column>
                     <Column field="name" header="Nama"></Column>
-                    <Column field="nip" header="NIP"></Column>
+                    <Column field="nip" header="Kode Pegawai"></Column>
                     <Column field="group" header="Pangkat"></Column>
                     <Column field="position" header="Jabatan"></Column>
                     <Column field="types" header="Keterangan">
