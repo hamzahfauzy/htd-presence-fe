@@ -46,7 +46,7 @@ export default {
 					label: 'Modul', icon: 'pi pi-fw pi-clone',
                     permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian', 'adminopd'],
 					items: [
-                        { label: 'OPD', icon: 'pi pi-fw pi-microsoft', to: '/workunits', permissions: ['superuser', 'adminsistem'] },
+                        { label: 'Unit Kerja', icon: 'pi pi-fw pi-microsoft', to: '/workunits', permissions: ['superuser', 'adminsistem'] },
                         { label: 'Pegawai', icon: 'pi pi-fw pi-user', to: '/employees', permissions: ['superuser', 'adminsistem', 'kasubagumum', 'adminkepegawaian', 'adminopd'] },
 						{
                             label: 'Presensi', icon: 'pi pi-fw pi-calendar', 
