@@ -55,8 +55,8 @@
 					<Column header="Aksi">
 						<template #body="slotProps">
 							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-								@click="editUser(slotProps.data)" v-if="slotProps.data.role != 'pegawai'" />
-							<Button v-if="slotProps.data.role != 'pegawai'" icon="pi pi-trash"
+								@click="editUser(slotProps.data)" v-if="slotProps.data.role != 'superuser'" />
+							<Button v-if="slotProps.data.role != 'superuser'" icon="pi pi-trash"
 								class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />
 						</template>
 					</Column>
