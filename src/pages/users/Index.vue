@@ -36,7 +36,7 @@
 						</template>
 					</Column>
 					<Column field="email" header="Email"></Column>
-					<Column field="workunit.name" header="OPD"></Column>
+					<Column field="workunit.name" header="Unit Kerja"></Column>
 					<Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true"
 						headerStyle="width:20%; min-width:10rem;">
 						<template #body="slotProps">
@@ -89,9 +89,9 @@
 					<div class="field">
 						<label>OPD</label>
 						<Dropdown v-model="user.workunit_id" :options="workunits" optionLabel="name"
-							optionValue="id" required="true" placeholder="Pilih OPD" :filter="true"
+							optionValue="id" required="true" placeholder="Pilih Unit Kerja" :filter="true"
 							:class="{'p-invalid': submitted && !user.workunit_id}" />
-						<small class="p-invalid" v-if="submitted && !user.workunit_id">OPD diperlukan.</small>
+						<small class="p-invalid" v-if="submitted && !user.workunit_id">Unit Kerja diperlukan.</small>
 					</div>
 					<div class="field">
 						<label>Pengatur Jam Kerja</label>
@@ -130,10 +130,10 @@ export default {
 			userDialog: false,
 			submitted: false,
 			roleLists: [
-				{ name: "Admin Kota", value: "adminsistem" },
+				{ name: "Admin", value: "adminsistem" },
 				{ name: "Pegawai", value: "pegawai" },
-				{ name: "Kasubag Umum", value: "kasubagumum" },
-				{ name: "Admin BKD", value: "adminkepegawaian" },
+				// { name: "Kasubag Umum", value: "kasubagumum" },
+				// { name: "Admin BKD", value: "adminkepegawaian" },
 				// { name: "Admin OPD", value: "adminopd" }
 			]
 		}
