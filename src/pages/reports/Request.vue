@@ -13,7 +13,7 @@
 
                             <Dropdown v-model="report.workunit_id" :options="workunits" optionLabel="name"
                                 v-if="['superuser','adminsistem','adminkepegawaian'].includes(role)"
-                                optionValue="id" class="m-2" placeholder="Pilih OPD" :filter="true" />
+                                optionValue="id" class="m-2" placeholder="Pilih Unit Kerja" :filter="true" />
                             
                             <Dropdown v-model="report.report_type" :options="[{name:'Rekapitulasi',value:'rekapitulasi'},{name:'Detail',value:'detail'}]" optionLabel="name"
                                 optionValue="value" class="m-2" placeholder="Pilih Report Type" :filter="true" />
@@ -36,7 +36,7 @@
                             {{slotProps.data.id}}
                         </template>
                     </Column>
-                    <Column field="workunit.name" header="OPD / Unit Kerja"></Column>
+                    <Column field="workunit.name" header="Unit Kerja"></Column>
                     <Column field="start_at" header="Tanggal Awal"></Column>
                     <Column field="end_at" header="Tanggal Akhir"></Column>
                     <Column field="status" header="Status"></Column>
