@@ -56,7 +56,7 @@
                     </Column>
                     <Column field="employee.name" header="Nama"></Column>
                     <Column field="type" header="Jenis Pengajuan"></Column>
-                    <Column field="workunit.name" header="OPD"></Column>
+                    <Column field="workunit.name" header="Unit Kerja"></Column>
                     <Column field="status" header="Status">
                         <template #body="slotProps">
                             <Badge :class="'p-badge ' + (slotProps.data.status == 'diajukan' ? 'p-badge-info' : slotProps.data.status == 'ditolak' ? 'p-badge-danger' : slotProps.data.status == 'disetujui' ? 'p-badge-success' : '')">
