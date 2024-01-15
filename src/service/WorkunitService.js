@@ -96,14 +96,39 @@ export default class WorkunitService {
         .then(d => d.data);
     }
 
-    updateWorkunit(workunit){
-        return fetch(process.env.VUE_APP_API_URL+'workunits/'+workunit.id+'/place',{
-            method:'PATCH',
+    addWorkunit(workunit){
+        return fetch(process.env.VUE_APP_API_URL+'workunits',{
+            method:'POST',
             headers:{
                 'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
                 'Content-type': 'application/json; charset=UTF-8',
             },
             body:JSON.stringify({
+                name:workunit.name,
+                lat:workunit.lat,
+                lng:workunit.lng,
+                radius:workunit.radius,
+            })
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
+
+    updateWorkunit(workunit){
+        return fetch(process.env.VUE_APP_API_URL+'workunits/'+workunit.id,{
+            method:'POST',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+            body:JSON.stringify({
+                _method:'PUT',
+                name:workunit.name,
                 lat:workunit.lat,
                 lng:workunit.lng,
                 radius:workunit.radius,
@@ -148,6 +173,23 @@ export default class WorkunitService {
             body:JSON.stringify({
                 worktime_id:data.id
             })
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
+
+    deleteWorkunit(workunit){
+        return fetch(process.env.VUE_APP_API_URL+'workunits/'+workunit.id,{
+            method:'DELETE',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                'Content-type': 'application/json; charset=UTF-8',
+            },
         })
         .then(res => {
             if(res.status == 401)

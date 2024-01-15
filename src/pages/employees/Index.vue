@@ -2,6 +2,14 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
+                <Toolbar class="mb-4">
+					<template v-slot:start>
+						<div class="my-2">
+							<Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+						</div>
+					</template>
+				</Toolbar>
+
                 <DataTable :value="employees" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
                     ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
                     @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
@@ -46,7 +54,57 @@
                     </Column>
                     <Column field="position" header="Jabatan" ref="position"></Column>
                     <Column field="phone" header="Telepon" ref="phone"></Column>
+                    <Column header="Aksi">
+                        <template #body="slotProps">
+                            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                                @click="editEmployee(slotProps.data)" />
+                            <Button icon="pi pi-trash"
+								class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />
+                        </template>
+                    </Column>
                 </DataTable>
+
+                <Dialog v-model:visible="employeeDialog" :style="{width: '450px'}" header="Form Pegawai" :modal="true"
+                    class="p-fluid">
+                    <div class="field">
+                        <label for="nip">Unit Kerja</label>
+                        <Dropdown :options="workunits" optionLabel="name"
+                                    optionValue="id" class="mr-3" placeholder="Pilih Unit Kerja" v-model="employee.workunit_id" :filter="true"/>
+                        <small class="p-invalid" v-if="submitted && !employee.workunit_id">Unit Kerja diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="nip">Kode Pegawai</label>
+                        <InputText id="nip" v-model.trim="employee.nip" required="true" autofocus />
+                        <small class="p-invalid" v-if="submitted && !employee.nip">Kode Pegawai diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="name">Nama</label>
+                        <InputText id="name" v-model.trim="employee.name" required="true" />
+                        <small class="p-invalid" v-if="submitted && !employee.name">Nama diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="group">Golongan</label>
+                        <InputText id="group" v-model.trim="employee.group" required="true"
+                            :class="{'p-invalid': submitted && !employee.group}" />
+                        <small class="p-invalid" v-if="submitted && !employee.group">Golongan diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="position">Jabatan</label>
+                        <InputText id="position" v-model.trim="employee.position" required="true"
+                            :class="{'p-invalid': submitted && !employee.position}" />
+                        <small class="p-invalid" v-if="submitted && !employee.position">Jabatan diperlukan.</small>
+                    </div>
+                    <div class="field">
+                        <label for="phone">No. Whatsapp</label>
+                        <InputText id="phone" v-model.trim="employee.phone" required="true"
+                            :class="{'p-invalid': submitted && !employee.phone}" />
+                        <small class="p-invalid" v-if="submitted && !employee.phone">No. Whatsapp diperlukan.</small>
+                    </div>
+                    <template #footer>
+                        <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
+                        <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveEmployee" />
+                    </template>
+                </Dialog>
             </div>
         </div>
     </div>
@@ -206,6 +264,106 @@ export default {
             this.lazyParams.filters = this.filters;
             this.loadLazyData();
         },
+        openNew() {
+			this.employee = {}
+			this.submitted = false;
+			this.employeeDialog = true;
+		},
+        editEmployee(employee) {
+			this.employee = {...employee};
+			this.employeeDialog = true;
+		},
+        hideDialog() {
+			this.employeeDialog = false;
+			this.submitted = false;
+		},
+        saveEmployee() {
+			this.submitted = true;
+            if (this.employee.id) 
+            {
+                this.employeeService.updateEmployee(this.employee)
+                .then(res => {
+                    if(!res.success)
+                    {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: res.message,
+                        })
+                    }
+                    else
+                    {
+                        this.employees[this.findIndexById(this.employee.id)] = this.employee;
+                        this.$swal({
+                            icon: 'success',
+                            title: 'Success',
+                            text: res.message
+                        })
+                        this.employeeDialog = false;
+                        this.employee = {};
+                    }
+                })
+            }
+            else
+            {
+                this.employeeService.addEmployee(this.employee)
+                .then(res => {
+                    if(!res.success)
+                    {
+                        this.$swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: res.message,
+                        })
+                    }
+                    else
+                    {
+                        this.loadLazyData()
+                        this.$swal({
+                            icon: 'success',
+                            title: 'Success',
+                            text: res.message
+                        })
+                        this.employeeDialog = false;
+                        this.employee = {};
+                    }
+                })
+            }
+            // this.workunits[this.findIndexById(this.workunit.id)] = this.workunit;
+            
+		},
+
+        confirmDelete(employee) {
+			this.employee = employee;
+			this.$swal({
+				title: 'Apakah anda yakin akan menghapus data ini ?',
+				showCancelButton: true,
+				confirmButtonText: 'Hapus',
+			}).then((result) => {
+				if (result.isConfirmed) {
+					this.employeeService.deleteEmployee(this.employee)
+						.then(res => {
+							if (!res.success) {
+								this.$swal({
+									icon: 'error',
+									title: 'Oops...',
+									text: res.message,
+								})
+							}
+							else {
+								this.employees = this.employees.filter(val => val.id !== this.employee.id);
+								this.$swal({
+									icon: 'success',
+									title: 'Success',
+									text: res.message
+								})
+								this.employeeDialog = false;
+								this.employee = {};
+							}
+						})
+				}
+			})
+		},
     }
 }
 </script>

@@ -207,27 +207,27 @@ export default class EmployeeService {
         .then(d => d.data);
     }
 
-    updateEmployee(employee){
-        return fetch(process.env.VUE_APP_API_URL+'employees/'+employee.id+'/place',{
-            method:'PATCH',
-            headers:{
-                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-            body:JSON.stringify({
-                lat:employee.lat,
-                lng:employee.lng,
-                radius:employee.radius,
-            })
-        })
-        .then(res => {
-            if(res.status == 401)
-            {
-                return {redirectTo:"Login"};
-            }
-            return res.json()
-        })
-    }
+    // updateEmployee(employee){
+    //     return fetch(process.env.VUE_APP_API_URL+'employees/'+employee.id+'/place',{
+    //         method:'PATCH',
+    //         headers:{
+    //             'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+    //             'Content-type': 'application/json; charset=UTF-8',
+    //         },
+    //         body:JSON.stringify({
+    //             lat:employee.lat,
+    //             lng:employee.lng,
+    //             radius:employee.radius,
+    //         })
+    //     })
+    //     .then(res => {
+    //         if(res.status == 401)
+    //         {
+    //             return {redirectTo:"Login"};
+    //         }
+    //         return res.json()
+    //     })
+    // }
 
     updateRole(user, role){
         var _user = {...user}
@@ -423,6 +423,73 @@ export default class EmployeeService {
                 // 'Content-type': 'multipart/form-data',
             },
             body:data
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
+
+    addEmployee(employee){
+        return fetch(process.env.VUE_APP_API_URL+'employees',{
+            method:'POST',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+            body:JSON.stringify({
+                workunit_id:employee.workunit_id,
+                nip:employee.nip,
+                name:employee.name,
+                group:employee.group,
+                position:employee.position,
+                phone:employee.phone,
+            })
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
+
+    updateEmployee(employee){
+        return fetch(process.env.VUE_APP_API_URL+'employees/'+employee.id,{
+            method:'POST',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+            body:JSON.stringify({
+                workunit_id:employee.workunit_id,
+                nip:employee.nip,
+                name:employee.name,
+                group:employee.group,
+                position:employee.position,
+                phone:employee.phone,
+            })
+        })
+        .then(res => {
+            if(res.status == 401)
+            {
+                return {redirectTo:"Login"};
+            }
+            return res.json()
+        })
+    }
+
+    deleteEmployee(employee){
+        return fetch(process.env.VUE_APP_API_URL+'employees/'+employee.id,{
+            method:'DELETE',
+            headers:{
+                'authorization' : 'Bearer '+localStorage.getItem('presence_app_token'),
+                'Content-type': 'application/json; charset=UTF-8',
+            },
         })
         .then(res => {
             if(res.status == 401)
