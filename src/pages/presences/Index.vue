@@ -56,7 +56,7 @@
                     </Column>
                     <Column field="employee.name" header="Nama"></Column>
                     <Column field="worktime_item.name" header="Jadwal"></Column>
-                    <Column field="workunit.name" header="OPD"></Column>
+                    <Column field="workunit.name" header="Unit Kerja"></Column>
                     <Column field="type" header="Tipe"></Column>
                     <Column field="in_location" header="Di lokasi">
                         <template #body="slotProps">
