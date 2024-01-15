@@ -17,7 +17,7 @@
                             <div class="flex">
                                 <Dropdown v-model="selectedWorkunit.id" :options="workunits" optionLabel="name"
                                     v-if="['superuser', 'adminsistem','adminkepegawaian'].includes(role)"
-                                    optionValue="id" class="mr-3" placeholder="Pilih OPD" :filter="true" @change="onWorkunitChange" />
+                                    optionValue="id" class="mr-3" placeholder="Pilih Unit Kerja" :filter="true" @change="onWorkunitChange" />
 
                                 <span class="mt-2 md:mt-0 p-input-icon-left">
                                     <i class="pi pi-search" />
