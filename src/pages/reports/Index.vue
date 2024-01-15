@@ -56,7 +56,7 @@
                         </template>
                     </Column>
                     <Column field="name" header="Nama"></Column>
-                    <Column field="nip" header="NIP"></Column>
+                    <Column field="nip" header="Kode Pegawai"></Column>
                     <Column field="group" header="Golongan"></Column>
                     <Column field="position" header="Jabatan"></Column>
                     <Column field="kehadiran" class="text-center" header="Hadir"></Column>
