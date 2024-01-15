@@ -33,7 +33,7 @@
                             {{slotProps.data.id}}
                         </template>
                     </Column>
-                    <Column field="nip" header="NIP"></Column>
+                    <Column field="nip" header="Kode Pegawai"></Column>
                     <Column field="workunit.name" header="Unit Kerja" headerStyle="width:20%; min-width:10rem;">
                     </Column>
                     <Column field="name" header="Nama" filterMatchMode="startsWith" ref="name" :sortable="true"
