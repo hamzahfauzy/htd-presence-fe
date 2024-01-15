@@ -5,7 +5,7 @@
                 <div class="font-medium text-3xl text-900 mb-3">Detail Pegawai</div>
                 <ul class="list-none p-0 m-0">
                     <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
-                        <div class="text-500 w-6 md:w-2 font-medium">NIP</div>
+                        <div class="text-500 w-6 md:w-2 font-medium">Kode Pegawai</div>
                         <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{employee.nip}}</div>
                     </li>
                     <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
