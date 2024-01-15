@@ -65,7 +65,6 @@
                     <Column field="_tugas" class="text-center" header="Tugas Luar/Dalam"></Column>
                     <Column field="hari_kerja" class="text-center" header="Hari Kerja"></Column>
                     <Column field="time_left" class="text-center" header="Kekurangan Waktu (Menit)"></Column>
-                    <Column field="presentase" class="text-center" header="Persentase"></Column>
                 </DataTable>
             </div>
         </div>

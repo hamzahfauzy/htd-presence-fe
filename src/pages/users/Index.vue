@@ -46,18 +46,12 @@
 						</template>
 					</Column>
 					<Column field="role" header="Jabatan"></Column>
-					<Column field="shift_management" header="Pengatur Jam Kerja">
-						<template #body="slotProps">
-							<span class="p-column-title">Pengatur Jam Kerja</span>
-							{{slotProps.data.shift_management?'Ya':'Tidak'}}
-						</template>
-					</Column>
 					<Column header="Aksi">
 						<template #body="slotProps">
 							<Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
 								@click="editUser(slotProps.data)" v-if="slotProps.data.role != 'superuser'" />
-							<Button v-if="slotProps.data.role != 'superuser'" icon="pi pi-trash"
-								class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />
+							<!-- <Button v-if="slotProps.data.role != 'superuser'" icon="pi pi-trash"
+								class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" /> -->
 						</template>
 					</Column>
 				</DataTable>
@@ -85,18 +79,6 @@
 						<Dropdown v-model="user.role" :options="roleLists" optionLabel="name" optionValue="value"
 							placeholder="Pilih Jabatan" :class="{'p-invalid': submitted && !user.role}" />
 						<small class="p-invalid" v-if="submitted && !user.role">Jabatan diperlukan.</small>
-					</div>
-					<div class="field">
-						<label>OPD</label>
-						<Dropdown v-model="user.workunit_id" :options="workunits" optionLabel="name"
-							optionValue="id" required="true" placeholder="Pilih Unit Kerja" :filter="true"
-							:class="{'p-invalid': submitted && !user.workunit_id}" />
-						<small class="p-invalid" v-if="submitted && !user.workunit_id">Unit Kerja diperlukan.</small>
-					</div>
-					<div class="field">
-						<label>Pengatur Jam Kerja</label>
-						<Dropdown v-model="user.shift_management" :options="[{'name':'Ya','value':1},{'name':'Tidak','value':0}]" optionLabel="name"
-							optionValue="value" required="true" placeholder="Pilih"/>
 					</div>
 					<template #footer>
 						<Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
