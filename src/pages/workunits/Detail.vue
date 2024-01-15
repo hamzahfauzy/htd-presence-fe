@@ -2,7 +2,7 @@
 	<div class="grid">
 		<div class="col-12">
 			<div class="card">
-                <div class="font-medium text-3xl text-900 mb-3">Detail OPD</div>
+                <div class="font-medium text-3xl text-900 mb-3">Detail Unit Kerja</div>
                 <ul class="list-none p-0 m-0">
                     <li class="flex align-items-center py-3 px-2 border-top-1 surface-border flex-wrap">
                         <div class="text-500 w-6 md:w-2 font-medium">Nama</div>
