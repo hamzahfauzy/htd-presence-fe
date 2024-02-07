@@ -24,6 +24,7 @@
                 </Toolbar>
                 <DataTable :value="reports" :lazy="true" v-model:filters="filters"
                     ref="dt" dataKey="id" :loading="loading" :globalFilterFields="['name']"
+                    :totalRecords="totalRecords" @page="onPage($event)"
                     v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange"
                     @row-select="onRowSelect" @row-unselect="onRowUnselect"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
