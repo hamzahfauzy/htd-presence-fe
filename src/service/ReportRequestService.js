@@ -1,9 +1,24 @@
 export default class ReportRequestService {
 
-	getReports(workunit_id = false) {
+	getReports(lazyParams, workunit_id = false) {
         // const queryParams = params ? Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&') : '';
 
         var params = ''
+        if(lazyParams){
+            params = 'page='+(lazyParams.page+1)+'&per_page='+lazyParams.rows
+            var order_by = lazyParams.sortOrder == 1 ? 'asc' : 'desc';
+            params +='&order_by='+order_by
+            if(lazyParams.sortField != null)
+            {
+                params += '&sort_by='+lazyParams.sortField
+            }
+    
+            if(lazyParams.filters.global.value)
+            {
+                params += '&keyword='+lazyParams.filters.global.value
+            }
+        }
+        
         var userData = JSON.parse(localStorage.getItem('presence_user_data'))
         if(userData.workunit_id)
         {

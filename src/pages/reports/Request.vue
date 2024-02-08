@@ -22,9 +22,9 @@
                         </div>
                     </template>
                 </Toolbar>
-                <DataTable :value="reports" :lazy="true" v-model:filters="filters"
-                    ref="dt" dataKey="id" :loading="loading" :globalFilterFields="['name']"
-                    :totalRecords="totalRecords" @page="onPage($event)"
+                <DataTable :value="reports" :lazy="true" :paginator="true" :rows="10" v-model:filters="filters"
+                    ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading" @page="onPage($event)"
+                    @sort="onSort($event)" @filter="onFilter($event)" :globalFilterFields="['name']"
                     v-model:selection="selectedCustomers" :selectAll="selectAll" @select-all-change="onSelectAllChange"
                     @row-select="onRowSelect" @row-unselect="onRowUnselect"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -134,7 +134,7 @@ export default {
                     }
                     );
 
-                this.reportService.getReports(this.selectedWorkunit ? this.selectedWorkunit.id : {})
+                this.reportService.getReports(this.lazyParams, this.selectedWorkunit ? this.selectedWorkunit.id : {})
                     .then(data => {
                         if ('redirectTo' in data) {
                             localStorage.removeItem('presence_app_token')
